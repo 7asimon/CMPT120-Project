@@ -13,3 +13,15 @@
 # Show the player their score.
 
 
+location = 0
+score = 0
+input("You are an insomniac who is attempting to master lucid dreaming. You are currently stuck in a dream; aware that you are in a dream state but unable to control your actions. Press Enter to continue...")
+location = 1
+score = 5
+input("In your dream, you are walking forward in a meadow littered with wilted, white dasies. Smoke fills the air and the sky is tinted an eerily familiar shade of red. You try to sieze control of your body and set your own course, but your efforts prove futile. Your body continues to run forward with purpose despite there being nothing in sight other than the dasies in this seemingly endless field. Press ENTER to continue...")
+location = 2
+score = 10
+input("After what felt like hours of non-stop running, you come across a strange figure eating alone at a small table. Upon venturing closer, you realize that the person sitting there is a mirror image of yourself. You are terrified by this and wish to run away, but your body goes and sits down across from him against your will. Press ENTER to continue.")
+location = 3
+score = 15
+input("Suddenly, the entire meadow begins to fold in on itself as the color changes to a bleak grey. You watch as the color also drains from yourself and your surroundings until everything in your dream is black and white. \" You're certainly wondering what I'm - or rather - what YOU'RE doing here, aren't you?\" the mirror image says to you. 
