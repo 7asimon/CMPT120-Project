@@ -12,8 +12,8 @@ greyroom = ("Suddenly, the entire meadow begins to fold in on itself as the colo
 " \" You're certainly wondering where you are, aren't you?\" the mirror image asks of you, barely able to control his laughter."
 " He lifts his fork from the plate and forcefully stabs it into the table."
 " The letters he begins carving are rough and jagged, but when he finishes you can clearly make out the words \" D E A T H  R O W \".")
-dreamend = ("Upon reading the words, you violently jolted up from your bed. You had experienced strange dreams before, but the meadow felt far too familiar for it to be pure coincidence."
-" You knew you had to lucid dream and re-enter that strange world so that you could figure out what happened and the reason for the carving on the table."
+dreamend = ("Upon reading the words, you violently jolted up from your bed. You had experienced strange dreams before, but the meadow felt far too familiar for it to be pure coincidence...")
+conclusion = ("You knew you had no choice but to lucid dream and re-enter that strange world so that you could figure out what happened and the reason for the carving on the table."
 " To Be Continued In Future Game Versions...")
 
 location = gamestart
@@ -49,7 +49,8 @@ location = dreamend
 print(location)
 print('')
 print("Your final score is ", score)
-input("Press ENTER to to complete the game")
+input("Press ENTER to continue...")
 print('')
-
+print(conclusion)
+print('')
 print("Copyright: Abel Simon, abel.simon1@marist.edu")
