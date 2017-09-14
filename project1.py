@@ -15,6 +15,7 @@
 
 location = 0
 score = 0
+print("GREYWALKER")
 input("You are a sleepwalker and an insomniac who is attempting to master lucid dreaming. You are currently stuck in a dream; aware that you are in a dream state but unable to control your actions. Press Enter to continue...")
 location = 1
 score = 5
@@ -28,4 +29,8 @@ input("Suddenly, the entire meadow begins to fold in on itself as the color chan
 location = 4
 score = 20
 input("Upon reading the words, you violently jolted up from your bed. You had experienced strange dreams before, but the meadow felt far too familiar for it to be pure coincidence. You knew you had to lucid dream and re-enter that strange world so that you could figure out what happened and the reason for the carving on the table. Press ENTER to complete the game.")
+print("To Be Continued In Future Game Versions...")
+print("Final Score:", score)
 
+
+print("Copyright: Abel Simon, abel.simon1@marist.edu")
