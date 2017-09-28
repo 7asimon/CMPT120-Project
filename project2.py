@@ -16,6 +16,12 @@ dreamend = ("Upon reading the words, you violently jolted up from your bed. You 
 conclusion = ("You knew you had no choice but to lucid dream and re-enter that strange world so that you could figure out what happened and the reason for the carving on the table."
 " To Be Continued In Future Game Versions...")
 
+def gameIntro():
+    print("GREYWALKER")
+    print('')
+    name = input("You are a sleepwalker and an insomniac who is attempting to master lucid dreaming. You are currently stuck in a dream;"
+" aware that you are in a dream state but unable to control your actions. You begin with a score of 0 and you will gain 5 points for every stage you progress through.")
+
 location = gamestart
 print("GREYWALKER")
 print('')
