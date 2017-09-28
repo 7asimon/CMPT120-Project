@@ -19,10 +19,14 @@ conclusion = ("You knew you had no choice but to lucid dream and re-enter that s
 def gameIntro():
     print("GREYWALKER")
     print('')
-    name = input("You are a sleepwalker and an insomniac who is attempting to master lucid dreaming. You are currently stuck in a dream;"
-" aware that you are in a dream state but unable to control your actions. You begin with a score of 0 and you will gain 5 points for every stage you progress through.")
+    playerName = input("Your name is...you struggle to recall your name. Try to remember your name.")
+    print("Ah, yes, "+playerName+", that was it. You are a sleepwalker and an insomniac who is attempting to master lucid dreaming. You are currently stuck in a dream;"
+    " aware that you are in a dream state but unable to control your actions. You begin with a score of 0 and you will gain 5 points for every stage you progress through."
+    " Type North, South, East, and West to navigate, or type Quit to end the game.")
 
-location = gamestart
+def gameEnd():
+    print(
+location == gamestart
 print("GREYWALKER")
 print('')
 print(location)
