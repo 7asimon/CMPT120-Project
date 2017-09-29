@@ -22,11 +22,19 @@ def gameIntro():
     playerName = input("Your name is...you struggle to recall your name. Try to remember your name.")
     print("Ah, yes, "+playerName+", that was it. You are a sleepwalker and an insomniac who is attempting to master lucid dreaming. You are currently stuck in a dream;"
     " aware that you are in a dream state but unable to control your actions. You begin with a score of 0 and you will gain 5 points for every stage you progress through."
-    " Type North, South, East, and West to navigate, or type Quit to end the game.")
+    " Type North, South, East, and West to navigate, type Quit to end the game, or type Help to view this message again. For now, press enter to continue.")
 
 def gameEnd():
     print(
-location == gamestart
+
+def gameLoop():
+    
+
+def locationTracker():
+    while location = meadow:
+        score = score + 5
+
+location = gamestart
 print("GREYWALKER")
 print('')
 print(location)
