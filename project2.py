@@ -1,4 +1,3 @@
-score = 0
 meadow = ("In your dream, you are walking forward in a meadow littered with wilted, white dasies. Smoke fills the air and the sky is tinted an eerily familiar shade of red."
 " You try to sieze control of your body and set your own course, but your efforts prove futile."
 " Your body continues to run forward with purpose despite there being nothing in sight other than the dasies in this seemingly endless field.")
@@ -13,6 +12,8 @@ stage2 = False
 stage3 = False
 stage4 = False
 stage6 = False
+
+score = 0
 
 def gameIntro():
     print("GREYWALKER")
@@ -31,26 +32,23 @@ def gameEnd():
     
 
 def gameLoop():
-    score = 0
     if stage1 == False:
+        global score
         score = score + 5
         stage1 == True
-    location = meadow
-    print("MEADOW")
-    print("Score:",score)
-    print(location)
     loop = 1
     while loop == 1:
+        location = meadow
+        print("MEADOW")
+        print("Score:",score)
+        print(location)
         userChoice = input()
         if userChoice == ("North"):
-            location = burningVillage
-            if burningVillage == False:
-                score = score + 5
-                burningVillage == True
-            print("BURNING VILLAGE")
-            print("Score:",score)
-            print(location)
             loop = 2
+            break
+        if userChoice == ("South"):
+            print("There is no desirable path to the south.")
+            loop = 1
         if userChoice == ("Help"):
             print("Type North, South, East, or West to navigate, type Quit to end the game, or type Help to view this message again.")
             loop = 1
@@ -60,9 +58,19 @@ def gameLoop():
             print("Please enter a valid command")
             loop = 1
             
-        while loop == 2:
-            userChoice = input()
+    while loop == 2:
+        location = burningVillage
+        if stage2 == False:
+            score = score + 5
+            stage2 == True
+        print("BURNING VILLAGE")
+        print("Score:",score)
+        print(location)
+        userChoice = input()
+        if userChoice == ("South"):
+            loop = 1
+            gameLoop()
+
             
 gameIntro() 
 gameLoop()
-gameEnd()
