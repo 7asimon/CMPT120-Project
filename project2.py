@@ -8,6 +8,12 @@ dinnerTable = ("eat shit here")
 cliff = ("dont jump off this shit")
 houseInterior = ("strange shit going on in here")
 
+stage1 = False
+stage2 = False
+stage3 = False
+stage4 = False
+stage6 = False
+
 def gameIntro():
     print("GREYWALKER")
     print('')
@@ -25,37 +31,38 @@ def gameEnd():
     
 
 def gameLoop():
+    score = 0
+    if stage1 == False:
+        score = score + 5
+        stage1 == True
     location = meadow
-    score = 5
     print("MEADOW")
     print("Score:",score)
     print(location)
-    meadow == True
-    while True:
+    loop = 1
+    while loop == 1:
         userChoice = input()
         if userChoice == ("North"):
             location = burningVillage
-            score = score + 5
+            if burningVillage == False:
+                score = score + 5
+                burningVillage == True
             print("BURNING VILLAGE")
             print("Score:",score)
             print(location)
-            userChoice = input()
-            if userChoice == ("North"):
-                location = houseInterior
-                score = score + 5
-                print("BURNING HOUSE")
-                print("Score:",score)
-                print(location)
-            if userChoice == ("South"):
-                print("MEADOW")
-                print("Score:",score)
-                print(location)
+            loop = 2
         if userChoice == ("Help"):
             print("Type North, South, East, or West to navigate, type Quit to end the game, or type Help to view this message again.")
+            loop = 1
         if userChoice == ("Quit"):
             quit(1)
         else:
             print("Please enter a valid command")
+            loop = 1
+            
+        while loop == 2:
+            userChoice = input()
             
 gameIntro() 
 gameLoop()
+gameEnd()
