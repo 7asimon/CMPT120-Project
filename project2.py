@@ -1,14 +1,8 @@
-
-#Grey Walker
-#Author: Able Simon
-#Date : sep 29 2017
-
-
+# GREYWALKER
+# Author: Abel Simon
+# Date : September 29, 2017
 
 score = 0
-
-
-
 
 def gameIntro():
     print("GREYWALKER")
@@ -17,7 +11,7 @@ def gameIntro():
     print("Ah, yes, " + playerName + ", that was it. You are a sleepwalker and an insomniac who is attempting to master lucid dreaming."
     " You have successfully assumed control of yourself within your dream and intend to explore the strange realm you have dreamed of.")
     print('')
-    input(" You begin with a score of 0 and you will gain 5 points for every stage you progress through."
+    input(" You begin with a score of 0 and you will gain 5 points for every stage you progress through. You will win the game when all locations have been visited."
           " Type North, South, East, or West to navigate, type Quit to end the game, or type Help to view this message again. For now, press ENTER to continue. ")
 
 meadow = ("As the dream begins, you find yourself in a vaguely familiar meadow filled with wilted daisies. Looking forward, you can see a village engulfed in flames. There appears to be areas of interest to the east, west, and south as well.")
