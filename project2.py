@@ -1,7 +1,12 @@
-meadow = ("MEADOW -"
-"In your dream, you are walking forward in a meadow littered with wilted, white dasies. Smoke fills the air and the sky is tinted an eerily familiar shade of red."
+score = 0
+meadow = ("In your dream, you are walking forward in a meadow littered with wilted, white dasies. Smoke fills the air and the sky is tinted an eerily familiar shade of red."
 " You try to sieze control of your body and set your own course, but your efforts prove futile."
 " Your body continues to run forward with purpose despite there being nothing in sight other than the dasies in this seemingly endless field.")
+burningVillage = ("this shit burned")
+greyRoom = ("this shit grey")
+dinnerTable = ("eat shit here")
+cliff = ("dont jump off this shit")
+houseInterior = ("strange shit going on in here")
 
 def gameIntro():
     print("GREYWALKER")
@@ -21,11 +26,18 @@ def gameEnd():
 
 def gameLoop():
     location = meadow
-    input(location)
+    score = 5
+    print("MEADOW")
+    print("Score:",score)
+    print(location)
+    meadow == True
+    userChoice = input()
+    if userChoice == ("North"):
+        
+    
     
         
-def locationTrakcer():
-    input()
 
-gameIntro()
+gameIntro() 
 gameLoop()
+gameEnd()
