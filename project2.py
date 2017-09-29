@@ -31,13 +31,31 @@ def gameLoop():
     print("Score:",score)
     print(location)
     meadow == True
-    userChoice = input()
-    if userChoice == ("North"):
-        
-    
-    
-        
-
+    while True:
+        userChoice = input()
+        if userChoice == ("North"):
+            location = burningVillage
+            score = score + 5
+            print("BURNING VILLAGE")
+            print("Score:",score)
+            print(location)
+            userChoice = input()
+            if userChoice == ("North"):
+                location = houseInterior
+                score = score + 5
+                print("BURNING HOUSE")
+                print("Score:",score)
+                print(location)
+            if userChoice == ("South"):
+                print("MEADOW")
+                print("Score:",score)
+                print(location)
+        if userChoice == ("Help"):
+            print("Type North, South, East, or West to navigate, type Quit to end the game, or type Help to view this message again.")
+        if userChoice == ("Quit"):
+            quit(1)
+        else:
+            print("Please enter a valid command")
+            
 gameIntro() 
 gameLoop()
-gameEnd()
