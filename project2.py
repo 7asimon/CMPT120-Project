@@ -265,8 +265,9 @@ def gameLoop():
 def scoreLocation():
         global score
         score = score + 5
+
+def main():
+    gameIntro()
+    gameLoop()
         
-    
-            
-gameIntro()
-gameLoop()
+main()
