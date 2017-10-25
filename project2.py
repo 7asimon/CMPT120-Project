@@ -14,15 +14,20 @@ def gameIntro():
     input(" You begin with a score of 0 and you will gain 5 points for every stage you progress through. You will win the game when all locations have been visited."
           " Type North, South, East, or West to navigate, type Quit to end the game, or type Help to view this message again. For now, press ENTER to continue. ")
 
-meadow = ("As the dream begins, you find yourself in a vaguely familiar meadow filled with wilted daisies. Looking forward, you can see a village engulfed in flames. There appears to be areas of interest to the east, west, and south as well.")
-burningVillage = ("The village is completely vacant as the buildings crumble and burn around you. However, in front of you lies one house that is completely unaffected by the fire, and a sign in front of it that reads: WHY HAVE YOU CAUSED US SUCH AGONY?")
-greyRoom = ("You arrive in a grey room with random burned objects scattered about. As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.")
+meadow = ("As the dream begins, you find yourself in a vaguely familiar meadow filled with wilted daisies. Looking forward, you can see a village engulfed in flames."
+          "There appears to be areas of interest to the east, west, and south as well.")
+burningVillage = ("The village is completely vacant as the buildings crumble and burn around you."
+                  "However, in front of you lies one house that is completely unaffected by the fire, and a sign in front of it that reads: WHY HAVE YOU CAUSED US SUCH AGONY?")
+greyRoom = ("You arrive in a grey room with random burned objects scattered about."
+            "As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.")
 dinnerTable = ("You arrive at a dinner table with a mirror image of yourself. No matter what you do, he does not speak to you.")
 cliff = ("You arrive at the edge of a cliff with a dark abyss below it. There is nothing of interest here.")
-houseInterior = ("Inside the house, you find that the walls are covered with black and white pictures of your family that were taken before they died mysteriously years ago. Eerily enough, you are missing from all the pictures as if you were cropped out of them.")
+houseInterior = ("Inside the house, you find that the walls are covered with black and white pictures of your family that were taken before they died mysteriously years ago."
+                 "Eerily enough, you are missing from all the pictures as if you were cropped out of them.")
  
 def gameEnd():
-    print("Suddenly, before you could discover all you needed to, you awaken from the dream. You knew you had no choice but to lucid dream and re-enter that strange world so that you could figure out what happened and the reason for the cryptic message on the sign"
+    print("Suddenly, before you could discover all you needed to, you awaken from the dream."
+          "You knew you had no choice but to lucid dream and re-enter that strange world so that you could figure out what happened and the reason for the cryptic message on the sign"
 " To Be Continued In Future Game Versions...")
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
