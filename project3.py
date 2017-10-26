@@ -7,7 +7,7 @@ score = 0
 def gameIntro():
     
 
-locations = ["As the dream begins, you find yourself in a vaguely familiar meadow filled with wilted daisies."
+location = ["As the dream begins, you find yourself in a vaguely familiar meadow filled with wilted daisies."
           "Looking forward, you can see a village engulfed in flames."
           "There appears to be areas of interest to the east, west, and south as well.", "The village is completely vacant as the buildings crumble and burn around you."
                   "However, in front of you lies one house that is completely unaffected by the fire,"
@@ -20,6 +20,8 @@ locations = ["As the dream begins, you find yourself in a vaguely familiar meado
                  "Eerily enough, you are missing from all the pictures as if you were cropped out of them.",
              "You come across a wall with seemingly meaningless inscribings on them. You cannot make out what the strange drawings say.",
              "You enter another part of the village that is blocked off from the other side. There appears to be nothing of interest here."]
+
+stage = [False, False, False, False, False, False, False, False]
 
 meadow = ()
 burningVillage = ()
@@ -36,13 +38,10 @@ def gameEnd():
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
 
+def placeHolder():
+    stage[0] = True location[0]
+
 def gameLoop():
-    stage1 = False
-    stage2 = False
-    stage3 = False
-    stage4 = False
-    stage5 = False
-    stage6 = False
     loop = 1
     while True:
         while loop == 1:
@@ -266,9 +265,8 @@ def gameLoop():
                 break
             
 
-def scoreLocation():
-        global score
-        score = score + 5
+def goTo(x):
+       
 
 def main():
     print("GREYWALKER")
@@ -285,3 +283,13 @@ def main():
     gameLoop()
     
 main()
+
+goTo(i)
+ global
+ location[i]
+
+if not hasBeenThere[i]
+ # add to score
+
+hasBeenThere[i] = True
+
