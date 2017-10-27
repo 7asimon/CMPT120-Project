@@ -16,26 +16,27 @@ def showIntro():
     print('')
     input(" You begin with a score of 0 and you will gain 5 points for every stage you progress through."
           "You will win the game when all locations have been visited."
-          " Type North, South, East, or West to navigate, type Quit to end the game, or type Help to view this message again."
-          " For now, press ENTER to continue. ")
+          "Type North, South, East, or West to navigate, type Map to view the map, type Points to view your score,"
+                      " or type Quit to end the game."
+                      " You may also type Help at any point to view this message again.") 
     
 
 location = ["You find yourself in a vaguely familiar meadow filled with wilted daisies."
           " Looking forward, you can see a village engulfed in flames."
           " There appears to be areas of interest to the east, west, and south as well.",
             "The village is completely vacant as the buildings crumble and burn around you."
-            "However, in front of you lies one house that is completely unaffected by the fire,"
-            "and a sign in front of it that reads: WHY HAVE YOU CAUSED US SUCH AGONY?",
+            " However, in front of you lies one house that is completely unaffected by the fire,"
+            " and a sign in front of it that reads: WHY HAVE YOU CAUSED US SUCH AGONY?",
             "You arrive in a grey room with random burned objects scattered about."
-            "As you walk into the room, the color fades from your skin and you notice everything you see is in black and white." ,
+            " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white." ,
              "You arrive at a dinner table with a mirror image of yourself. No matter what you do, he does not speak to you.",
              "You arrive at the edge of a cliff with a dark abyss below it. There is nothing of interest here.",
              "Inside the house, you find that the walls are covered with black and white pictures of your family"
-                "that were taken before they died mysteriously years ago."
-                "Eerily enough, you are missing from all the pictures as if you were cropped out of them.",
+                " that were taken before they died mysteriously years ago."
+                " Eerily enough, you are missing from all the pictures as if you were cropped out of them.",
              "You come across a wall with seemingly meaningless inscribings on them. You cannot make out what the strange drawings say.",
              "Walking down the path, you witness many villagers screaming in agony and running down the street."
-             "There appears to be an endless number of them"]
+             " There appears to be an endless number of them"]
 
 hasBeenThere = [False, False, False, False, False, False, False, False]
 
@@ -56,7 +57,7 @@ def gameLoop():
         global score
         global stage
         while True:
-           if moves == 15:
+           if moves == 12:
                input("You have taken too long to explore your dream and so it has ended")
                quit()
            print(curLocation)
@@ -158,6 +159,8 @@ def gameLoop():
                        "     ||                           ||                                   \n"
                        "   Meadow ==================== Village                                 \n"
                       )
+           if userChoice not in ("map", "quit", "help", "score", "north", "south", "east", "west"):
+               print("Please enter a valid command")
 
 def goTo(x):
     global curLocation
