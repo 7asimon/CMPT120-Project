@@ -9,18 +9,22 @@ moves = 0
 def showIntro():
     print("GREYWALKER")
     print('')
+    # store input name in a variable and return it to them
     playerName = input("Your name is...you cannot seem to recall it. Try to remember your name: ")
     print("Ah, yes, " + playerName + ", that was it. You are a sleepwalker"
-          "and an insomniac who is attempting to master lucid dreaming."
+          " and an insomniac who is attempting to master lucid dreaming."
     "You have successfully assumed control of yourself within your dream and intend to explore the strange realm you have dreamed of.")
     print('')
-    input(" You begin with a score of 0 and you will gain 5 points for every stage you progress through."
+    input(" You begin with a score of 0 and you will gain 5 points for every stage you progress through. "
           "You will win the game when all locations have been visited."
-          "Type North, South, East, or West to navigate, type Map to view the map, type Points to view your score,"
-                      " or type Quit to end the game."
-                      " You may also type Help at any point to view this message again.") 
+          " However, failing to reach all 8 locations within 12 moves will result in defeat."
+          " Type North, South, East, or West to navigate, type Map to view the map,"
+          " type Points to view your score, type Moves to see how many moves you have left,"
+          " or type Quit to end the game."
+          " You may also type Help at any point to view this message again.")
+    print('')
     
-
+# store all 8 locations in a list to be used later
 location = ["You find yourself in a vaguely familiar meadow filled with wilted daisies."
           " Looking forward, you can see a village engulfed in flames."
           " There appears to be areas of interest to the east, west, and south as well.",
@@ -40,6 +44,7 @@ location = ["You find yourself in a vaguely familiar meadow filled with wilted d
 
 hasBeenThere = [False, False, False, False, False, False, False, False]
 
+# current location is set to 0 so that the loop can begin from the first location when it first executes
 curLocation = location[0]
  
 def gameEnd():
@@ -57,14 +62,20 @@ def gameLoop():
         global score
         global stage
         while True:
+           # player loses the game if number of moves reaches 12
            if moves == 12:
-               input("You have taken too long to explore your dream and so it has ended")
+               input("GAME OVER: You have taken too long to explore your dream and so it has ended")
                quit()
+           # begin each loop iteration by showing the location
            print(curLocation)
+           # player wins the game if their score reaches 35 (only possible by visiting all locations)
            if score == 35:
                gameEnd()
+           # store player's decision in a variable
            userChoice = input()
            userChoice = userChoice.lower()
+           # use the goTo function to determine player's next location by passing an argument through goTo
+           # the argument passed through goTo depends on what direction they choose and their current location 
            if userChoice == ("north"):
                if curLocation == location[0]:
                    goTo(2)
@@ -137,14 +148,24 @@ def gameLoop():
                     goTo(7)
                 elif curLocation == location[7]:
                     print("That is not a valid direction from your currrent location")
+           # show the player their score upon request
            if userChoice == ("score"):
                 print(score)
+                print('')
+           # repeat help command upon request
            if userChoice == ("help"):
                 print("Type North, South, East, or West to navigate, type Map to view the map, type Points to view your score,"
-                      " or type Quit to end the game."
-                      " You may also type Help at any point to view this message again.")
+                      " or type Quit to end the game. Type moves to see how many moves you have left."
+                      " Type Help at any point to view this message again.")
+                print('')
+           # end game upon request
            if userChoice == ("quit"):
                quit()
+           # show the player how many moves they have left upon request
+           if userChoice == ("moves"):
+               print("You have", 12 - moves ,"moves left")
+               print('')
+           # show map of the game world upon request
            if userChoice == ("map"):
                 print(
                        "House Interior ============= Strange Wall ============== Path of Agony \n"
@@ -159,18 +180,23 @@ def gameLoop():
                        "     ||                           ||                                   \n"
                        "   Meadow ==================== Village                                 \n"
                       )
-           if userChoice not in ("map", "quit", "help", "score", "north", "south", "east", "west"):
+           # if the user inputs something not one of the above commands, inform them and restart loop
+           if userChoice not in ("map", "quit", "help", "score", "north", "south", "east", "west", "moves"):
                print("Please enter a valid command")
+               print('')
 
 def goTo(x):
     global curLocation
     global stage
     global score
     global moves
+    # when function is called, change location depending on what argument was passed through it
     curLocation = location[x]
     moves = moves + 1
+    # add to the score only if location has not been visited
     if hasBeenThere[x] is False:
         score = score + 5
+        # now that this location has been visited, mark it as so
         hasBeenThere[x] = True    
 
 def main():
