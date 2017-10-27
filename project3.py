@@ -4,6 +4,8 @@
 
 score = 0
 
+moves = 0
+
 def showIntro():
     print("GREYWALKER")
     print('')
@@ -54,7 +56,12 @@ def gameLoop():
         global score
         global stage
         while True:
+           if moves == 15:
+               input("You have taken too long to explore your dream and so it has ended")
+               quit()
            print(curLocation)
+           if score == 35:
+               gameEnd()
            userChoice = input()
            userChoice = userChoice.lower()
            if userChoice == ("north"):
@@ -136,7 +143,7 @@ def gameLoop():
                       " or type Quit to end the game."
                       " You may also type Help at any point to view this message again.")
            if userChoice == ("quit"):
-               quit(1)
+               quit()
            if userChoice == ("map"):
                 print(
                        "House Interior ============= Strange Wall ============== Path of Agony \n"
@@ -156,13 +163,12 @@ def goTo(x):
     global curLocation
     global stage
     global score
+    global moves
     curLocation = location[x]
+    moves = moves + 1
     if hasBeenThere[x] is False:
         score = score + 5
-        print(score)
-        hasBeenThere[x] = True
-    if score == 40:
-        gameEnd()
+        hasBeenThere[x] = True    
 
 def main():
     showIntro()
