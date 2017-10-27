@@ -32,7 +32,7 @@ location = ["You find yourself in a vaguely familiar meadow filled with wilted d
              "You come across a wall with seemingly meaningless inscribings on them. You cannot make out what the strange drawings say.",
              "You enter another part of the village that is blocked off from the other side. There appears to be nothing of interest here."]
 
-stage = [False, False, False, False, False, False, False, False]
+hasBeenThere = [False, False, False, False, False, False, False, False]
 
 curLocation = location[0]
  
@@ -53,23 +53,60 @@ def gameLoop():
    while True:
        print(curLocation)
        userChoice = input()
-       if userChoice == "north":
+       userChoice = userChoice.lower()
+       if userChoice == ("north"):
            if curLocation == location[0]:
-               goTo(1)
-           if curLocation == location[1]:
                goTo(2)
-           if curLocation == location[2]:
+           elif curLocation == location[1]:
                goTo(3)
-           if curLocation == location[3]:
-               goTo(4)
-           if curLocation == location[4]:
+           elif curLocation == location[2]:
                goTo(5)
-           if curLocation == location[5]:
+           elif curLocation == location[3]:
                goTo(6)
-           if curLocation == location[6]:
+           elif curLocation == location[4]:
                goTo(7)
-           if curLocation == location[7]:
-               goTo(8)
+           elif curLocation == location[5]:
+               print("That is not a valid direction from your currrent location")
+           elif curLocation == location[6]:
+               print("That is not a valid direction from your currrent location")
+           else:
+               print("That is not a valid direction from your currrent location")
+        if userChoice == ("south")
+            if curLocation == location[0]:
+                print("That is not a valid direction from your currrent location")
+            elif curLocation == location[1]:
+                print("That is not a valid direction from your currrent location")
+            elif curLocation == location[2]:
+                goTo(0)
+            elif curLocation == location[3]:
+                goTo(1)
+            elif curLocation == location[4]:
+                print("That is not a valid direction from your currrent location")
+            elif curLocation == location[5]:
+                goTo(2)
+            elif curLocation == location[6]:
+                goTo(3)
+            elif curLocation == location[7]:
+                goTo(4)
+            else:
+                print("That is not a valid direction from your currrent location")
+        if userChoice == ("west")
+            if curLocation == location[0]:
+                print("That is not a valid direction from your currrent location")
+            elif curLocation == location[1]:
+                goTo(0)
+            elif curLocation == location[2]:
+                print("That is not a valid direction from your currrent location")
+            elif curLocation == location[3]:
+                goTo(2)
+            elif curLocation == location[4]:
+                goTo(3)
+            elif curLocation == location[5]:
+                print("That is not a valid direction from your currrent location")
+            elif curLocation == location[6]:
+                goTo(5)
+            elif curLocation == location[7]:
+                goTo(6)
     
             
 
@@ -78,7 +115,7 @@ def goTo(x):
     global stage
     global score
     curLocation = location[x]
-    if stage is False:
+    if hasBeenThere[x] is False:
         score = score + 5
         print(score)
        
