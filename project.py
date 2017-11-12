@@ -25,7 +25,7 @@ def showIntro():
     print('')
     
 # store all 8 locations in a list to be used later
-location = ["You find yourself in a vaguely familiar meadow filled with wilted daisies."
+locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilted daisies."
           " Looking forward, you can see a village engulfed in flames."
           " There appears to be areas of interest to the east, west, and south as well.",
             "The village is completely vacant as the buildings crumble and burn around you."
@@ -41,10 +41,14 @@ location = ["You find yourself in a vaguely familiar meadow filled with wilted d
              "You come across a wall with seemingly meaningless inscribings on them. You cannot make out what the strange drawings say.",
              "Walking down the path, you witness many villagers screaming in agony and running down the street."
              " There appears to be an endless number of them",
-             " As you approach the wall, it crumbles, revealing a small shrine",
-             " Going forward past the shrine, you find a balcony where several people with blank faces talk amongst themselves"]
+             " At the end of the path of agony, people gather around a small shrine",
+             " As you approach the wall, it crumbles, reavealing a balcony where several people with blank faces talk amongst themselves"]
 
 hasBeenThere = [False, False, False, False, False, False, False, False]
+
+locNames = ["meadow", "village", "grey room",
+           "dinner table", "cliff", "house interior", 
+           "path of agony", "shrine", "strange wall", "balcony"]
 
 # current location is set to 0 so that the loop can begin from the first location when it first executes
 curLocation = location[0]
@@ -58,10 +62,16 @@ def gameEnd():
 
 
 world = [ #N   S   E   W
-        [grey room, None, burning village, None]
-       ,[dinner table, burning village, cliff, grey room]
-       ,[house interior, meadow, dinner table, None]
-       ,[strange wall,
+        [grey room, None, burning village, None] # meadow
+       ,[dinner table, village, cliff, grey room] # village
+       ,[house interior, meadow, dinner table, None] # grey room
+       ,[strange wall, village, cliff, grey room] # dinner table
+       ,[path of agony, None, None, dinner table] # cliff
+       ,[None, grey room, strange wall, None] # house interior
+       ,[balcony, dinner table, path of agony, house interior] # strange wall
+       ,[None, cliff, shrine, strange wall] # path of agony
+       ,[None, None, None, path of agony] # shrine
+       ,[None, strange wall, None, None] # balcony
 
 def goTo(x):
     global curLocation
