@@ -1,4 +1,10 @@
-                        House Interior ============= Strange Wall ============== Path of Agony 
+
+                                                       Balcony
+                                                          ||                          
+                                                          ||                                  
+                                                          ||                          
+                                                          ||                          
+                        House Interior ============= Strange Wall ============== Path of Agony ============== Shrine
                              ||                           ||                          ||      
                              ||                           ||                          ||      
                              ||                           ||                          ||       
@@ -8,4 +14,4 @@
                              ||                           ||                                   
                              ||                           ||                                   
                              ||                           ||                                   
-                           Meadow ==================== Village 
+                           Meadow ==================== Village             
