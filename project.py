@@ -40,7 +40,9 @@ location = ["You find yourself in a vaguely familiar meadow filled with wilted d
                 " Eerily enough, you are missing from all the pictures as if you were cropped out of them.",
              "You come across a wall with seemingly meaningless inscribings on them. You cannot make out what the strange drawings say.",
              "Walking down the path, you witness many villagers screaming in agony and running down the street."
-             " There appears to be an endless number of them"]
+             " There appears to be an endless number of them",
+             " As you approach the wall, it crumbles, revealing a small shrine",
+             " Going forward past the shrine, you find a balcony where several people with blank faces talk amongst themselves"]
 
 hasBeenThere = [False, False, False, False, False, False, False, False]
 
