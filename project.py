@@ -1,10 +1,10 @@
 # GREYWALKER
 # Author: Abel Simon
-# Date : October 23, 2017
+# Date : November 8, 2017
 
 score = 0
-userAction = None
 moves = 0
+userAction = None
 
 def showIntro():
     print("GREYWALKER")
@@ -12,11 +12,11 @@ def showIntro():
     # store input name in a variable and return it to them
     playerName = input("Your name is...you cannot seem to recall it. Try to remember your name: ")
     print("Ah, yes, " + playerName + ", that was it. You are a sleepwalker"
-          " and an insomniac who is attempting to master lucid dreaming."
+          " and an insomniac who is attempting to master lucid dreaming in order to discover forgotten secrets about your past."
     " You have successfully assumed control of yourself within your dream and intend to explore the strange realm you have dreamed of.")
     print('')
     input("You begin with a score of 0 and you will gain 5 points for every stage you progress through."
-          " You must collect all items and visit every location before the final encounter of the game."
+          " You must collect all important artifacts and visit every location before the final encounter of the game."
           " Once the game begins, type help to view the list of usable commands.")
     print('')
     
@@ -52,13 +52,6 @@ locNames = ["The Meadow", "Burning Village", "Grey Room",
            "Dinner Table", "Cliff", "House Interior", 
            "Strange Wall", "Path Of Agony", "Shrine" , "Balcony"]
 
- 
-def gameEnd():
-    print("Suddenly, before you could discover all you needed to, you awaken from the dream."
-          "You knew you had no choice but to lucid dream and re-enter that strange world so that you could figure out what happened and the reason for the cryptic message on the sign"
-" To Be Continued In Future Game Versions...")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
-    quit(1)
 
 meadow = 0
 village = 1
@@ -75,8 +68,8 @@ locInfo = 0
 world = [[2,  None,     1,  None] # meadow
         ,[3,     1,     4,     2] # village
         ,[5,     0,     3,  None] # grey room
-        ,[7,     1,     4,     2] # dinner table
-        ,[6,  None,  None,     3] # cliff
+        ,[6,     1,     4,     2] # dinner table
+        ,[7,  None,  None,     3] # cliff
         ,[None,  2,     6,  None] # house interior
         ,[9,     3,     7,     5] # strange wall
         ,[None,  4,     8,     6] # path of agony
@@ -176,7 +169,7 @@ def finalEncounter(location):
     else:
         print(locNames[locInfo])
         print('')
-    if "Necklace" not in inventory and "Strange Gem" not in inventory:
+    if "Necklace" not in inventory or "Strange Gem" not in inventory:
         print("The blank faced woman on the balcony grabs a dagger, clearly intending to attack you if you approach. Do you proceed?") 
     else:
         print("A woman stretches her arms out towards you, beckoning you to come forward. Do you comply?")
