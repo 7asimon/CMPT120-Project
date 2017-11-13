@@ -16,15 +16,16 @@ def showIntro():
     "You have successfully assumed control of yourself within your dream and intend to explore the strange realm you have dreamed of.")
     print('')
     input(" You begin with a score of 0 and you will gain 5 points for every stage you progress through. "
-          "You will win the game when all locations have been visited."
-          " However, failing to reach all 8 locations within 12 moves will result in defeat."
+          " Visiting every location is no longer a victory requirement,"
+          " but you must collect all 3 items before reaching the final location"
+          " Failing to do this will result in defeat."
           " Type North, South, East, or West to navigate, type Map to view the map,"
           " type Points to view your score, type Moves to see how many moves you have left,"
           " or type Quit to end the game."
           " You may also type Help at any point to view this message again.")
     print('')
     
-# store all 8 locations in a list to be used later
+# store all 10 locations in a list to be used later
 locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilted daisies."
           " Looking forward, you can see a village engulfed in flames."
           " There appears to be areas of interest to the east, west, and south as well.",
@@ -47,12 +48,12 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False]
 hasBeenSearched = [False, False, False, False, False, False, False, False, False, False]
 locationCheck = [False, False, False, False, False, False, False, False, False, False]
-items = []
+items = [None, None, "Map", None, None, "Necklace", None, None, "Strange Gem", None]
 inventory = []
 
-locNames = ["meadow", "village", "greyroom",
-           "dinner table", "cliff", "house interior", 
-           "path of agony", "shrine", "strange wall", "balcony"]
+locNames = ["The Meadow", "Burning Village", "Grey Room",
+           "Dinner Table", "Cliff", "House Interior", 
+           "Srange Wall", "Path Of Agony", "Shrine" , "Balcony"]
 
  
 def gameEnd():
@@ -87,6 +88,8 @@ world = [[2,  None,     1,  None] # meadow
         ]
 def gameLoop():
     global locInfo
+    global hasBeenSearched
+    global world
     while True:
         showLocation(locInfo)
         userAction = input("Enter Command: ").lower()
@@ -94,6 +97,20 @@ def gameLoop():
             whereTo(locInfo, userAction)
         if userAction == "score":
             print(score)
+        if userAction == "moves":
+            print("You have", 16 - moves ,"moves left")
+        if userAction == "look":
+            print(locDescrips[locInfo])
+        if userAction == "help":
+            print("Use <north>, <south>, <east>, and <west> to navigate \n"
+                  "Once you find the map, type <map> to view it \n"
+                  "Type <score> to view your current score \n"
+                  "Type <moves> to see how many moves you have left \n"
+                  "Type <quit> to exit the game \n")
+        if userAction == "quit":
+            quit()
+        if userAction == "search":
+            playerSearch(locInfo)
             
 
 def goTo(x):
@@ -101,6 +118,8 @@ def goTo(x):
     global hasBeenThere
     global countHasBeen
     global locNames
+    global moves
+    moves = moves + 1
     curLocation = locNames[x]
     if hasBeenThere[x] == False:
         score = score + 5
@@ -130,12 +149,27 @@ def showLocation(location):
     global locInfo
     global hasBeenThere
     global locationCheck
+    global moves
+    if moves == 16:
+        print("You run out of time and the dream has ended")
+        input()
+        quit()
     if locationCheck[location] == False:
         print(locDescrips[locInfo])
         locationCheck[location] = True
     else:
         print(locNames[locInfo])
 
+def playerSearch(s):
+    global locInfo
+    global hasBeenSearched
+    global items
+    global world
+    if items[s] != None:
+        print("While searching the area, you find a", items[locInfo], "for the taking.")
+        hasBeenSearched[s] = True
+    else:
+        print("You find nothing worth taking in this area.")
 
 def main():
     showIntro()
