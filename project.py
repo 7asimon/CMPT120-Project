@@ -44,7 +44,8 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
              "Walking down the path, you witness many villagers screaming in agony and running down the street."
              " There appears to be an endless number of them",
              "At the end of the path of agony, people gather around a small shrine",
-             "As you approach the wall, it crumbles, reavealing a balcony where several people with blank faces talk amongst themselves"]
+             "As you approach the wall, it crumbles, reavealing a balcony where several people talk amongst themselves."
+             " The people have completely blank faces that are missing all facial features, but you can tell by their bodies that they are your family."]
 
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False]
 hasBeenSearched = [False, False, False, False, False, False, False, False, False, False]
@@ -54,7 +55,7 @@ inventory = []
 
 locNames = ["The Meadow", "Burning Village", "Grey Room",
            "Dinner Table", "Cliff", "House Interior", 
-           "Srange Wall", "Path Of Agony", "Shrine" , "Balcony"]
+           "Strange Wall", "Path Of Agony", "Shrine" , "Balcony"]
 
  
 def gameEnd():
@@ -144,12 +145,49 @@ def goTo(x):
     global countHasBeen
     global locNames
     global moves
+    global locInfo
+    global locationCheck
     moves = moves + 1
     curLocation = locNames[x]
     if hasBeenThere[x] == False:
         score = score + 5
         hasBeenThere[x] = True
-    
+    if curLocation == locNames[9]:
+        finalLocation(locInfo)
+        
+
+def finalLocation(location):
+    global score
+    global hasBeenThere
+    global countHasBeen
+    global locNames
+    global moves
+    global locInfo
+    global locationCheck
+    if locationCheck[location] == False:
+        print(locDescrips[locInfo])
+        print('')
+        locationCheck[location] = True
+        if "Necklace" not in inventory and "Strange Gem" not in inventory:
+            print("Your blank faced family on the balcony grabs weapons, clearly intending to attack you if you approach. Do you proceed?") 
+        else:
+            print("Your blank faced family stretches their arms out towards you, beckoning you to come forward. Do you comply?")
+    else:
+        print(locNames[locInfo])
+        print('')
+        if "Necklace" not in inventory and "Strange Gem" not in inventory:
+            print("Your blank faced family on the balcony grabs weapons, clearly intending to attack you if you approach. Do you proceed?") 
+        else:
+            print("Your blank faced family stretches their arms out towards you, beckoning you to come forward. Do you comply?")
+    decision = input()
+    if decision == "yes":
+        if "Necklace" in inventory and "Strange Gem" in inventory:
+                gameEnd()
+        else:
+                input("Your family slaughters you for the sins of your past.")
+                quit()
+    else:
+        return
                     
 def whereTo(location,userAction):
     global world
@@ -203,6 +241,13 @@ def retrieve(locInfo):
     else:
         print("You find nothing worth taking in this area. Try <search> if you have not already")
 
+def gameEnd():
+    print("Suddenly, before you could discover all you needed to, you awaken from the dream."
+          "You knew you had no choice but to lucid dream and re-enter that strange world so that you could figure out what happened and the reason for the cryptic message on the sign"
+" To Be Continued In Future Game Versions...")
+    input("Copyright: Abel Simon, abel.simon1@marist.edu")
+    quit(1)
+    
 def main():
     showIntro()
     gameLoop()
