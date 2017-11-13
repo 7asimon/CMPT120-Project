@@ -44,8 +44,8 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
              " At the end of the path of agony, people gather around a small shrine",
              " As you approach the wall, it crumbles, reavealing a balcony where several people with blank faces talk amongst themselves"]
 
-hasBeenThere = [False, False, False, False, False, False, False, False]
-hasSearched = [False, False, False, False, False, False, False, False]
+hasBeenThere = [False, False, False, False, False, False, False, False, False, False]
+hasSearched = [False, False, False, False, False, False, False, False, False, False]
 items = []
 inventory = []
 
@@ -99,11 +99,10 @@ def goTo(x):
     global countHasBeen
     global locNames
     curLocation = locNames[x]
+    if hasBeenThere[x] == False:
+        score = score + 5
+        hasBeenThere[x] == True
     
-    
-        
-    
-        
                     
 def whereTo(location,userAction):
     global world
