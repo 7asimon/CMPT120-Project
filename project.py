@@ -3,7 +3,7 @@
 # Date : October 23, 2017
 
 score = 0
-
+userAction = None
 moves = 0
 
 def showIntro():
@@ -45,6 +45,9 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
              " As you approach the wall, it crumbles, reavealing a balcony where several people with blank faces talk amongst themselves"]
 
 hasBeenThere = [False, False, False, False, False, False, False, False]
+hasSearched = [False, False, False, False, False, False, False, False]
+items = []
+inventory = []
 
 locNames = ["meadow", "village", "greyroom",
            "dinner table", "cliff", "house interior", 
@@ -64,46 +67,66 @@ greyRoom = 2
 dinnerTable = 3
 cliff = 4
 houseInterior = 5
-pathOfAgony = 6
-shrine = 7
-strangeWall = 8
+strangeWall = 6
+pathOfAgony = 7
+shrine = 8
 balcony = 9
-
-world = [ #N   S   E   W
-        [greyRoom, None, village, None] # meadow
-       ,[dinnerTable, village, cliff, greyRoom] # village
-       ,[houseInterior, meadow, dinnerTable, None] # grey room
-       ,[strangeWall, village, cliff, greyRoom] # dinner table
-       ,[pathOfAgony, None, None, dinnerTable] # cliff
-       ,[None, greyRoom, strangeWall, None] # house interior
-       ,[balcony, dinnerTable, pathOfAgony, houseInterior] # strange wall
-       ,[None, cliff, shrine, strangeWall] # path of agony
-       ,[None, None, None, pathOfAgony] # shrine
-       ,[None, strangeWall, None, None] # balcony
+locIndex = 0
+         # N     S     E      W
+world = [[2,  None,     1,  None] # meadow
+        ,[3,     1,     4,     2] # village
+        ,[5,     0,     3,  None] # grey room
+        ,[8,     1,     4,     2] # dinner table
+        ,[6,  None,  None,     3] # cliff
+        ,[None,  2,     6,  None] # house interior
+        ,[9,     3,     7,     5] # strange wall
+        ,[None,  4,     8,     6] # path of agony
+        ,[None,  None,   None, 7] # shrine
+        ,[None,  6,  None,  None] # balcony
         ]
 def gameLoop():
-        curLocation = meadow
-        while True:
-            showLocation(curLocation)
-            userAction = updateLocation()
-            curLocation = WhereTo(curLocation, userAction)
-
-def updateLocation():
-        userChoice = input()
-        if userChoice == "north":
-            return 0
-        elif userChoice == "south":
-            return 1
-        elif userChoice == "east":
-            return 2
-        elif userChoice == "west":
-            return 3
+    global locIndex
+    while True:
+        showLocation(locIndex)
+        userAction = input("Enter Command: ")
+        if userAction == "north" or userAction == "east" or userAction == "south" or userAction == "west":
+            whereTo(locIndex, userAction) 
             
-def WhereTo(location, direction):
-        return world[location][direction]
+
+def goTo(x):
+    global score
+    global hasBeenThere
+    global countHasBeen
+    global locNames
+    curLocation = locNames[x]
+    
+    
+        
+    
+        
+                    
+def whereTo(location,userAction):
+    global world
+    global locIndex
+    direction = None
+    if userAction == "north":
+        direction = 0
+    elif userAction == "south":
+        direction = 1
+    elif userAction  == "east":
+        direction = 2
+    elif userAction == "west":
+        direction = 3
+    nextLocation = world[location][direction]
+    if nextLocation is None:
+        print("There is nothing in that direction.")
+    else:
+        locIndex = nextLocation
+        goTo(nextLocation)
 
 def showLocation(location):
-    print(locDescrips[location])
+    global locIndex
+    print(locDescrips[locIndex])
 
     
 
