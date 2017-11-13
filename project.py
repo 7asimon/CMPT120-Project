@@ -13,16 +13,11 @@ def showIntro():
     playerName = input("Your name is...you cannot seem to recall it. Try to remember your name: ")
     print("Ah, yes, " + playerName + ", that was it. You are a sleepwalker"
           " and an insomniac who is attempting to master lucid dreaming."
-    "You have successfully assumed control of yourself within your dream and intend to explore the strange realm you have dreamed of.")
+    " You have successfully assumed control of yourself within your dream and intend to explore the strange realm you have dreamed of.")
     print('')
-    input(" You begin with a score of 0 and you will gain 5 points for every stage you progress through. "
-          " Visiting every location is no longer a victory requirement,"
-          " but you must collect all 3 items before reaching the final location"
-          " Failing to do this will result in defeat."
-          " Type North, South, East, or West to navigate, type Map to view the map,"
-          " type Points to view your score, type Moves to see how many moves you have left,"
-          " or type Quit to end the game."
-          " You may also type Help at any point to view this message again.")
+    input("You begin with a score of 0 and you will gain 5 points for every stage you progress through."
+          " You must collect all items and visit every location before the final encounter of the game."
+          " Once the game begins, type help to view the list of usable commands.")
     print('')
     
 # store all 10 locations in a list to be used later
@@ -44,8 +39,8 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
              "Walking down the path, you witness many villagers screaming in agony and running down the street."
              " There appears to be an endless number of them",
              "At the end of the path of agony, people gather around a small shrine",
-             "As you approach the wall, it crumbles, reavealing a balcony where several people talk amongst themselves."
-             " The people have completely blank faces that are missing all facial features, but you can tell by their bodies that they are your family."]
+             "As you approach the wall, it crumbles, reavealing a balcony where a blank faced woman stands."
+             " The woman is missing all facial features as if they have been erased from her face."]
 
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False]
 hasBeenSearched = [False, False, False, False, False, False, False, False, False, False]
@@ -80,7 +75,7 @@ locInfo = 0
 world = [[2,  None,     1,  None] # meadow
         ,[3,     1,     4,     2] # village
         ,[5,     0,     3,  None] # grey room
-        ,[8,     1,     4,     2] # dinner table
+        ,[7,     1,     4,     2] # dinner table
         ,[6,  None,  None,     3] # cliff
         ,[None,  2,     6,  None] # house interior
         ,[9,     3,     7,     5] # strange wall
@@ -108,7 +103,11 @@ def gameLoop():
                   "Once you find the map, type <map> to view it \n"
                   "Type <score> to view your current score \n"
                   "Type <moves> to see how many moves you have left \n"
-                  "Type <quit> to exit the game \n")
+                  "Type <quit> to exit the game \n"
+                  "Type <search> to look for an item in your location \n"
+                  "Type <take> to take an item once you find it \n"
+                  "Type <inv> to view your inventory \n"
+                  "Type <stuck> to be given tips on how to win the game.")
         if userAction == "quit":
             quit()
         if userAction == "search":
@@ -117,6 +116,12 @@ def gameLoop():
             retrieve(locInfo)
         if userAction[0:3] == "inv":
             print(inventory)
+        if userAction == "stuck":
+            print("There are 10 locations. Each one must be visited in order to win. \n"
+                  "Type <search> at every location and then <take> if something is found. \n"
+                  "You must find all items, except the map, to pass the final stage of the game. \n"
+                  "Do not try to interact with the blank-faced woman without having all the necessary items. "
+                  "You can tell if you have all the items needed based on how she responds to your presence. \n")
         if userAction == "map":
             if "Map" in inventory:
                 print("                              Balcony                                 \n"
@@ -153,10 +158,10 @@ def goTo(x):
         score = score + 5
         hasBeenThere[x] = True
     if curLocation == locNames[9]:
-        finalLocation(locInfo)
+        finalEncounter(locInfo)
         
 
-def finalLocation(location):
+def finalEncounter(location):
     global score
     global hasBeenThere
     global countHasBeen
@@ -168,24 +173,22 @@ def finalLocation(location):
         print(locDescrips[locInfo])
         print('')
         locationCheck[location] = True
-        if "Necklace" not in inventory and "Strange Gem" not in inventory:
-            print("Your blank faced family on the balcony grabs weapons, clearly intending to attack you if you approach. Do you proceed?") 
-        else:
-            print("Your blank faced family stretches their arms out towards you, beckoning you to come forward. Do you comply?")
     else:
         print(locNames[locInfo])
         print('')
-        if "Necklace" not in inventory and "Strange Gem" not in inventory:
-            print("Your blank faced family on the balcony grabs weapons, clearly intending to attack you if you approach. Do you proceed?") 
+    if "Necklace" not in inventory and "Strange Gem" not in inventory:
+        print("The blank faced woman on the balcony grabs a dagger, clearly intending to attack you if you approach. Do you proceed?") 
+    else:
+        print("A woman stretches her arms out towards you, beckoning you to come forward. Do you comply?")
+    finalDecision = input()
+    if finalDecision == "yes":
+        if "Necklace" in inventory and "Strange Gem" in inventory and score == 45 or score == 50:
+            gameEnd()
+        elif "Necklace" in inventory and "Strange Gem" in inventory and score != 45 or score != 50:
+            print("Once you get close to her, the woman takes a closer look at you and then pushes you away")
         else:
-            print("Your blank faced family stretches their arms out towards you, beckoning you to come forward. Do you comply?")
-    decision = input()
-    if decision == "yes":
-        if "Necklace" in inventory and "Strange Gem" in inventory:
-                gameEnd()
-        else:
-                input("Your family slaughters you for the sins of your past.")
-                quit()
+            input("The woman slaughters you for the sins of your past. You die within the dream and never wake up from it.")
+            quit()
     else:
         return
                     
@@ -228,7 +231,7 @@ def playerSearch(s):
     global hasBeenSearched
     global items
     global world
-    if hasBeenSearched[s] == False:
+    if hasBeenSearched[s] == False and items[locInfo] != None:
         print("While searching the area, you find a", items[locInfo], "for the taking.")
         hasBeenSearched[s] = True
     else:
@@ -242,8 +245,7 @@ def retrieve(locInfo):
         print("You find nothing worth taking in this area. Try <search> if you have not already")
 
 def gameEnd():
-    print("Suddenly, before you could discover all you needed to, you awaken from the dream."
-          "You knew you had no choice but to lucid dream and re-enter that strange world so that you could figure out what happened and the reason for the cryptic message on the sign"
+    print("The woman takes the necklace and the gem from you and then promptly disappears, leaving you without any answers." 
 " To Be Continued In Future Game Versions...")
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
