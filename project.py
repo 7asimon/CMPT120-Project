@@ -39,11 +39,12 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
              "Inside the house, you find that the walls are covered with black and white pictures of your family"
                 " that were taken before they died mysteriously years ago."
                 " Eerily enough, you are missing from all the pictures as if you were cropped out of them.",
-             "You come across a wall with seemingly meaningless inscribings on them. You cannot make out what the strange drawings say.",
+             "You come across a wall with seemingly meaningless inscribings on them."
+               "You cannot make out what the strange drawings say. You hear people shuffling around on the other side",
              "Walking down the path, you witness many villagers screaming in agony and running down the street."
              " There appears to be an endless number of them",
-             " At the end of the path of agony, people gather around a small shrine",
-             " As you approach the wall, it crumbles, reavealing a balcony where several people with blank faces talk amongst themselves"]
+             "At the end of the path of agony, people gather around a small shrine",
+             "As you approach the wall, it crumbles, reavealing a balcony where several people with blank faces talk amongst themselves"]
 
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False]
 hasBeenSearched = [False, False, False, False, False, False, False, False, False, False]
@@ -111,6 +112,30 @@ def gameLoop():
             quit()
         if userAction == "search":
             playerSearch(locInfo)
+        if userAction == "take":
+            retrieve(locInfo)
+        if userAction[0:3] == "inv":
+            print(inventory)
+        if userAction == "map":
+            if "Map" in inventory:
+                print("                              Balcony                                 \n"
+                       "                                ||                                   \n"
+                       "                                ||                                   \n"
+                       "House Interior ========= Strange Wall ========== Path of Agony ===== Shrine \n"
+                       "     ||                         ||                     ||       \n"
+                       "     ||                         ||                     ||       \n"
+                       "     ||                         ||                     ||       \n"
+                       "     ||                         ||                     ||       \n"
+                       " Grey Room ============== Dinner Table ============= Cliff     \n"
+                       "     ||                         ||                                   \n"                  
+                       "     ||                         ||                                   \n"
+                       "     ||                         ||                                   \n"
+                       "     ||                         ||                                   \n"
+                       "   Meadow =================== Village                                 \n"
+                      )
+            else:
+                print("You have not yet found the map")
+                
             
 
 def goTo(x):
@@ -165,11 +190,18 @@ def playerSearch(s):
     global hasBeenSearched
     global items
     global world
-    if items[s] != None:
+    if hasBeenSearched[s] == False:
         print("While searching the area, you find a", items[locInfo], "for the taking.")
         hasBeenSearched[s] = True
     else:
         print("You find nothing worth taking in this area.")
+
+def retrieve(locInfo):
+    if hasBeenSearched[locInfo] is True:
+        inventory.append(items[locInfo])
+        print("You have picked up a", items[locInfo]+".")
+    else:
+        print("You find nothing worth taking in this area. Try <search> if you have not already")
 
 def main():
     showIntro()
