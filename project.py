@@ -46,6 +46,7 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
 
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False]
 hasBeenSearched = [False, False, False, False, False, False, False, False, False, False]
+locationCheck = [False, False, False, False, False, False, False, False, False, False]
 items = []
 inventory = []
 
@@ -128,8 +129,12 @@ def whereTo(location,userAction):
 def showLocation(location):
     global locInfo
     global hasBeenThere
-    
-    print(locDescrips[locInfo])
+    global locationCheck
+    if locationCheck[location] == False:
+        print(locDescrips[locInfo])
+        locationCheck[location] = True
+    else:
+        print(locNames[locInfo])
 
 
 def main():
