@@ -45,7 +45,7 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
              " As you approach the wall, it crumbles, reavealing a balcony where several people with blank faces talk amongst themselves"]
 
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False]
-hasSearched = [False, False, False, False, False, False, False, False, False, False]
+hasBeenSearched = [False, False, False, False, False, False, False, False, False, False]
 items = []
 inventory = []
 
@@ -71,7 +71,7 @@ strangeWall = 6
 pathOfAgony = 7
 shrine = 8
 balcony = 9
-locIndex = 0
+locInfo = 0
          # N     S     E      W
 world = [[2,  None,     1,  None] # meadow
         ,[3,     1,     4,     2] # village
@@ -85,12 +85,14 @@ world = [[2,  None,     1,  None] # meadow
         ,[None,  6,  None,  None] # balcony
         ]
 def gameLoop():
-    global locIndex
+    global locInfo
     while True:
-        showLocation(locIndex)
-        userAction = input("Enter Command: ")
+        showLocation(locInfo)
+        userAction = input("Enter Command: ").lower()
         if userAction == "north" or userAction == "east" or userAction == "south" or userAction == "west":
-            whereTo(locIndex, userAction) 
+            whereTo(locInfo, userAction)
+        if userAction == "score":
+            print(score)
             
 
 def goTo(x):
@@ -101,12 +103,12 @@ def goTo(x):
     curLocation = locNames[x]
     if hasBeenThere[x] == False:
         score = score + 5
-        hasBeenThere[x] == True
+        hasBeenThere[x] = True
     
                     
 def whereTo(location,userAction):
     global world
-    global locIndex
+    global locInfo
     direction = None
     if userAction == "north":
         direction = 0
@@ -120,14 +122,15 @@ def whereTo(location,userAction):
     if nextLocation is None:
         print("There is nothing in that direction.")
     else:
-        locIndex = nextLocation
+        locInfo = nextLocation
         goTo(nextLocation)
 
 def showLocation(location):
-    global locIndex
-    print(locDescrips[locIndex])
-
+    global locInfo
+    global hasBeenThere
     
+    print(locDescrips[locInfo])
+
 
 def main():
     showIntro()
