@@ -46,12 +46,10 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
 
 hasBeenThere = [False, False, False, False, False, False, False, False]
 
-locNames = ["meadow", "village", "grey room",
+locNames = ["meadow", "village", "greyroom",
            "dinner table", "cliff", "house interior", 
            "path of agony", "shrine", "strange wall", "balcony"]
 
-# current location is set to 0 so that the loop can begin from the first location when it first executes
-curLocation = location[0]
  
 def gameEnd():
     print("Suddenly, before you could discover all you needed to, you awaken from the dream."
@@ -60,32 +58,54 @@ def gameEnd():
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
 
+meadow = 0
+village = 1
+greyRoom = 2
+dinnerTable = 3
+cliff = 4
+houseInterior = 5
+pathOfAgony = 6
+shrine = 7
+strangeWall = 8
+balcony = 9
 
 world = [ #N   S   E   W
-        [grey room, None, burning village, None] # meadow
-       ,[dinner table, village, cliff, grey room] # village
-       ,[house interior, meadow, dinner table, None] # grey room
-       ,[strange wall, village, cliff, grey room] # dinner table
-       ,[path of agony, None, None, dinner table] # cliff
-       ,[None, grey room, strange wall, None] # house interior
-       ,[balcony, dinner table, path of agony, house interior] # strange wall
-       ,[None, cliff, shrine, strange wall] # path of agony
-       ,[None, None, None, path of agony] # shrine
-       ,[None, strange wall, None, None] # balcony
+        [greyRoom, None, village, None] # meadow
+       ,[dinnerTable, village, cliff, greyRoom] # village
+       ,[houseInterior, meadow, dinnerTable, None] # grey room
+       ,[strangeWall, village, cliff, greyRoom] # dinner table
+       ,[pathOfAgony, None, None, dinnerTable] # cliff
+       ,[None, greyRoom, strangeWall, None] # house interior
+       ,[balcony, dinnerTable, pathOfAgony, houseInterior] # strange wall
+       ,[None, cliff, shrine, strangeWall] # path of agony
+       ,[None, None, None, pathOfAgony] # shrine
+       ,[None, strangeWall, None, None] # balcony
+        ]
+def gameLoop():
+        curLocation = meadow
+        while True:
+            showLocation(curLocation)
+            userAction = updateLocation()
+            curLocation = WhereTo(curLocation, userAction)
 
-def goTo(x):
-    global curLocation
-    global stage
-    global score
-    global moves
-    # when function is called, change location depending on what argument was passed through it
-    curLocation = location[x]
-    moves = moves + 1
-    # add to the score only if location has not been visited
-    if hasBeenThere[x] is False:
-        score = score + 5
-        # now that this location has been visited, mark it as so
-        hasBeenThere[x] = True    
+def updateLocation():
+        userChoice = input()
+        if userChoice == "north":
+            return 0
+        elif userChoice == "south":
+            return 1
+        elif userChoice == "east":
+            return 2
+        elif userChoice == "west":
+            return 3
+            
+def WhereTo(location, direction):
+        return world[location][direction]
+
+def showLocation(location):
+    print(locDescrips[location])
+
+    
 
 def main():
     showIntro()
