@@ -1,6 +1,6 @@
 # GREYWALKER
 # Author: Abel Simon
-# Date : November 8, 2017
+# Date : November 28, 2017
 
 score = 0
 moves = 0
@@ -39,14 +39,16 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
                "Walking down the path, you witness many villagers screaming in agony and running down the street."
                " There appears to be an endless number of them",
                "At the end of the path of agony, people gather around a small shrine",
-               "As you approach the wall, it crumbles, reavealing a balcony where a blank faced woman stands."
-               " The woman is missing all facial features as if they have been erased from her face."]
+               "As you approach the wall, it crumbles, reavealing a balcony",
+               "Using a ladder, you climb down from the balcony into the black water.",
+               "As you wade out of the water onto the land, you realize that the water surrounds you."
+               " You must find a way out of this dream."]
 
 # all these lists of booleans are used in vital functions
-hasBeenThere = [False, False, False, False, False, False, False, False, False, False]
-hasBeenSearched = [False, False, False, False, False, False, False, False, False, False]
-locationCheck = [False, False, False, False, False, False, False, False, False, False]
-items = [None, None, "Map", None, None, "Necklace", None, None, "Strange Gem", None]
+hasBeenThere = [False, False, False, False, False, False, False, False, False, False, False, False]
+hasBeenSearched = [False, False, False, False, False, False, False, False, False, False, False, False]
+locationCheck = [False, False, False, False, False, False, False, False, False, False, False, False]
+items = [None, None, "Map", None, None, "Necklace", None, None, "Strange Gem", None, None, None]
 inventory = []
 
 # short name for each location, later displayed if player has already been to that location
@@ -162,7 +164,7 @@ def goTo(x):
         score = score + 5
         hasBeenThere[x] = True
     # triggers the final encounter scene only if at the balcony
-    if curLocation == locNames[9]:
+    if curLocation == locNames[11]:
         finalEncounter(locInfo)
         
 # special function for handling the final location of the game, where the player could potential win or lose the game
