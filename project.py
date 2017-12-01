@@ -13,13 +13,17 @@ class Player:
         self.curLocation = curLocation
         self.moveCount = moveCount
         self.inventory = inventory
+    def changeScore(self)
+        score = score + 5
+    def changeLoc(self, 
 
 class Locale:
-    def __init__(self, name, locDescrip, locName, hasBeenThere)
+    def __init__(self, name, locDescrip, locName, hasBeenThere, items)
         self.name = name
         self.locDescrip = locDescrip
         self.locName = locName
         self.hasBeenThere = hasBeenThere
+        self.items = items
 
 def showIntro():
     print("GREYWALKER")
@@ -82,6 +86,8 @@ strangeWall = 6
 pathOfAgony = 7
 shrine = 8
 balcony = 9
+water = 10
+land = 11
 # locInfo stores the number of the location you're in, making creating additional functions far easier.
 # locInfo is repeatedly updated throughout the functions in this program
 locInfo = 0
