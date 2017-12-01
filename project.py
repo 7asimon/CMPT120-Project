@@ -185,7 +185,7 @@ def goTo(x):
     if hasBeenThere[x] == False:
         score = score + 5
         hasBeenThere[x] = True
-    # triggers the final encounter scene only if at the balcony
+    # triggers the final encounter scene only if at "land"
     if curLocation == locNames[11]:
         finalEncounter(locInfo)
         
@@ -202,25 +202,17 @@ def finalEncounter(location):
     else:
         print(locNames[locInfo])
         print('')
-    # the woman is hostile towards you if you do not bear her gifts upon entering
-    if "Necklace" not in inventory or "Strange Gem" not in inventory:
-        print("The blank faced woman on the balcony grabs a dagger, clearly intending to attack you if you approach. Do you proceed?")
-    # if you do have the gifts, she will allow you to approach
-    else:
-        print("A woman stretches her arms out towards you, beckoning you to come forward. Do you comply?")
     finalDecision = input()
-    if finalDecision == "yes":
-        # if you have all necessary items and have visited every location, you win
-        if "Necklace" in inventory and "Strange Gem" in inventory and score >= 45:
-            gameEnd()
-        # however, if you have not visited every location, she will turn you back
-        elif "Necklace" in inventory and "Strange Gem" in inventory and score < 45:
-            print("Once you get close to her, the woman takes a closer look at you and then pushes you away")
-        else:
-            input("The woman slaughters you for the sins of your past. You die within the dream and never wake up from it.")
-            quit()
+    if finalDecision = ("use Dream Shard").lower:
+         if "Dream Shard" in inventory:
+             gameEnd()
+         else:
+             input("You failed to collect the dream shard and cannot leave the dream")
+             quit()
     else:
-        return
+         input("You have failed to use the dream shard in time")
+         quit()
+    
                     
 def whereTo(location,userAction):
     global world
