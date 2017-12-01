@@ -6,6 +6,21 @@ score = 0
 moves = 0
 userAction = None
 
+class Player:
+    def __init__(self, name, score, curLocation, moveCount, inventory)
+        self.name = name
+        self.score = score
+        self.curLocation = curLocation
+        self.moveCount = moveCount
+        self.inventory = inventory
+
+class Locale:
+    def __init__(self, name, locDescrip, locName, hasBeenThere)
+        self.name = name
+        self.locDescrip = locDescrip
+        self.locName = locName
+        self.hasBeenThere = hasBeenThere
+
 def showIntro():
     print("GREYWALKER")
     print('')
@@ -48,7 +63,7 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False, False, False]
 hasBeenSearched = [False, False, False, False, False, False, False, False, False, False, False, False]
 locationCheck = [False, False, False, False, False, False, False, False, False, False, False, False]
-items = [None, None, "Map", None, None, "Necklace", None, None, "Strange Gem", None, None, None]
+items = [None, None, "Map", "Ripped Garments", "Ornament", "Necklace", None, None, "Strange Gem", "Dream Shard", None, None]
 inventory = []
 
 # short name for each location, later displayed if player has already been to that location
@@ -81,8 +96,9 @@ world = [[2,  None,     1,  None] # meadow
         ,[9,     3,     7,     5] # strange wall
         ,[None,  4,     8,     6] # path of agony
         ,[None,  None,   None, 7] # shrine
-        ,[None,  6,  None,  None] # balcony
-        ]
+        ,[10,  6,  None,  None] # balcony
+        ,[11,  9,  None,  None] # water
+        ,[None,10, None,  None] # land
 
 # main game loop
 def gameLoop():
