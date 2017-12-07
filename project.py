@@ -137,8 +137,44 @@ def gameLoop():
             quit()
         if userAction == "search":
             playerSearch(locInfo)
-        if userAction == "take":
-            retrieve(locInfo)
+        if userAction == "take map":
+            if locInfo == 2 and "Map" not in inventory:
+                retrieve(locInfo)
+                items[2] = None
+            else:
+                print("There is no map here")
+        if userAction[0:8] == "take rip":
+            if locInfo == 3 and "Ripped Garments" not in inventory:
+                retrieve(locInfo)
+                items[3] = None
+            else:
+                print("There are no Ripped Garments here")
+        if userAction == "take ornament":
+            if locInfo == 4 and "Ornament" not in inventory:
+                retrieve(locInfo)
+                items[4] = None
+            else:
+                print("There is no Ornament here")
+        if userAction == "take necklace":
+            if locInfo == 5 and "Necklaace" not in inventory:
+                retrieve(locInfo)
+                items[5] = None
+            else:
+                print("There is no Necklace here")
+        if userAction == "take strange gem":
+            if locInfo == 8 and "Strange Gem" not in inventory:
+                retrieve(locInfo)
+                items[8] = None
+            else:
+                print("There is no Strange Gem here")
+        if userAction == "take dream shard":
+            if locInfo == 9 and "Dream Shard" not in inventory:
+                retrieve(locInfo)
+                items[9] = None
+            else:
+                print("There is no Dream Shard here")
+        if userAction == "drop":
+            dropItem(locInfo)
         if userAction[0:3] == "inv":
             print(inventory)
         if userAction == "stuck":
@@ -149,7 +185,7 @@ def gameLoop():
                   "You can tell if you have all the items needed based on how she responds to your presence. \n"
                   "If she seems as though she will accept you and then rejects you anyway, you have not visited all locations. "
                   "This kind of rejection will not result in instant defeat, however.")
-        if userAction == "map":
+        if userAction == "map" or userAction == "use map":
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
             if "Map" in inventory:
                 print(
@@ -209,7 +245,7 @@ def finalEncounter(location):
         print(locNames[locInfo])
         print('')
     finalDecision = input()
-    if finalDecision == "use Dream Shard":
+    if finalDecision == "use dream shard":
          if "Dream Shard" in inventory:
              gameEnd()
          else:
@@ -218,9 +254,9 @@ def finalEncounter(location):
     else:
          if "Dream Shard" in inventory:
              secondTry = input("Use the Dream Shard!")
-             if secondTry == "use Dream Shard":
+             if secondTry == "use dream shard":
                  gameEnd()
-             elif secondTry != "use Dream Shard":
+             elif secondTry != "use dream shard":
                  input("You have failed to use the dream shard in time")
                  quit()
              else:
@@ -277,7 +313,7 @@ def playerSearch(s):
     global items
     global world
     # if they have not searched yet and there is an item present at current location, tell them what item is present
-    if hasBeenSearched[s] == False and items[locInfo] != None:
+    if items[locInfo] != None:
         print("While searching the area, you find a", items[locInfo], "for the taking.")
         # this allows them to take the item at the location with the <take> command
         hasBeenSearched[s] = True
@@ -293,9 +329,54 @@ def retrieve(locInfo):
     else:
         print("You find nothing worth taking in this area. Try <search> if you have not already")
 
+def dropItem(locInfo):
+    itemChoice = input("What item do you want to drop? ")
+    if itemChoice == "map":
+        if "Map" in inventory:
+            inventory.remove("Map")
+            items[2] = "Map"
+        else:
+            print("You do not have a map")
+            print('')
+    if itemChoice == "ripped garments":
+        if "Ripped Garments" in inventory:
+            inventory.remove("Ripped Garments")
+            items[3] = "Ripped Garments"
+        else:
+            print("You do not have Ripped Garments")
+            print('')
+    if itemChoice == "ornament":
+        if "Ornament" in inventory:
+            inventory.remove("Ornament")
+            items[4] = "Ornament"
+        else:
+            print("You do not have the Ornament")
+            print('')
+    if itemChoice == "necklace":
+        if "Necklace" in inventory:
+            inventory.remove("Necklace")
+            items[5] = "Necklace"
+        else:
+            print("You do not have the Necklace")
+            print('')
+    if itemChoice == "strange gem" or itemChoice == "gem":
+        if "Strange Gem" in inventory:
+            inventory.remove("Strange Gem")
+            items[8] = "Strange Gem"
+        else:
+            print("You do not have the Strange Gem")
+            print('')
+    if itemChoice == "dream shard":
+        if "Dream Shard" in inventory:
+            print("You cannot drop essential items!")
+            print('')
+        else:
+            print("You do not have the Dream Shard")
+            print('')
+
 def gameEnd():
-    print("The woman takes the necklace and the gem from you and then promptly disappears, leaving you without any answers." 
-" To Be Continued In Future Game Versions...")
+    print("You use the Dream Shard and escape the dream." 
+" All will be solved in the final game version...")
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
     
