@@ -6,6 +6,8 @@ score = 0
 moves = 0
 userAction = None
 
+#classes
+
 class Player:
     def __init__(self, name, score, curLocation, moveCount, inventory):
         self.name = name
@@ -23,6 +25,9 @@ class Locale:
         self.locName = locName
         self.hasBeenThere = hasBeenThere
         self.items = items
+
+#initiate classes
+        
 player = Player('', 0, "Meadow", 20, [])
 Locales = [
     Locale("meadow", "You find yourself in a vaguely familiar meadow filled with wilted daisies."
@@ -51,7 +56,7 @@ Locales = [
                " There appears to be an endless number of them", "Path of Agony", False, False, None),
     Locale("shrine", "At the end of the path of agony, people gather around a small shrine", "Shrine", False, False, "Strange Gem"),
     Locale("balcony", "As you approach the wall, it crumbles, reavealing a balcony", "Balcony", False, False, "Dream Shard"),
-    Locale("water", "Using a ladder, you climb down from the balcony into the black water.", "Water", False, False, None),
+    Locale("water", "Using a ladder, you climb down from the balcony into the black water. Proceeding without visiting every location and without the dream shard is ill advised", "Water", False, False, None),
     Locale("land", "As you wade out of the water onto the land, you realize that the water surrounds you."
                " You must find a way out of this dream.", "Land", False, False, None)]
     
@@ -281,6 +286,7 @@ def finalEncounter(location):
         print(locNames[locInfo])
         print('')
     finalDecision = input()
+    #win by using the dream shard. lose instantly if you have failed to collect it
     if finalDecision == "use dream shard":
          if "Dream Shard" in inventory and score >= 55:
              gameEnd()
@@ -288,7 +294,7 @@ def finalEncounter(location):
              input("You failed to collect the dream shard and cannot leave the dream")
              quit()
     else:
-         if "Dream Shard" in inventory:
+         if "Dream Shard" in inventory and score >= 55:
              secondTry = input("Use the Dream Shard!")
              if secondTry == "use dream shard":
                  gameEnd()
@@ -366,6 +372,8 @@ def retrieve(locInfo):
         print("You find nothing worth taking in this area. Try <search> if you have not already")
 
 def dropItem(locInfo):
+    # ask player what item they want to drop and put down the item they choose
+    # the player can still choose to pick the item up again
     itemChoice = input("What item do you want to drop? ")
     if itemChoice == "map":
         if "Map" in inventory:
