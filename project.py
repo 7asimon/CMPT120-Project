@@ -7,18 +7,17 @@ moves = 0
 userAction = None
 
 class Player:
-    def __init__(self, name, score, curLocation, moveCount, inventory)
+    def __init__(self, name, score, curLocation, moveCount, inventory):
         self.name = name
         self.score = score
         self.curLocation = curLocation
         self.moveCount = moveCount
         self.inventory = inventory
-    def changeScore(self)
+    def changeScore(self):
         score = score + 5
-    def changeLoc(self, 
 
 class Locale:
-    def __init__(self, name, locDescrip, locName, hasBeenThere, items)
+    def __init__(self, name, locDescrip, locName, hasBeenThere, items):
         self.name = name
         self.locDescrip = locDescrip
         self.locName = locName
@@ -73,7 +72,8 @@ inventory = []
 # short name for each location, later displayed if player has already been to that location
 locNames = ["The Meadow", "Burning Village", "Grey Room",
            "Dinner Table", "Cliff", "House Interior", 
-           "Strange Wall", "Path Of Agony", "Shrine" , "Balcony"]
+           "Strange Wall", "Path Of Agony", "Shrine" , "Balcony",
+            "Water", "Land"]
 
 # matrix key
 meadow = 0
@@ -105,7 +105,7 @@ world = [[2,  None,     1,  None] # meadow
         ,[10,  6,  None,  None] # balcony
         ,[11,  9,  None,  None] # water
         ,[None,10, None,  None] # land
-
+        ]
 # main game loop
 def gameLoop():
     global locInfo
@@ -152,20 +152,26 @@ def gameLoop():
         if userAction == "map":
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
             if "Map" in inventory:
-                print("                              Balcony                                 \n"
+                print("
+                       "                               Land                                  \n"
                        "                                ||                                   \n"
                        "                                ||                                   \n"
-                       "House Interior ========= Strange Wall ========== Path of Agony ===== Shrine \n"
+                       "                               Water                                 \n"
+                       "                                ||                                   \n"
+                       "                              Balcony                                \n"
+                       "                                ||                                   \n"
+                       "                                ||                                   \n"
+                       " House Interior ========= Strange Wall ========== Path of Agony ===== Shrine \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
-                       " Grey Room ============== Dinner Table ============= Cliff     \n"
-                       "     ||                         ||                                   \n"                  
-                       "     ||                         ||                                   \n"
-                       "     ||                         ||                                   \n"
-                       "     ||                         ||                                   \n"
-                       "   Meadow =================== Village                                 \n"
+                       " Grey Room ============== Dinner Table ============= Cliff      \n"
+                       "     ||                         ||                              \n"                  
+                       "     ||                         ||                              \n"
+                       "     ||                         ||                              \n"
+                       "     ||                         ||                              \n"
+                       "   Meadow =================== Village                           \n"
                       )
             else:
                 print("You have not yet found the map")
@@ -203,7 +209,7 @@ def finalEncounter(location):
         print(locNames[locInfo])
         print('')
     finalDecision = input()
-    if finalDecision = ("use Dream Shard").lower:
+    if finalDecision == ("use Dream Shard").lower:
          if "Dream Shard" in inventory:
              gameEnd()
          else:
