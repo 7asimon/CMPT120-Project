@@ -142,7 +142,7 @@ def gameLoop():
         if userAction[0:3] == "inv":
             print(inventory)
         if userAction == "stuck":
-            print("There are 10 locations. Each one must be visited in order to win. \n"
+            print("There are 12 locations. Each one must be visited in order to win. \n"
                   "Type <search> at every location and then <take> if something is found. \n"
                   "You must find all items, except the map, to pass the final stage of the game. \n"
                   "DO NOT try to interact with the blank-faced woman without having all the necessary items; doing so could be fatal. "
@@ -152,7 +152,7 @@ def gameLoop():
         if userAction == "map":
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
             if "Map" in inventory:
-                print("
+                print(
                        "                               Land                                  \n"
                        "                                ||                                   \n"
                        "                                ||                                   \n"
@@ -195,7 +195,7 @@ def goTo(x):
     if curLocation == locNames[11]:
         finalEncounter(locInfo)
         
-# special function for handling the final location of the game, where the player could potential win or lose the game
+# special function for handling the final location of the game, where the player could potentially win or lose the game
 def finalEncounter(location):
     global score
     global locNames
@@ -209,15 +209,26 @@ def finalEncounter(location):
         print(locNames[locInfo])
         print('')
     finalDecision = input()
-    if finalDecision == ("use Dream Shard").lower:
+    if finalDecision == "use Dream Shard":
          if "Dream Shard" in inventory:
              gameEnd()
          else:
              input("You failed to collect the dream shard and cannot leave the dream")
              quit()
     else:
-         input("You have failed to use the dream shard in time")
-         quit()
+         if "Dream Shard" in inventory:
+             secondTry = input("Use the Dream Shard!")
+             if secondTry == "use Dream Shard":
+                 gameEnd()
+             elif secondTry != "use Dream Shard":
+                 input("You have failed to use the dream shard in time")
+                 quit()
+             else:
+                 input("You have failed to use the dream shard in time")
+                 quit()
+         else:
+             input("You have failed to collect the dream shard.")
+             quit()
     
                     
 def whereTo(location,userAction):
@@ -247,8 +258,8 @@ def showLocation(location):
     global hasBeenThere
     global locationCheck
     global moves
-    # defeat if you fail to win within the 16 given moves
-    if moves == 16:
+    # defeat if you fail to win within the 20 given moves
+    if moves == 20:
         print("You run out of time and the dream has ended")
         input()
         quit()
