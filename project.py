@@ -17,14 +17,49 @@ class Player:
         score = score + 5
 
 class Locale:
-    def __init__(self, name, locDescrip, locName, hasBeenThere, items):
+    def __init__(self, name, locDescrip, locName, hasBeenThere, hasBeenSearched, items):
         self.name = name
         self.locDescrip = locDescrip
         self.locName = locName
         self.hasBeenThere = hasBeenThere
         self.items = items
+player = Player('', 0, "Meadow", 20, [])
+Locales = [
+    Locale("meadow", "You find yourself in a vaguely familiar meadow filled with wilted daisies."
+               " Looking forward, you can see a village engulfed in flames."
+               " There appears to be areas of interest to the east, west, and south as well.", "The Meadow",
+           False, False, None),
+    Locale("burning village", "The village is completely vacant as the buildings crumble and burn around you."
+               " However, in front of you lies one house that is completely unaffected by the fire,"
+               " and a sign in front of it that reads: WHY HAVE YOU CAUSED US SUCH AGONY?", "The Burning Village",
+           False, False, None),
+    Locale("grey room", "You arrive in a grey room with random burned objects scattered about."
+               " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.",
+           "Grey Room", False, False, "Map"),
+    Locale("dinner table", "You arrive at a dinner table with a mirror image of yourself. No matter what you do, he does not speak to you.",
+           "Dinner Table", False, False, "Ripped Garments"),
+    Locale("cliff", "You arrive at the edge of a cliff with a dark abyss below it. There is nothing of interest here.", "Cliff",
+           False, False, "Ornament"),
+    Locale("house interior", "Inside the house, you find that the walls are covered with black and white pictures of your family"
+               " that were taken before they died mysteriously years ago."
+               " Eerily enough, you are missing from all the pictures as if you were cropped out of them.", "House Interior",
+           False, False, "Necklace"),
+    Locale("strange wall", "You come across a wall with seemingly meaningless inscribings on them."
+               " You cannot make out what the strange drawings say. You hear people shuffling around on the other side.", "Strange Wall",
+           False, False, None),
+    Locale("path of agony", "Walking down the path, you witness many villagers screaming in agony and running down the street."
+               " There appears to be an endless number of them", "Path of Agony", False, False, None),
+    Locale("shrine", "At the end of the path of agony, people gather around a small shrine", "Shrine", False, False, "Strange Gem"),
+    Locale("balcony", "As you approach the wall, it crumbles, reavealing a balcony", "Balcony", False, False, "Dream Shard"),
+    Locale("water", "Using a ladder, you climb down from the balcony into the black water.", "Water", False, False, None),
+    Locale("land", "As you wade out of the water onto the land, you realize that the water surrounds you."
+               " You must find a way out of this dream.", "Land", False, False, None)]
+    
+
+    
 
 def showIntro():
+    global playerName
     print("GREYWALKER")
     print('')
     # store input name in a variable and return it to them
@@ -38,7 +73,7 @@ def showIntro():
           " Once the game begins, type help to view the list of usable commands.")
     print('')
     
-# store all 10 locations in a list to be used later
+# store all 12 locations in a list to be used later
 locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilted daisies."
                " Looking forward, you can see a village engulfed in flames."
                " There appears to be areas of interest to the east, west, and south as well.",
@@ -58,7 +93,8 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
                " There appears to be an endless number of them",
                "At the end of the path of agony, people gather around a small shrine",
                "As you approach the wall, it crumbles, reavealing a balcony",
-               "Using a ladder, you climb down from the balcony into the black water.",
+               "Using a ladder, you climb down from the balcony into the black water."
+               " Proceeding without visiting every location and without the dream shard is ill-advised",
                "As you wade out of the water onto the land, you realize that the water surrounds you."
                " You must find a way out of this dream."]
 
@@ -122,7 +158,7 @@ def gameLoop():
         if userAction == "moves":
             print("You have", 16 - moves ,"moves left")
         if userAction == "look":
-            print(locDescrips[locInfo])
+            print(Locales[locInfo].locDescrip)
         if userAction == "help":
             print("Use <north>, <south>, <east>, and <west> to navigate \n"
                   "Once you find the map, type <map> to view it \n"
@@ -159,7 +195,7 @@ def gameLoop():
             else:
                 print("There is no Ornament here")
         if userAction == "take necklace":
-            if locInfo == 5 and "Necklaace" not in inventory:
+            if locInfo == 5 and "Necklace" not in inventory:
                 retrieve(locInfo)
                 items[5] = None
             else:
