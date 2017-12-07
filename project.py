@@ -143,6 +143,9 @@ def gameLoop():
                 items[2] = None
             else:
                 print("There is no map here")
+        # the following set of if statements lets a user take an item, but they must state it by name.
+        # once the item is taken, the element representing that item is set to None
+        # this prevents the user from duplicating items by taking it multiple times
         if userAction[0:8] == "take rip":
             if locInfo == 3 and "Ripped Garments" not in inventory:
                 retrieve(locInfo)
@@ -179,12 +182,9 @@ def gameLoop():
             print(inventory)
         if userAction == "stuck":
             print("There are 12 locations. Each one must be visited in order to win. \n"
-                  "Type <search> at every location and then <take> if something is found. \n"
-                  "You must find all items, except the map, to pass the final stage of the game. \n"
-                  "DO NOT try to interact with the blank-faced woman without having all the necessary items; doing so could be fatal. "
-                  "You can tell if you have all the items needed based on how she responds to your presence. \n"
-                  "If she seems as though she will accept you and then rejects you anyway, you have not visited all locations. "
-                  "This kind of rejection will not result in instant defeat, however.")
+                  "Type <search> at every location and then <take [item name]> if something is found. \n"
+                  "You must find all items, except the Dream Shard, to pass the final stage of the game. \n"
+                  "DO NOT try to visit the final location without finding the Dream Shard. You will die.")
         if userAction == "map" or userAction == "use map":
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
             if "Map" in inventory:
@@ -246,7 +246,7 @@ def finalEncounter(location):
         print('')
     finalDecision = input()
     if finalDecision == "use dream shard":
-         if "Dream Shard" in inventory:
+         if "Dream Shard" in inventory and score >= 55:
              gameEnd()
          else:
              input("You failed to collect the dream shard and cannot leave the dream")
