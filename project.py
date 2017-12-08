@@ -6,6 +6,13 @@ score = 0
 moves = 0
 userAction = None
 
+#player name is retrieved outside of functions first, otherwise it is difficult to use it in location descriptions
+print("GREYWALKER")
+print('')
+playerName = input("Your name is...you cannot seem to recall it. \nTry to remember your name: ")
+print("Ah, yes, " + playerName + ", that was it.")
+print('')
+        
 #classes
 
 class Player:
@@ -65,18 +72,48 @@ Locales = [
 
 def showIntro():
     global playerName
-    print("GREYWALKER")
+    print("STORY:\n \n"
+          "You are a sleepwalker and an insomniac with the uncanny ability to bring items you find in your dreams into the real world. "
+          "5 years ago, you woke up lying down on the front lawn of your home feeling almost paralyzed. "
+          "Your entire house was engulfed in flames and your wife, son, and daughter all perished in the fire. "
+          "You immediately went into hiding and eventually fled the country out of fear that you would be blamed. "
+          "To this day, you still do not have a clue why it occurred or why whoever did it left you alive. "
+          "Perhaps someone planned to ruin your life by killing everyone you loved and framing you just by striking a match. \n \n"
+          "Recently, you have been having very detailed dreams containing strange details about your past and the day of the fire. "
+          "You continue on in hopes that you will find something that gives a clue as to who is responsible for the massacre of your family.")
     print('')
-    # store input name in a variable and return it to them
-    playerName = input("Your name is...you cannot seem to recall it. Try to remember your name: ")
-    print("Ah, yes, " + playerName + ", that was it. You are a sleepwalker"
-          " and an insomniac who is attempting to master lucid dreaming in order to discover forgotten secrets about your past."
-    " You have successfully assumed control of yourself within your dream and intend to explore the strange realm you have dreamed of.")
+    print("This game is unique in that the decisions you make throughout the course of it "
+          "affect the events that occur within the game and the ending of its story. "
+          "Choose wisely.")
     print('')
-    input("You begin with a score of 0 and you will gain 5 points for every stage you progress through."
-          " You must collect all important artifacts and visit every location before the final encounter of the game."
-          " Once the game begins, type help to view the list of usable commands.")
-    print('')
+    while True:
+        startOrHelp = input("Type help for a tutorial (highly recommended if you have not played before)"
+                            "or type start if you have played before and wish to begin immediately ")
+        if startOrHelp == "start":
+            print('')
+            break
+        elif startOrHelp == "help":
+            print('')
+            print("Use <north>, <south>, <east>, and <west> to navigate. \n"
+                  "Type <score> to view your current score. \n"
+                  "Type <moves> to see how many moves you have left. \n"
+                  "Type <quit> to exit the game. \n"
+                  "Type <search> to look for an item in your location. \n"
+                  "Type <take [item name]> to take an item once you find it. \n"
+                  "For example, once you find the map, type <take map> to pick it up (it is near the start). \n"
+                  "Once the map is found typing <map> will view it. "
+                  "Similarly to the map, every item serves a purpose, even if it cannot be used directly. \n"
+                  "Some items can be used by typing <use [item name]>, but for others, you will be prompted to use it when the time is right. \n"
+                  "Type <inv> to view your inventory \n"
+                  "Type <speak> to talk to any people present at your current location \n"
+                  "Type <help> at any point to view these commands again \n"
+                  "All commands should be typed in lower case. \n")
+            print("Simply interacting with the world adds to your score, regardless of whether your choice is good or evil.")
+            input("Press Enter to Continue")
+            print('')
+            break
+            
+    
     
 # store all 12 locations in a list to be used later
 locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilted daisies."
@@ -163,17 +200,22 @@ def gameLoop():
         if userAction == "moves":
             print("You have", 16 - moves ,"moves left")
         if userAction == "look":
-            print(Locales[locInfo].locDescrip)
+            print(locDescrips[locInfo])
         if userAction == "help":
-            print("Use <north>, <south>, <east>, and <west> to navigate \n"
-                  "Once you find the map, type <map> to view it \n"
-                  "Type <score> to view your current score \n"
-                  "Type <moves> to see how many moves you have left \n"
-                  "Type <quit> to exit the game \n"
-                  "Type <search> to look for an item in your location \n"
-                  "Type <take> to take an item once you find it \n"
+            print("Use <north>, <south>, <east>, and <west> to navigate. \n"
+                  "Type <score> to view your current score. \n"
+                  "Type <moves> to see how many moves you have left. \n"
+                  "Type <quit> to exit the game. \n"
+                  "Type <search> to look for an item in your location. \n"
+                  "Type <take [item name]> to take an item once you find it. \n"
+                  "For example, once you find the map, type <take map> to pick it up (it is near the start). \n"
+                  "Once the map is found typing <map> will view it. "
+                  "Similarly to the map, every item serves a purpose, even if it cannot be used directly. \n"
+                  "Some items can be used by typing <use [item name]>, but for others, you will be prompted to use it when the time is right. \n"
                   "Type <inv> to view your inventory \n"
-                  "Type <stuck> to be given tips on how to win the game.")
+                  "Type <speak> to talk to any people present at your current location \n"
+                  "Type <help> at any point to view these commands again \n"
+                  "All commands should be typed in lower case. \n")
         if userAction == "quit":
             quit()
         if userAction == "search":
@@ -252,6 +294,9 @@ def gameLoop():
                       )
             else:
                 print("You have not yet found the map")
+        else:
+            print("You have not entered a valid command. Remember, you can type help at any point for a list of valid commands")
+            print('')
                 
             
 
