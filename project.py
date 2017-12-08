@@ -72,6 +72,7 @@ Locales = [
 
 def showIntro():
     global playerName
+    global score
     print("STORY:\n \n"
           "You are a sleepwalker and an insomniac with the uncanny ability to bring items you find in your dreams into the real world. "
           "5 years ago, you woke up lying down on the front lawn of your home feeling almost paralyzed. "
@@ -118,14 +119,11 @@ def showIntro():
     
     
 # store all 12 locations in a list to be used later
-locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilted daisies."
-               " Looking forward, you can see a village engulfed in flames."
-               " There appears to be areas of interest to the east, west, and south as well.",
-               "The village is completely vacant as the buildings crumble and burn around you."
-               " However, in front of you lies one house that is completely unaffected by the fire,"
-               " and a sign in front of it that reads: WHY HAVE YOU CAUSED US SUCH AGONY?",
+locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilted daisies. "
+               "Looking forward, you can see a village. In the center lies your home, which is engulfed in flames. ",
                "You arrive in a grey room with random burned objects scattered about."
-               " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white." ,
+               " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.",
+               "In front of your home, a message, painted across the sidewalk in blood red reads: \"WHY?\"",
                "You arrive at a dinner table with a mirror image of yourself. No matter what you do, he does not speak to you.",
                "You arrive at the edge of a cliff with a dark abyss below it. There is nothing of interest here.",
                "Inside the house, you find that the walls are covered with black and white pictures of your family"
@@ -154,15 +152,15 @@ items = [None, None, "Map", "Ripped Garments", "Ornament", "Necklace", None, Non
 inventory = []
 
 # short name for each location, later displayed if player has already been to that location
-locNames = ["The Meadow", "Burning Village", "Grey Room",
+locNames = ["The Meadow", "Grey Room", "Home Town",
            "Dinner Table", "Cliff", "House Interior", 
            "Strange Wall", "Path Of Agony", "Shrine" , "Balcony",
             "Water", "Land", "Your Room", "The Hallway", "Your Son's Room", "Your Daughter's Room"]
 
 # matrix key
 meadow = 0
-village = 1
-greyRoom = 2
+greyRoom = 1
+village = 2
 dinnerTable = 3
 cliff = 4
 houseInterior = 5
@@ -182,16 +180,16 @@ locInfo = 0
 # matrix for the game world
          # N     S     E      W
 world = [[2,  None,     1,  None] # meadow
-        ,[3,  None,     4,     2] # village
         ,[5,     0,     3,  None] # grey room
+        ,[3,  None,     4,     2] # home town
         ,[6,     1,     4,     2] # dinner table
         ,[7,  None,  None,     3] # cliff
         ,[None,  2,     6,  None] # house interior
         ,[9,     3,     7,     5] # strange wall
         ,[None,  4,     8,     6] # path of agony
         ,[None,  None,   None, 7] # shrine
-        ,[10,  6,  None,  None] # balcony
-        ,[11,  9,  None,  None] # water
+        ,[None,  6,  10,  None] # balcony
+        ,[11,  None,  None,  9] # water
         ,[None,10, None,  None] # land
         ,[13, None, None, None]
         ,[None,   12,   14, 15]
@@ -229,6 +227,8 @@ def gameLoop():
             print("You have made", moves, "moves")
         if userAction == "look":
             print(locDescrips[locInfo])
+        if userAction == "take":
+            print("You must type take followed by the item name to take an item")
         if userAction == "help":
             print("Type <north>, <south>, <east>, and <west> to navigate. \n"
                   "Type <awaken> when in a dream state to wake up and move around in your home. \n"
@@ -302,12 +302,14 @@ def gameLoop():
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
             if "Map" in inventory and locInfo <= 11:
                 print(
-                       "                               Land                                  \n"
+                       "                                                 Fiery Throne        \n"
+                       "                                                       ||            \n"
+                       "                                                       ||            \n"
+                       "                                                       ||            \n"
+                       "                                                       ||            \n"
+                       "                             Balcony  ========== Blackened Water     \n"
                        "                                ||                                   \n"
                        "                                ||                                   \n"
-                       "                               Water                                 \n"
-                       "                                ||                                   \n"
-                       "                              Balcony                                \n"
                        "                                ||                                   \n"
                        "                                ||                                   \n"
                        " House Interior ========= Strange Wall ========== Path of Agony ======= Shrine \n"
@@ -315,15 +317,21 @@ def gameLoop():
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
-                       " Grey Room ============== Dinner Table ============= Cliff      \n"
+                       "  Home Town ============== Dinner Table ============= Cliff     \n"
                        "     ||                         ||                              \n"                  
                        "     ||                         ||                              \n"
                        "     ||                         ||                              \n"
                        "     ||                         ||                              \n"
-                       "   Meadow =================== Village                           \n"
+                       "   Meadow ================== Grey Room                          \n"
                       )
             if "Map" in inventory and locInfo >= 12:
-                print("new map here")
+                print("  Living Room ============= The Hallway ============ Kitchen     \n"
+                      "                                 ||                              \n"
+                      "                                 ||                              \n"
+                      "                                 ||                              \n"
+                      "                                 ||                              \n"
+                      "                         "+playerName+"'s Room \n"
+                      )
             if "Map" not in inventory:
                 print("You have not yet found the map")
                 
@@ -432,6 +440,7 @@ def playerSearch(s):
         print("You find nothing worth taking in this area.")
 
 def retrieve(locInfo):
+    global score
     # only allow player to take an item if they have searched and there is an item in the location
     if hasBeenSearched[locInfo] is True:
         # add new item to inventory list and inform player of successful take
