@@ -7,7 +7,7 @@ moves = 0
 userAction = None
 
 #player name is retrieved outside of functions first, otherwise it is difficult to use it in location descriptions
-print("GREYWALKER")
+print("FIVE YEARS OF AGONY")
 print('')
 playerName = input("Your name is...you cannot seem to recall it. \nTry to remember your name: ")
 print("Ah, yes, " + playerName + ", that was it.")
@@ -83,18 +83,20 @@ def showIntro():
           "You continue on in hopes that you will find something that gives a clue as to who is responsible for the massacre of your family.")
     print('')
     print("This game is unique in that the decisions you make throughout the course of it "
-          "affect the events that occur within the game and the ending of its story. "
-          "Choose wisely.")
+          "affect the events that occur within the game and the ending of its story. \n"
+          "Choose wisely...")
     print('')
     while True:
-        startOrHelp = input("Type help for a tutorial (highly recommended if you have not played before)"
-                            "or type start if you have played before and wish to begin immediately ")
+        startOrHelp = input("Type help for a tutorial (highly recommended if you have not played before) \n"
+                            "Or type start if you have played before and wish to begin immediately: ")
         if startOrHelp == "start":
             print('')
             break
         elif startOrHelp == "help":
             print('')
-            print("Use <north>, <south>, <east>, and <west> to navigate. \n"
+            print("Type <north>, <south>, <east>, and <west> to navigate. \n"
+                  "Type <awaken> when in a dream state to wake up and move around in your home. \n"
+                  "Type <sleep> when in the real world to return to your dream. \n"
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have left. \n"
                   "Type <quit> to exit the game. \n"
@@ -109,7 +111,7 @@ def showIntro():
                   "Type <help> at any point to view these commands again \n"
                   "All commands should be typed in lower case. \n")
             print("Simply interacting with the world adds to your score, regardless of whether your choice is good or evil.")
-            input("Press Enter to Continue")
+            input("Press Enter to Continue: ")
             print('')
             break
             
@@ -138,20 +140,24 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
                "Using a ladder, you climb down from the balcony into the black water."
                " Proceeding without visiting every location and without the dream shard is ill-advised",
                "As you wade out of the water onto the land, you realize that the water surrounds you."
-               " You must find a way out of this dream."]
+               " You must find a way out of this dream.",
+               "You just woke up. Testing.",
+               "You are in the hallway. Testing.",
+               "You are on the right room. Testing.",
+               "You are on the left room. Testing."]
 
 # all these lists of booleans are used in vital functions
-hasBeenThere = [False, False, False, False, False, False, False, False, False, False, False, False]
-hasBeenSearched = [False, False, False, False, False, False, False, False, False, False, False, False]
-locationCheck = [False, False, False, False, False, False, False, False, False, False, False, False]
-items = [None, None, "Map", "Ripped Garments", "Ornament", "Necklace", None, None, "Strange Gem", "Dream Shard", None, None]
+hasBeenThere = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+hasBeenSearched = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+locationCheck = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+items = [None, None, "Map", "Ripped Garments", "Ornament", "Necklace", None, None, "Strange Gem", "Dream Shard", None, None, None, None, None, None]
 inventory = []
 
 # short name for each location, later displayed if player has already been to that location
 locNames = ["The Meadow", "Burning Village", "Grey Room",
            "Dinner Table", "Cliff", "House Interior", 
            "Strange Wall", "Path Of Agony", "Shrine" , "Balcony",
-            "Water", "Land"]
+            "Water", "Land", "Your Room", "The Hallway", "Your Son's Room", "Your Daughter's Room"]
 
 # matrix key
 meadow = 0
@@ -166,6 +172,10 @@ shrine = 8
 balcony = 9
 water = 10
 land = 11
+room1 = 12
+room2 = 13
+room3 = 14
+room4 = 15
 # locInfo stores the number of the location you're in, making creating additional functions far easier.
 # locInfo is repeatedly updated throughout the functions in this program
 locInfo = 0
@@ -183,7 +193,11 @@ world = [[2,  None,     1,  None] # meadow
         ,[10,  6,  None,  None] # balcony
         ,[11,  9,  None,  None] # water
         ,[None,10, None,  None] # land
-        ]
+        ,[13, None, None, None]
+        ,[None,   12,   14, 15]
+        ,[None, None, None, 13]
+        ,[None, None, 13, None]
+         ]
 # main game loop
 def gameLoop():
     global locInfo
@@ -195,14 +209,30 @@ def gameLoop():
         # only address the whereTo function if the user decides to move somewhere 
         if userAction == "north" or userAction == "east" or userAction == "south" or userAction == "west":
             whereTo(locInfo, userAction)
+        if userAction == "awaken":
+            if locInfo <= 11:
+                print('')
+                print("You awaken from your slumber.")
+                locInfo = 12
+            elif locInfo >= 12:
+                print("You are already awake.")
+        if userAction == "sleep":
+            if locInfo >= 12:
+                print('')
+                print("You go back to your bed and return to the dream world.")
+                locInfo = 0
+            elif locInfo <= 11:
+                print("You are already dreaming.")
         if userAction == "score":
             print(score)
         if userAction == "moves":
-            print("You have", 16 - moves ,"moves left")
+            print("You have made", moves, "moves")
         if userAction == "look":
             print(locDescrips[locInfo])
         if userAction == "help":
-            print("Use <north>, <south>, <east>, and <west> to navigate. \n"
+            print("Type <north>, <south>, <east>, and <west> to navigate. \n"
+                  "Type <awaken> when in a dream state to wake up and move around in your home. \n"
+                  "Type <sleep> when in the real world to return to your dream. \n"
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have left. \n"
                   "Type <quit> to exit the game. \n"
@@ -270,7 +300,7 @@ def gameLoop():
                   "DO NOT try to visit the final location without finding the Dream Shard. You will die.")
         if userAction == "map" or userAction == "use map":
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
-            if "Map" in inventory:
+            if "Map" in inventory and locInfo <= 11:
                 print(
                        "                               Land                                  \n"
                        "                                ||                                   \n"
@@ -280,7 +310,7 @@ def gameLoop():
                        "                              Balcony                                \n"
                        "                                ||                                   \n"
                        "                                ||                                   \n"
-                       " House Interior ========= Strange Wall ========== Path of Agony ===== Shrine \n"
+                       " House Interior ========= Strange Wall ========== Path of Agony ======= Shrine \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
@@ -292,11 +322,10 @@ def gameLoop():
                        "     ||                         ||                              \n"
                        "   Meadow =================== Village                           \n"
                       )
-            else:
+            if "Map" in inventory and locInfo >= 12:
+                print("new map here")
+            if "Map" not in inventory:
                 print("You have not yet found the map")
-        else:
-            print("You have not entered a valid command. Remember, you can type help at any point for a list of valid commands")
-            print('')
                 
             
 
@@ -381,11 +410,6 @@ def showLocation(location):
     global hasBeenThere
     global locationCheck
     global moves
-    # defeat if you fail to win within the 20 given moves
-    if moves == 20:
-        print("You run out of time and the dream has ended")
-        input()
-        quit()
     # display long location description if location has not been visited
     if locationCheck[location] == False:
         print(locDescrips[locInfo])
@@ -413,6 +437,7 @@ def retrieve(locInfo):
         # add new item to inventory list and inform player of successful take
         inventory.append(items[locInfo])
         print("You have picked up a", items[locInfo]+".")
+        score = score + 5
     else:
         print("You find nothing worth taking in this area. Try <search> if you have not already")
 
@@ -424,6 +449,7 @@ def dropItem(locInfo):
         if "Map" in inventory:
             inventory.remove("Map")
             items[2] = "Map"
+            score = score - 5
         else:
             print("You do not have a map")
             print('')
@@ -431,6 +457,7 @@ def dropItem(locInfo):
         if "Ripped Garments" in inventory:
             inventory.remove("Ripped Garments")
             items[3] = "Ripped Garments"
+            score = score - 5
         else:
             print("You do not have Ripped Garments")
             print('')
@@ -438,6 +465,7 @@ def dropItem(locInfo):
         if "Ornament" in inventory:
             inventory.remove("Ornament")
             items[4] = "Ornament"
+            score = score - 5
         else:
             print("You do not have the Ornament")
             print('')
@@ -445,6 +473,7 @@ def dropItem(locInfo):
         if "Necklace" in inventory:
             inventory.remove("Necklace")
             items[5] = "Necklace"
+            score = score - 5
         else:
             print("You do not have the Necklace")
             print('')
@@ -452,6 +481,7 @@ def dropItem(locInfo):
         if "Strange Gem" in inventory:
             inventory.remove("Strange Gem")
             items[8] = "Strange Gem"
+            score = score - 5
         else:
             print("You do not have the Strange Gem")
             print('')
