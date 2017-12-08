@@ -55,7 +55,7 @@ Locales = [
     Locale("house interior", "Inside the house, you find that the walls are covered with black and white pictures of your family"
                " that were taken before they died mysteriously years ago."
                " Eerily enough, you are missing from all the pictures as if you were cropped out of them.", "House Interior",
-           False, False, "Necklace"),
+           False, False, "Family Photo"),
     Locale("strange wall", "You come across a wall with seemingly meaningless inscribings on them."
                " You cannot make out what the strange drawings say. You hear people shuffling around on the other side.", "Strange Wall",
            False, False, None),
@@ -123,8 +123,9 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
                "Looking forward, you can see a village. In the center lies your home, which is engulfed in flames. ",
                "You arrive in a grey room with random burned objects scattered about."
                " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.",
-               "In front of your home, a message, painted across the sidewalk in blood red reads: \"WHY?\"",
-               "You arrive at a dinner table with a mirror image of yourself. No matter what you do, he does not speak to you.",
+               "In front of your home, a message, painted across the sidewalk in blood red reads: \n\"WHY?\"",
+               "You arrive at a dinner table with a mirror image of yourself. He smiles at you provokingly. "
+               "Perhaps you should try to <speak> to him.",
                "You arrive at the edge of a cliff with a dark abyss below it. There is nothing of interest here.",
                "Inside the house, you find that the walls are covered with black and white pictures of your family"
                " that were taken before they died mysteriously years ago."
@@ -148,7 +149,7 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 hasBeenSearched = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 locationCheck = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
-items = [None, None, "Map", "Ripped Garments", "Ornament", "Necklace", None, None, "Strange Gem", "Dream Shard", None, None, None, None, None, None]
+items = [None, None, "Map", "Ripped Garments", "Ornament", "Family Photo", None, None, "Strange Gem", "Dream Shard", None, None, None, None, None, None]
 inventory = []
 
 # short name for each location, later displayed if player has already been to that location
@@ -180,8 +181,8 @@ locInfo = 0
 # matrix for the game world
          # N     S     E      W
 world = [[2,  None,     1,  None] # meadow
-        ,[5,     0,     3,  None] # grey room
-        ,[3,  None,     4,     2] # home town
+        ,[3,  None,  None,     2] # grey room
+        ,[5,     0,     3,  None] # home town
         ,[6,     1,     4,     2] # dinner table
         ,[7,  None,  None,     3] # cliff
         ,[None,  2,     6,  None] # house interior
@@ -256,6 +257,8 @@ def gameLoop():
                 items[2] = None
             else:
                 print("There is no map here")
+        if userAction == "speak":
+            speechCheckOne()
         # the following set of if statements lets a user take an item, but they must state it by name.
         # once the item is taken, the element representing that item is set to None
         # this prevents the user from duplicating items by taking it multiple times
@@ -271,12 +274,12 @@ def gameLoop():
                 items[4] = None
             else:
                 print("There is no Ornament here")
-        if userAction == "take necklace":
-            if locInfo == 5 and "Necklace" not in inventory:
+        if userAction == "take family photo" or userAction == "take photo":
+            if locInfo == 5 and "Family Photo" not in inventory:
                 retrieve(locInfo)
                 items[5] = None
             else:
-                print("There is no Necklace here")
+                print("The Family Photo is not here")
         if userAction == "take strange gem":
             if locInfo == 8 and "Strange Gem" not in inventory:
                 retrieve(locInfo)
@@ -432,7 +435,14 @@ def playerSearch(s):
     global items
     global world
     # if they have not searched yet and there is an item present at current location, tell them what item is present
-    if items[locInfo] != None:
+    if items[locInfo] == "Family Photo" and hasBeenThere[3] == True:
+        print("The Family Photo you see on the stand can be taken. \n"
+              "Perhaps you should bring it back to the mirror image of yourself at the table...")
+        hasBeenSearched[s] = True
+    elif items[locInfo] == "Family Photo":
+        print("The Family Photo you see on the stand can be taken.")
+        hasBeenSearched[s] = True
+    elif items[locInfo] != None:
         print("While searching the area, you find a", items[locInfo], "for the taking.")
         # this allows them to take the item at the location with the <take> command
         hasBeenSearched[s] = True
@@ -478,13 +488,13 @@ def dropItem(locInfo):
         else:
             print("You do not have the Ornament")
             print('')
-    if itemChoice == "necklace":
-        if "Necklace" in inventory:
-            inventory.remove("Necklace")
-            items[5] = "Necklace"
+    if itemChoice == "Family Photo":
+        if "Family Photo" in inventory:
+            inventory.remove("Family Photo")
+            items[5] = "Family Photo"
             score = score - 5
         else:
-            print("You do not have the Necklace")
+            print("You do not have the Family Photo")
             print('')
     if itemChoice == "strange gem" or itemChoice == "gem":
         if "Strange Gem" in inventory:
@@ -502,6 +512,63 @@ def dropItem(locInfo):
             print("You do not have the Dream Shard")
             print('')
 
+def speechCheckOne():
+    global locInfo
+    global hasBeenSearched
+    global world
+    if locInfo == 3 and "Family Photo" in inventory:
+                consciousQuestion = input("What would you like to say (type the # of the response you want)?\n"
+                                       "1 - Who are you? \n"
+                                       "2 - How can I find out who burned my home and killed my family? \n"
+                                       "3 - Why does this dream occur every time I sleep? \n"
+                                       "4 - (show him the family photo) Why am I missing from this family portrait? \n "
+                                          "I was certainly in the photo when it was taken \n"
+                                       "5 - (End conversation)\n")      
+                if consciousQuestion == "1":
+                    print("\"I'm you, "+playerName+". Or, your subconscious, rather. "
+                          "I can plainly say things that you subsciously know but are unable to recognize.\"")
+                elif consciousQuestion == "2":
+                    questionTwo = input("\"Now, that's a tough one. You had a lot of enemies in life, but you don't suspect any of them. "
+                          "Why is that?\"\n"
+                          "1 - Are you suggesting someone I know who isn't an enemy of mine did it? \n"
+                          "2 - (End Conversation)\n")
+                    if questionTwo == "1":
+                        print("\"Have you not always suspected that to be possible?\"")
+                elif consciousQuestion == "3":
+                    print("\"Because you feel guilty for running away and it's been eating away at you for years.\n"
+                          "My guess would be that you've had enough and want answers.\"")
+                elif consciousQuestion == "4":
+                    questionThree = input("\"Your subconscious has removed you from the picture out of guilt. \n "
+                                          "Now, whether that is just guilt for running away, survivor guilt,"
+                                          "or something much more serious, I do not wish to answer.\"\n"
+                                          "1 - Why must everything be so cryptic? Why cant you just tell me, dammit! \n"
+                                          "2 - (End Conversation)\n")
+                    if questionThree == "1":
+                        print("\"That's your fault, you know. I'm only doing what you would do in the same situation. \n"
+                              "Subconsciously, you love messing with people and playing games.\"")
+    elif locInfo == 3 and "Family Photo" not in inventory:
+                consciousQuestion = input("What would you like to say (type the # of the response you want)?\n"
+                                       "1 - Who are you? \n"
+                                       "2 - How can I find out who burned my home and killed my family? \n"
+                                       "3 - Why does this dream occur every time I sleep? \n"
+                                       "4 - (End conversation)\n")      
+                if consciousQuestion == "1":
+                    print("\"I'm you, "+playerName+". Or, your subconscious, rather. "
+                          "I can plainly say things that you subsciously know but are unable to recognize.\"")
+                elif consciousQuestion == "2":
+                    questionTwo = input("\"Now, that's a tough one. You had a lot of enemies in life, but you don't suspect any of them. "
+                          "Why is that?\"\n"
+                          "1 - Are you suggesting someone I know who isn't an enemy of mine did it?\n"
+                          "2 - (End Conversation) \n")
+                    if questionTwo == "1":
+                        print("\"Have you not always suspected that to be possible?\"")
+                elif consciousQuestion == "3":
+                    print("\"Because you feel guilty for running away and it's been eating away at you for years.\n"
+                          "My guess would be that you've had enough and want answers.\"")
+        
+                    
+                
+                              
 def gameEnd():
     print("You use the Dream Shard and escape the dream." 
 " All will be solved in the final game version...")
