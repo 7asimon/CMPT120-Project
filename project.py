@@ -6,6 +6,11 @@ score = 0
 moves = 0
 userAction = None
 questionThreeAsked = False
+guardian = True
+morality = 0
+guardianRequest = 0
+necklace = 0
+garments = 0
 
 #player name is retrieved outside of functions first, otherwise it is difficult to use it in location descriptions
 print("FIVE YEARS OF AGONY")
@@ -50,15 +55,15 @@ Locales = [
                " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.",
            "Grey Room", False, False, "Map"),
     Locale("dinner table", "You arrive at a dinner table with a mirror image of yourself. No matter what you do, he does not speak to you.",
-           "Dinner Table", False, False, "Ripped Garments"),
+           "Dinner Table", False, False, "Exotic Garments"),
     Locale("cliff", "You arrive at the edge of a cliff with a dark abyss below it. There is nothing of interest here.", "Cliff",
            False, False, "Ornament"),
     Locale("house interior", "Inside the house, you find that the walls are covered with black and white pictures of your family"
                " that were taken before they died mysteriously years ago."
                " Eerily enough, you are missing from all the pictures as if you were cropped out of them.", "House Interior",
            False, False, "Family Photo"),
-    Locale("strange wall", "You come across a wall with seemingly meaningless inscribings on them."
-               " You cannot make out what the strange drawings say. You hear people shuffling around on the other side.", "Strange Wall",
+    Locale("guardian's lair", "You come across a wall with seemingly meaningless inscribings on them."
+               " You cannot make out what the strange drawings say. You hear people shuffling around on the other side.", "Guardian's Lair",
            False, False, None),
     Locale("path of agony", "Walking down the path, you witness many villagers screaming in agony and running down the street."
                " There appears to be an endless number of them", "Path of Agony", False, False, None),
@@ -102,16 +107,19 @@ def showIntro():
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have left. \n"
                   "Type <quit> to exit the game. \n"
+                  "Type <look> to view information about your location. "
+                  "If any special commands are possible at your location, (such as <speak>), "
+                  "typing <look> will also inform you of this. \n"
                   "Type <search> to look for an item in your location. \n"
                   "Type <take [item name]> to take an item once you find it. \n"
                   "For example, once you find the map, type <take map> to pick it up (it is near the start). \n"
                   "Once the map is found typing <map> will view it. "
                   "Similarly to the map, every item serves a purpose, even if it cannot be used directly. \n"
                   "Some items can be used by typing <use [item name]>, but for others, you will be prompted to use it when the time is right. \n"
-                  "Type <inv> to view your inventory \n"
-                  "Type <speak> to talk to any people present at your current location \n"
-                  "Type <help> at any point to view these commands again \n"
-                  "All commands should be typed in lower case. \n")
+                  "Type <inv> to view your inventory. \n"
+                  "Type <speak> to talk to any people present at your current location when prompted. \n"
+                  "Type <help> at any point to view these commands again. \n"
+                  "All commands should be typed in lower case and without the <>. \n")
             print("Simply interacting with the world adds to your score, regardless of whether your choice is good or evil.")
             input("Press Enter to Continue: ")
             print('')
@@ -127,7 +135,8 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
                "In front of your home, a message, painted across the sidewalk in blood red reads: \n\"WHY?\"",
                "You arrive at a dinner table with a mirror image of yourself. He smiles at you provokingly. "
                "Perhaps you should try to <speak> to him.",
-               "You arrive at the edge of a cliff with a dark abyss below it. There is nothing of interest here.",
+               "You arrive at the edge of a cliff with a dark abyss below it. "
+               "Lying down near the edge, you see a man shivering on the floor. Perhaps you should trying to <speak> to him?",
                "Inside the house, you find that the walls are covered with black and white pictures of your family"
                " that were taken before they died mysteriously years ago."
                " Eerily enough, you are missing from all the pictures as if you were cropped out of them.",
@@ -150,13 +159,13 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 hasBeenSearched = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 locationCheck = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
-items = [None, None, "Map", "Ripped Garments", "Ornament", "Family Photo", None, None, "Strange Gem", "Dream Shard", None, None, None, None, None, None]
+items = [None, None, "Map", "Exotic Garments", "Ornament", "Family Photo", None, None, "Strange Gem", "Dream Shard", None, None, None, None, None, "Expensive Necklace"]
 inventory = []
 
 # short name for each location, later displayed if player has already been to that location
 locNames = ["The Meadow", "Grey Room", "Home Town",
            "Dinner Table", "Cliff", "House Interior", 
-           "Strange Wall", "Path Of Agony", "Shrine" , "Balcony",
+           "Guardian's Lair", "Path Of Agony", "Shrine" , "Balcony",
             "Water", "Land", "Your Room", "The Hallway", "Your Son's Room", "Your Daughter's Room"]
 
 # matrix key
@@ -187,7 +196,7 @@ world = [[2,  None,     1,  None] # meadow
         ,[6,     1,     4,     2] # dinner table
         ,[7,  None,  None,     3] # cliff
         ,[None,  2,     6,  None] # house interior
-        ,[9,     3,     7,     5] # strange wall
+        ,[9,     3,     7,     5] # guardian's lair
         ,[None,  4,     8,     6] # path of agony
         ,[None,  None,   None, 7] # shrine
         ,[None,  6,  10,  None] # balcony
@@ -203,11 +212,15 @@ def gameLoop():
     global locInfo
     global hasBeenSearched
     global world
+    global necklace
+    global garments
     while True:
         showLocation(locInfo)
         userAction = input("Enter Command: ").lower()
-        # only address the whereTo function if the user decides to move somewhere 
-        if userAction == "north" or userAction == "east" or userAction == "south" or userAction == "west":
+        # only address the whereTo function if the user decides to move somewhere
+        if userAction == "north" and locInfo == 6 and guardian == True:
+            guardianEncounter()
+        elif userAction == "north" or userAction == "east" or userAction == "south" or userAction == "west":
             whereTo(locInfo, userAction)
         if userAction == "awaken":
             if locInfo <= 11:
@@ -238,16 +251,19 @@ def gameLoop():
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have left. \n"
                   "Type <quit> to exit the game. \n"
+                  "Type <look> to view information about your location. "
+                  "If any special commands are possible at your location, (such as <speak>), "
+                  "typing <look> will also inform you of this. \n"
                   "Type <search> to look for an item in your location. \n"
                   "Type <take [item name]> to take an item once you find it. \n"
                   "For example, once you find the map, type <take map> to pick it up (it is near the start). \n"
                   "Once the map is found typing <map> will view it. "
                   "Similarly to the map, every item serves a purpose, even if it cannot be used directly. \n"
                   "Some items can be used by typing <use [item name]>, but for others, you will be prompted to use it when the time is right. \n"
-                  "Type <inv> to view your inventory \n"
-                  "Type <speak> to talk to any people present at your current location \n"
-                  "Type <help> at any point to view these commands again \n"
-                  "All commands should be typed in lower case. \n")
+                  "Type <inv> to view your inventory. \n"
+                  "Type <speak> to talk to any people present at your current location when prompted. \n"
+                  "Type <help> at any point to view these commands again. \n"
+                  "All commands should be typed in lower case and without the <>. \n")
         if userAction == "quit":
             quit()
         if userAction == "search":
@@ -258,17 +274,36 @@ def gameLoop():
                 items[2] = None
             else:
                 print("There is no map here")
+        if userAction == "use necklace" or userAction == "use expensive necklace":
+            if "Expensive Necklace" in inventory and necklace == 0:
+                print("You have put on the expensive necklace")
+                necklace = 1
+            elif "Expensive Necklace" in inventory and necklace ==1:
+                print("You are already wearing the expensive necklace")
+            else:
+                print("You do not have the expensive necklace")
+        if userAction == "use exotic garments" or userAction == "use garments":
+            if "Exotic Garments" in inventory and garments == 0:
+                print("You have put on the exotic garments")
+                garments = 1
+            elif "Exotic Garments" in inventory and garments == 1:
+                print("You are already wearing the exotic garments")
+            else:
+                print("You do not have the exotic garments")
         if userAction == "speak":
-            speechCheckOne()
+            if locInfo == 3:
+                speechCheckOne()
+            elif locInfo == 4:
+                cliffEncounter()
         # the following set of if statements lets a user take an item, but they must state it by name.
         # once the item is taken, the element representing that item is set to None
         # this prevents the user from duplicating items by taking it multiple times
-        if userAction[0:8] == "take rip":
-            if locInfo == 3 and "Ripped Garments" not in inventory:
+        if userAction[0:8] == "take exo":
+            if locInfo == 3 and "Exotic Garments" not in inventory:
                 retrieve(locInfo)
                 items[3] = None
             else:
-                print("There are no Ripped Garments here")
+                print("There are no Exotic Garments here")
         if userAction == "take ornament":
             if locInfo == 4 and "Ornament" not in inventory:
                 retrieve(locInfo)
@@ -293,6 +328,12 @@ def gameLoop():
                 items[9] = None
             else:
                 print("There is no Dream Shard here")
+        if userAction == "take necklace" or userAction == "take expensive necklace":
+            if locInfo == 15 and "Expensive Necklace" not in inventory:
+                retrieve(locInfo)
+                items[15] = None
+            else:
+                print("The expensive Necklace is not here")
         if userAction == "drop":
             dropItem(locInfo)
         if userAction[0:3] == "inv":
@@ -316,7 +357,7 @@ def gameLoop():
                        "                                ||                                   \n"
                        "                                ||                                   \n"
                        "                                ||                                   \n"
-                       " House Interior ========= Strange Wall ========== Path of Agony ======= Shrine \n"
+                       " House Interior ========= Guardian's Lair ========== Path of Agony ======= Shrine \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
@@ -473,13 +514,13 @@ def dropItem(locInfo):
         else:
             print("You do not have a map")
             print('')
-    if itemChoice == "ripped garments":
-        if "Ripped Garments" in inventory:
-            inventory.remove("Ripped Garments")
-            items[3] = "Ripped Garments"
+    if itemChoice == "exotic garments":
+        if "Exotic Garments" in inventory:
+            inventory.remove("Exotic Garments")
+            items[3] = "Exotic Garments"
             score = score - 5
         else:
-            print("You do not have Ripped Garments")
+            print("You do not have the Exotic Garments")
             print('')
     if itemChoice == "ornament":
         if "Ornament" in inventory:
@@ -547,7 +588,7 @@ def speechCheckOne():
                                           "1 - Why must everything be so cryptic? Why cant you just tell me, dammit! \n"
                                           "2 - (End Conversation)\n")
                     if questionThreeAsked == False:
-                        score = score + 5
+                        score = score + 20
                         questionThreeAsked = True
                     if questionThree == "1":
                         print("\"That's your fault, you know. I'm only doing what you would do in the same situation. \n"
@@ -572,9 +613,66 @@ def speechCheckOne():
                     print("\"Because you feel guilty for running away and it's been eating away at you for years. "
                           "My guess would be that you've had enough and want answers.\"")
         
-                    
-                
-                              
+def cliffEncounter():
+    global locInfo
+    global hasBeenSearched
+    global world
+    global score
+    if locInfo == 4 and "Rare Coin" in inventory:
+        print("\"Go away!!! You've already taken the one thing I had. What more do you want from me?\"\n")
+    if locInfo == 4:
+        pass
+        
+def guardianEncounter():
+    global locInfo
+    global hasBeenSearched
+    global world
+    global score
+    global guardianRequest
+    global guardian
+    global garments
+    global necklace
+    if "Ornament" in inventory and "Strange Gem" in inventory and "Rare Coin" in inventory:
+        guardianRequest = 1
+    print("A guardian blocks your way, preventing you from going forward. "
+          "You must find some way to deal with him in order to continue."
+          "There are several hidden ways to do this, doing his bidding is not the only way. Now, he speaks to you: \n")
+    if score < 50:
+          print("\"Bah! You've hardly accomplished anything here. Come back when you've done more!\"")
+    elif score >= 50:
+        print("\"Seems like you've done quite a bit around here. So, here's the deal. "
+              "I'll let you pass if you bring me my ornament and my gem."
+              "I also spotted a rare coin that I fancy and want you to bring that to me as well.\"")
+        guardianChoice = input("What would you like to do (type the # of the action you want)?\n"
+                                "1 - (Give him the items) \n"
+                                "2 - (Kill the guardian) \n"
+                                "3 - (Try to convince him to let you pass) \n"
+                                "4 - I will come back later \n")
+        if guardianChoice == "1":
+            if guardianRequest == 1:
+                print("\"Ah, thank you. You have done me a great service. You are free to pass.\"\n")
+                print("The guardian disappears, allowing you to move forward freely")
+                guardian = False
+            else:
+                print("\"Is this some kind of joke? You do not have all the items I requested.\"")
+        if guardianChoice == "2":
+            if "Magical Dagger" not in inventory:
+                print("The guardian is far stronger than you and would kill you instantly if you tried fighting him. "
+                      "Perhaps if you had some sort of weapon you'd stand a chance...")
+            if "Magical Dagger" in inventory:
+                print("You plunge the dagger into the guardian's heart. He screams in sheer pain as the dagger disintegrates his life essense\n"
+                  "The path is now clear")
+                morality = morality - 1
+                guardian = False
+        if guardianChoice == "3":
+            if necklace == 1 and garments == 1:
+                print("\"You know, you do seem like a citizen of high stature. I will let you pass.\"")
+                print("The guardian disappears, allowing you to move forward freely")
+                guardian = False
+            else:
+                print("The guardian laughs in your face and refuses to let you pass. "
+                      "Perhaps if you could fool him somehow he would step aside...")
+                                                           
 def gameEnd():
     print("You use the Dream Shard and escape the dream." 
 " All will be solved in the final game version...")
