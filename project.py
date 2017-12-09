@@ -5,6 +5,7 @@
 score = 0
 moves = 0
 userAction = None
+questionThreeAsked = False
 
 #player name is retrieved outside of functions first, otherwise it is difficult to use it in location descriptions
 print("FIVE YEARS OF AGONY")
@@ -516,6 +517,8 @@ def speechCheckOne():
     global locInfo
     global hasBeenSearched
     global world
+    global score
+    global questionThreeAsked
     if locInfo == 3 and "Family Photo" in inventory:
                 consciousQuestion = input("What would you like to say (type the # of the response you want)?\n"
                                        "1 - Who are you? \n"
@@ -535,7 +538,7 @@ def speechCheckOne():
                     if questionTwo == "1":
                         print("\"Have you not always suspected that to be possible?\"")
                 elif consciousQuestion == "3":
-                    print("\"Because you feel guilty for running away and it's been eating away at you for years.\n"
+                    print("\"Because you feel guilty for running away and it's been eating away at you for years. "
                           "My guess would be that you've had enough and want answers.\"")
                 elif consciousQuestion == "4":
                     questionThree = input("\"Your subconscious has removed you from the picture out of guilt. \n "
@@ -543,6 +546,9 @@ def speechCheckOne():
                                           "or something much more serious, I do not wish to answer.\"\n"
                                           "1 - Why must everything be so cryptic? Why cant you just tell me, dammit! \n"
                                           "2 - (End Conversation)\n")
+                    if questionThreeAsked == False:
+                        score = score + 5
+                        questionThreeAsked = True
                     if questionThree == "1":
                         print("\"That's your fault, you know. I'm only doing what you would do in the same situation. \n"
                               "Subconsciously, you love messing with people and playing games.\"")
@@ -563,7 +569,7 @@ def speechCheckOne():
                     if questionTwo == "1":
                         print("\"Have you not always suspected that to be possible?\"")
                 elif consciousQuestion == "3":
-                    print("\"Because you feel guilty for running away and it's been eating away at you for years.\n"
+                    print("\"Because you feel guilty for running away and it's been eating away at you for years. "
                           "My guess would be that you've had enough and want answers.\"")
         
                     
