@@ -22,8 +22,8 @@ familyPhoto = False
 print("FIVE YEARS OF AGONY")
 print("Public Test Version. Please tell me if you find any bugs or exploits.")
 print('')
-playerName = input("Your name is...you cannot seem to recall it. \nTry to remember your name: ")
-print("Ah, yes, " + playerName + ", that was it.")
+playerName = input("Your name is...you cannot seem to recall it. \nTry to remember your name: ").capitalize()
+print(playerName + "...Yes, that was it.")
 print('')
         
 #classes
