@@ -1,11 +1,11 @@
-# GREYWALKER
-# Author: Abel Simon
+# FIVE YEARS AFLAME
+# Author: ya boy
 # Date : November 28, 2017
 
 score = 0
 moves = 0
 userAction = None
-questionThreeAsked = False
+specialQuestionAsked = False
 morality = 0
 guardianRequest = 0
 necklace = 0
@@ -498,7 +498,7 @@ def gameLoop():
             if "Food" in inventory and locInfo == 8:
                 print("\"How could you eat that in front of us, you monster?!\"")
                 morality = morality - 2
-                score = score + 5
+                score = score + 10
                 shrineState = 11
                 inventory.remove("Food")
             elif "Food" in inventory:
@@ -691,13 +691,7 @@ def dropItem(locInfo):
     # the player can still choose to pick the item up again
     itemChoice = input("What item do you want to drop? ")
     if itemChoice == "map":
-        if "Map" in inventory:
-            inventory.remove("Map")
-            items[2] = "Map"
-            score = score - 5
-        else:
-            print("You do not have a map")
-            print('')
+        print("You cannot drop essential items!")
     if itemChoice == "exotic garments":
         if "Exotic Garments" in inventory:
             inventory.remove("Exotic Garments")
@@ -715,13 +709,7 @@ def dropItem(locInfo):
             print("You do not have the Ornament")
             print('')
     if itemChoice == "Family Photo":
-        if "Family Photo" in inventory:
-            inventory.remove("Family Photo")
-            items[5] = "Family Photo"
-            score = score - 5
-        else:
-            print("You do not have the Family Photo")
-            print('')
+        print("You cannot drop essential quest items!")
     if itemChoice == "guardian gem" or itemChoice == "gem":
         if "Guardian Gem" in inventory:
             inventory.remove("Guardian Gem")
@@ -731,12 +719,7 @@ def dropItem(locInfo):
             print("You do not have the Guardian Gem")
             print('')
     if itemChoice == "dream shard":
-        if "Dream Shard" in inventory:
-            print("You cannot drop essential items!")
-            print('')
-        else:
-            print("You do not have the Dream Shard")
-            print('')
+        print("You cannot drop essential items!")
     if itemChoice == "cursed dagger" or itemChoice == "dagger":
         if "Cursed Dagger" in inventory and locInfo == 10:
             print("The dagger shakes violently and then explodes the moment it makes contact with the water")
@@ -749,13 +732,21 @@ def dropItem(locInfo):
             print('')
         else:
             print("You do not have the Cursed Dagger")
+    if itemChoice == "food":
+        if "Food" in inventory:
+            inventory.remove("Food")
+            items[15] = "Food"
+            score = score - 5
+        else:
+            print("You do not have Food")
+            print('')
 
 def speechCheckOne():
     global locInfo
     global hasBeenSearched
     global world
     global score
-    global questionThreeAsked
+    global specialQuestionAsked
     global morality
     global familyHonored
     if locInfo == 3 and "Family Photo" in inventory:
@@ -794,9 +785,9 @@ def speechCheckOne():
                                           "or something much more serious, I do not wish to answer.\"\n"
                                           "1 - Why must everything be so cryptic? Why cant you just tell me, dammit! \n"
                                           "2 - (End Conversation)\n")
-                    if questionThreeAsked == False:
-                        score = score + 20
-                        questionThreeAsked = True
+                    if specialQuestionAsked == False:
+                        score = score + 15
+                        specialQuestionAsked = True
                     if questionThree == "1":
                         print("\"That's your fault, you know. I'm only doing what you would do in the same situation.\n"
                               "Subconsciously, you love messing with people and playing games.\"\n")
@@ -807,7 +798,8 @@ def speechCheckOne():
                             familyHonored = 1
                 elif consciousQuestion == "4":
                     if morality >= -4 and morality <= 2 and score >= 60:
-                        print("\"It is hard for me to pass judgement on you...\n You are either staying out of things, avoiding drastic actions, or alternating between good and evil acts.\"")
+                        print("\"It is hard for me to pass judgement on you...\n"
+                              "You are either staying out of things or are avoiding doing anything significantly good or evil.\"")
                     elif morality >= -4 and morality <= 2:
                         print("\"You haven't done anything notable yet. You've yet to create your legacy here.\"")
                     elif morality >= 3:
@@ -846,7 +838,8 @@ def speechCheckOne():
                           "My guess would be that you've had enough and want answers.\"")
                 elif consciousQuestion == "4":
                     if morality >= -4 and morality <= 2 and score >= 60:
-                        print("\"You're a wild card. You either stay out of things or alternate between good and evil acts.\"")
+                        print("\"It is hard for me to pass judgement on you...\n"
+                              "You are either staying out of things or are avoiding doing anything significantly good or evil.\"")
                     elif morality >= -4 and morality <= 2:
                         print("\"You haven't done anything notable yet. You've yet to create your legacy here.\"")
                     elif morality >= 3:
@@ -962,12 +955,13 @@ def guardianEncounter():
     elif guardianState == 0:
         print("\"Seems like you've done quite a bit around here. So, here's the deal. "
               "I'll let you pass if you bring me my ornament and my gem. "
-              "I also spotted a rare coin that I fancy and want you to bring that to me as well.\"")
+              "I also spotted a rare coin that I want you to steal for me.\"")
         guardianChoice = input("What would you like to do (type the # of the action you want)?\n"
-                                "1 - (Give him the items) \n"
-                                "2 - (Kill the guardian) \n"
-                                "3 - (Try to convince him to let you pass) \n"
-                                "4 - I will come back later \n")
+                                "1 - (Give him the items)\n"
+                                "2 - (Kill the guardian)\n"
+                                "3 - (Try to convince him to let you pass)\n"
+                                "4 - What will you do with these items?\n"
+                                "5 - I will come back later\n")
         if guardianChoice == "1":
             if guardianRequest == 1:
                 print("\"Ah, thank you. You have done me a great service. You are free to pass.\"\n")
@@ -976,6 +970,7 @@ def guardianEncounter():
                 inventory.remove("Rare Coin")
                 inventory.remove("Ornament")
                 guardianState = 2
+                morality = morality - 5
                 locInfo = 6
             else:
                 print("\"Is this some kind of joke? You do not have all the items I requested.\"")
@@ -997,11 +992,16 @@ def guardianEncounter():
                 print("\"You know, you do seem like a citizen of high stature. I will let you pass.\"")
                 print("The guardian disappears, allowing you to move forward freely")
                 guardianState = 1
+                morality = morality + 2
                 locInfo = 6
             else:
                 print("The guardian laughs in your face and refuses to let you pass. "
                       "Perhaps if you could fool him somehow he would step aside...")
                 locInfo = 6
+        if guardianChoice == "4":
+            print("\"I plan to use them to restore my power and rule this land as sovereign. "
+                  "Please understand that I am not evil, I just see that this land is in chaos and needs order.\"\n")
+            print("You see that the guardian is power-hungry, but killing him would still be wrong.")
         else:
             locInfo = 6
 
@@ -1229,10 +1229,10 @@ def finalEncounter():
           "First, let's talk about what you've been doing in this dream world you've created for yourself.\n"
           "...")
     if guardianState == 1:
-        input("You passed the guardian with a non-violent approach, to your credit.\n"
+        input("You passed the guardian with a non-violent approach and without allowing him to become the ruler of this land.\n"
               "...")
     if guardianState == 2:
-        input("You did the guardian's bidding and stole from the man by the cliff.\n"
+        input("You did the guardian's bidding and this land now has a power hungry dictator as a result.\n"
               "...")
     if guardianState == 3:
         input("You murdered the guardian with a cursed dagger when there were non-violent options available.\n"
@@ -1425,7 +1425,7 @@ def gameEndGood():
           "This game has 4 endings, one of which is hidden in the GOOD ending. "
           "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 3, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu\n")
+    input()
     quit(1)
     
 def gameEndEvil():
@@ -1434,7 +1434,7 @@ def gameEndEvil():
           "This game has 4 endings, one of which is hidden in the GOOD ending. "
           "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 3, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu\n")
+    input()
     quit(1)
 
 def gameEndNeutral():
@@ -1443,7 +1443,7 @@ def gameEndNeutral():
           "This game has 4 endings, one of which is hidden in the GOOD ending. "
           "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 3, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu\n")
+    input()
     quit(1)
 
 def gameEndRevenge():
@@ -1452,9 +1452,12 @@ def gameEndRevenge():
           "This game has 4 endings, one of which is hidden in the GOOD ending (you just achieved it). "
           "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 3, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu\n")
+    input()
     quit(1)
-    
+
+# note: max morality is 18
+# note: min morality is -79. -70 would be a reasonable threshold for the TRUE EVIL ending if you plan to make it
+
 def main():
     showIntro()
     gameLoop()
