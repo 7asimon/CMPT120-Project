@@ -1085,9 +1085,13 @@ def finalEncounter():
     global daggerState
     global familyPhoto
     input("During this section, press ENTER when ... appears at the end to continue...\n")
-    print("The shard glows vibrantly as you use it and a memory of your wife comes out from behind the throne to sit on it.\n"
-          "\"It looks like you have finally reached the end, my love.\"")
-    input("ENTER - What end? This cannot end until I know who took you from me!\n")
+    print("The shard glows vibrantly as you use it and your wife, in perfect detail, comes out from behind the throne to sit on it.\n"
+          "\"I was waiting for you to come to this end, my love.\n\"")
+    input("ENTER - How have you appeared here in such clear detail? You don't seem like a mere memory\n")
+    print("\"You're not the only one in the world with strange abilities.\n"
+          "I found out that in death, I can visit the dreams of the one I loved most if they still live."
+          "I can also control their dreams, but I only figured out how to do it recently. I made this world as a test for you.\"\n")
+    input("ENTER - So, what happened to you? Tell me who took you from me!\n")
     input("\"You're still asking this? I cannot believe how blind you are to what is right in front of you. "
           "I'll save the answers for when we're done here. "
           "First, let's talk about what you've been doing in this dream world you've created for yourself...")
@@ -1202,7 +1206,7 @@ def finalEncounter():
             if resetChoice == "1":
                 input("\"Good. I will wake you up now, and everything will be back the way it was before...\"")
                 input("You wake up and use the Dream Shard. A cloud covers you as you begin to see a vision of the timeline you're being transfered to...")
-                input("The memory of your wife that you conjured up tricked you.\n"
+                input("Your wife tricked you.\n"
                       "The Dream Shard transfers you to the morning you woke up to find your family dead in the burning house...")
                 input("You scream in agony as you feel the transfer process slowly removing your memories of the dreams "
                       "and everything that occurred during the past five years ago being removed.\n")
@@ -1248,29 +1252,76 @@ def finalEncounter():
             else:
                 print("I'm not letting you wake up from this dream until you agree to it.\n")
                 continue
+    elif morality >= 5:
+        input("I can't do this..." +playerName+", you're a good person. You've always been...")
+        input("I planned to try and convince you that you burned the house down and killed us but...I did it.")
+        input("I don't know why I did it. Because I wanted to? Because I COULD do it? "
+              "Sometimes there really is no reason for evil...\n")
+        input("After I did it I immediately regretted it and tried to save everyone, "
+              "but I had sedated you all before, so I couldn't wake anyone up. "
+              "I carried you outside and tried to go get the kids, but the fire had already spread everywhere. "
+              "They died and I died trying to save them.\"")
+        while True:
+            endChoice = input("1 - I don't know what to say\n"
+                              "2 - (Kill Her)\n"
+                              "3 - I don't believe you\n"
+                              "4 - What happens now, then?\n")
+            if endChoice == "1":
+                print("Please, you don't have to say anything, You married the wrong woman. That's all there is to know.")
+                continue
+            if endChoice == "2":
+                if "Cursed Dagger" in inventory:
+                    print("You rush her with the cursed dagger and plunge it into her heart.\n")
+                    input("\"I...I understand...I deserve this.\" She stammers as she disintegrates...")
+                    input("...")
+                    gameEndRevenge()
+                if "Cursed Dagger" not in inventory:
+                    print("You do not have the item required to perform that action")
+                    continue
+            if endChoice == "3":
+                print("I wish it were not true, my love. I'm sorry.")
+            if endChoice == "4":
+                print("As hard as it is for me to say...move on. If either of us try and use our powers to fix this, "
+                      "the results will prove disastrous for you. I will leave and never come back.")
+                input("I'm sorry "+playerName+". Try to forget about me...")
+                input("...")
+                gameEndGood()
+        
         
                           
-    
+def gameEndGood():
+    global Score
+    print("Congratulations on completing the game. You have achieved the GOOD ending of the game with a final score of "+str(score)+"."
+          "This game has 4 endings, one of which is hidden in the GOOD ending."
+          "All of the endings are drastically different and reveal different information about the story."
+          "If you want to know how to achieve the other 3, just ask me!")
+    input("Copyright: Abel Simon, abel.simon1@marist.edu")
+    quit(1)
     
 def gameEndEvil():
     global Score
-    print("Congratulations on completing the game. You have achieved the EVIL ending of the game with a final score of "+score+"."
-          "This game has 3 endings, all of which are drastically different and reveal different information about the story."
-          "If you want to know how to achieve the other two, just ask me!")
+    print("Congratulations on completing the game. You have achieved the EVIL ending of the game with a final score of "+str(score)+"."
+          "This game has 4 endings, one of which is hidden in the GOOD ending."
+          "All of the endings are drastically different and reveal different information about the story."
+          "If you want to know how to achieve the other 3, just ask me!")
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
 
 def gameEndNeutral():
     global Score
-    print("Congratulations on completing the game. You have achieved the NEUTRAL ending of the game with a final score of "+score+"."
-          "This game has 3 endings, all of which are drastically different and reveal different information about the story."
-          "If you want to know how to achieve the other two, just ask me!")
+    print("Congratulations on completing the game. You have achieved the NEUTRAL ending of the game with a final score of "+str(score)+"."
+          "This game has 4 endings, one of which is hidden in the GOOD ending."
+          "All of the endings are drastically different and reveal different information about the story."
+          "If you want to know how to achieve the other 3, just ask me!")
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
 
-def gameEnd():
-    print("Congratulations on completing the game! This game has 4 possible endings, all of which are drastically different. "
-          "If you want to know how to achieve the other two, just ask me!")
+def gameEndRevenge():
+    global Score
+    print("Congratulations on completing the game. You have achieved the REVENGE ending of the game with a final score of "+str(score)+"."
+          "This game has 4 endings, one of which is hidden in the GOOD ending (you just achieved it)."
+          "All of the endings are drastically different and reveal different information about the story."
+          "If you want to know how to achieve the other 3, just ask me!")
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
     
