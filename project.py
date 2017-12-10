@@ -20,6 +20,7 @@ familyPhoto = False
 
 #player name is retrieved outside of functions first, otherwise it is difficult to use it in location descriptions
 print("FIVE YEARS OF AGONY")
+print("Public Test Version. Please tell me if you find any bugs or exploits.")
 print('')
 playerName = input("Your name is...you cannot seem to recall it. \nTry to remember your name: ")
 print("Ah, yes, " + playerName + ", that was it.")
@@ -73,7 +74,7 @@ Locales = [
            False, False, None),
     Locale("path of agony", "Walking down the path, you witness many villagers screaming in agony and running down the street."
                " There appears to be an endless number of them", "Path of Agony", False, False, None),
-    Locale("shrine", "At the end of the path of agony, people gather around a small shrine", "Shrine", False, False, "Strange Gem"),
+    Locale("shrine", "At the end of the path of agony, people gather around a small shrine", "Shrine", False, False, "Guardian Gem"),
     Locale("balcony", "As you approach the wall, it crumbles, reavealing a balcony", "Balcony", False, False, "Dream Shard"),
     Locale("water", "Using a ladder, you climb down from the balcony into the black water. Proceeding without visiting every location and without the dream shard is ill advised", "Water", False, False, None),
     Locale("land", "As you wade out of the water onto the land, you realize that the water surrounds you."
@@ -112,19 +113,17 @@ def showIntro():
                   "Type <sleep> when in the real world to return to your dream. \n"
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have left. \n"
-                  "Type <quit> to exit the game. \n"
-                  "Type <look> to view information about your location. "
-                  "If any special commands are possible at your location, (such as <speak>), "
+                  "Type <look> to view the long description of your location (automatically displayed at first visit).\n"
                   "typing <look> will also inform you of this. \n"
-                  "Type <search> to look for an item in your location. \n"
-                  "Type <take [item name]> to take an item once you find it. \n"
-                  "For example, once you find the map, type <take map> to pick it up (it is near the start). \n"
-                  "Once the map is found typing <map> will view it. "
-                  "Similarly to the map, every item serves a purpose, even if it cannot be used directly. \n"
-                  "Some items can be used by typing <use [item name]>, but for others, you will be prompted to use it when the time is right. \n"
+                  "ALWAYS Type <search> to look for an item in your location. \n"
+                  "Type <take item name> to take an item once you find it. \n"
+                  "For example, type <take map> to pick up the map (it is near the start). \n"
+                  "Type <map> once you find it to view it. "
+                  "Type <inspect item name> to be told how to use an item."
                   "Type <inv> to view your inventory. \n"
-                  "Type <speak> to talk to any people present at your current location when prompted. \n"
+                  "Type <speak> to talk to any people present at your current location. \n"
                   "Type <help> at any point to view these commands again. \n"
+                  "In sections that give you multiple numbered choices, type the # of the choice you want.\n"
                   "All commands should be typed in lower case and without the <>. \n")
             print("Simply interacting with the world adds to your score, regardless of whether your choice is good or evil.")
             input("Press Enter to Continue: ")
@@ -140,7 +139,7 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
                "Looking forward, you can see a village. In the center lies your home, which is engulfed in flames. ",
                "You arrive in a grey room with random burned objects scattered about."
                " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.",
-               "In front of your home, a message, painted across the sidewalk in blood red reads: \n\"WHY?\"",
+               "In front of your home, a message painted across the sidewalk in blood red reads: \n\"WHY?\"",
                "You arrive at a dinner table that you recognize from your old home.",
                "You arrive at the edge of a cliff, beyond which a dark abyss lies.",
                "Inside the house, you find that the walls are covered with black and white pictures of your family"
@@ -162,14 +161,15 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
                "The items you collected in your dream transfer over, so the <map> command will still work if you found the map. "
                "Type <sleep> to return to your dream.",
                "You are in the hallway. From here, you can enter your kitchen or your living room.",
-               "Looks like you left the stove in your kitchen on by accident earlier. The room reaks of carbon monoxide.",
+               "You left the stove in your kitchen on by accident earlier. The room reaks of carbon monoxide.",
                "The movie \"Inception\" plays on your living room television."]
 
 # all these lists of booleans are used in vital functions
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 hasBeenSearched = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 locationCheck = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
-items = [None, "Ornament", "Map", "Exotic Garments", None, "Family Photo", None, "Strange Gem", "Shrine Key", "Dream Shard", None, None, "Blanket", None, "Food", "Expensive Necklace"]
+items = [None, "Ornament", "Map", "Exotic Garments", None, "Family Photo", None, "Guardian Gem", "Shrine Key",
+         "Dream Shard", None, None, "Blanket", None, "Food", "Expensive Necklace"]
 inventory = []
 
 # short name for each location, later displayed if player has already been to that location
@@ -181,11 +181,11 @@ locNames = ["The Meadow", "Grey Room", "Home Town",
 # matrix key
 meadow = 0
 greyRoom = 1
-village = 2
+homeTown = 2
 dinnerTable = 3
 cliff = 4
 houseInterior = 5
-strangeWall = 6
+guardianLair = 6
 pathOfAgony = 7
 shrine = 8
 balcony = 9
@@ -201,21 +201,21 @@ locInfo = 0
 # matrix for the game world
          # N     S     E      W
 world = [[2,  None,     1,  None] # meadow
-        ,[3,  None,  None,     0] # grey room
-        ,[5,     0,     3,  None] # home town
-        ,[6,     1,     4,     2] # dinner table
+        ,[3,  None,  None,     0] # greyRoom
+        ,[5,     0,     3,  None] # homeTown
+        ,[6,     1,     4,     2] # dinnerTable
         ,[7,  None,  None,     3] # cliff
-        ,[None,  2,     6,  None] # house interior
-        ,[9,     3,     7,     5] # guardian's lair
-        ,[None,  4,     8,     6] # path of agony
+        ,[None,  2,     6,  None] # houseInterior
+        ,[9,     3,     7,     5] # guardianLair
+        ,[None,  4,     8,     6] # pathOfAgony
         ,[None,  None,   None, 7] # shrine
         ,[None,  6,  10,  None] # balcony
-        ,[11,  None,  None,  9] # blackened water
-        ,[None,10, None,  None] # fiery throne
-        ,[13, None, None, None] # your room
-        ,[None,   12,   14, 15]
-        ,[None, None, None, 13]
-        ,[None, None, 13, None]
+        ,[11,  None,  None,  9] # blackWater
+        ,[None,10, None,  None] # throneOfDreams
+        ,[13, None, None, None] # yourRoom
+        ,[None,   12,   14, 15] # hallway
+        ,[None, None, None, 13] # livingRoom
+        ,[None, None, 13, None] # kitchen
          ]
 # main game loop
 def gameLoop():
@@ -242,13 +242,15 @@ def gameLoop():
             print("The shrine is locked and you cannot enter")
         elif userAction == "east" and shrineState == 3 and locInfo == 7 and "Shrine Key" in inventory:
             print("The shrine is locked. Maybe if you <use shrine key> you will be able to enter.")
-        elif userAction =="east" and shrineState == 4 and locInfo == 7:
-            print("There is nothing left in the shrine for you to destroy, you monster")
+        elif userAction == "east" and shrineState == 4 and locInfo == 7:
+            print("There is nothing left in the shrine for you to destroy, you monster.")
         elif userAction == "north" or userAction == "east" or userAction == "south" or userAction == "west":
             whereTo(locInfo, userAction)
         if userAction == "speak":
             if locInfo == 3:
                 speechCheckOne()
+            elif locInfo == 7:
+                print("You try speaking to the encrazed people, but they flail their arms and are completely incoherent.")
             elif locInfo == 4:
                 cliffEncounter()
             elif locInfo == 8 and shrineState != 1:
@@ -287,18 +289,16 @@ def gameLoop():
                   "Type <sleep> when in the real world to return to your dream. \n"
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have left. \n"
-                  "Type <quit> to exit the game. \n"
-                  "Type <look> to view information about your location. "
-                  "If any special commands are possible at your location, (such as <speak>), "
+                  "Type <look> to view the long description of your location (automatically displayed at first visit).\n"
                   "typing <look> will also inform you of this. \n"
-                  "Type <search> to look for an item in your location. \n"
-                  "Type <take [item name]> to take an item once you find it. \n"
-                  "For example, once you find the map, type <take map> to pick it up (it is near the start). \n"
-                  "Once the map is found typing <map> will view it. "
-                  "Similarly to the map, every item serves a purpose, even if it cannot be used directly. \n"
-                  "Some items can be used by typing <use [item name]>, but for others, you will be prompted to use it when the time is right. \n"
+                  "ALWAYS Type <search> to look for an item in your location. \n"
+                  "Type <take item name> to take an item once you find it. \n"
+                  "For example, type <take map> to pick up the map (it is near the start). \n"
+                  "Type <map> once you find it to view it. "
+                  "Type <inspect item name> to be told how to use an item."
                   "Type <inv> to view your inventory. \n"
-                  "Type <speak> to talk to any people present at your current location when prompted. \n"
+                  "Type <speak> to talk to any people present at your current location. \n"
+                  "In sections that give you multiple numbered choices, type the # of the choice you want.\n"
                   "Type <help> at any point to view these commands again. \n"
                   "All commands should be typed in lower case and without the <>. \n")
         if userAction == "quit":
@@ -334,6 +334,8 @@ def gameLoop():
                 print("You have put on the exotic garments")
                 garments = 1
                 score = score + 5
+                print("This item can be useful in convincing certain people. "
+                      "Type <use garments> to put it on")
             elif "Exotic Garments" in inventory and garments == 1:
                 print("You are already wearing the exotic garments")
             else:
@@ -352,9 +354,7 @@ def gameLoop():
             if locInfo == 1 and "Ornament" not in inventory:
                 score = score + 5
                 retrieve(locInfo)
-                print("This item can be useful in convincing certain people. "
-                      "Type <use garments> to put it on")
-                items[4] = None
+                items[1] = None
             else:
                 print("There is no Ornament here")
         if userAction == "take family photo" or userAction == "take photo":
@@ -365,13 +365,13 @@ def gameLoop():
                 items[5] = None
             else:
                 print("The Family Photo is not here")
-        if userAction == "take strange gem" or userAction == "take gem":
-            if locInfo == 7 and "Strange Gem" not in inventory:
+        if userAction == "take guardian gem" or userAction == "take gem":
+            if locInfo == 7 and "Guardian Gem" not in inventory:
                 score = score + 5
                 retrieve(locInfo)
                 items[7] = None
             else:
-                print("There is no Strange Gem here")
+                print("There is no Guardian Gem here")
         if userAction == "take dream shard" or userAction == "take shard":
             if locInfo == 9 and "Dream Shard" not in inventory:
                 retrieve(locInfo)
@@ -410,6 +410,9 @@ def gameLoop():
                 print("This item can be used for a quick score boost, but it has another hidden purpose...")
             else:
                 print("There is no food here")
+        if userAction == "take dagger" or userAction == "take cursed dagger":
+            if locInfo == 8 and "Cursed Dagger" not in inventory:
+                print("You must <speak> to the woman to be given this option")  
         if userAction == "use shrine key" or userAction == "use key":
             if locInfo == 7 and "Shrine Key" in inventory and shrineOpen == False:
                 print("You use the key to break back into the shrine")
@@ -427,6 +430,7 @@ def gameLoop():
                 shrineState = 11
                 inventory.remove("Food")
             elif "Food" in inventory:
+                print("You eat the food, increasing your score")
                 score = score + 5
                 inventory.remove("Food")
             else:
@@ -438,7 +442,7 @@ def gameLoop():
         if userAction == "summon":
             if locInfo == 11 and "Dream Shard" in inventory:
                 finalChoice = input("Are you sure you wish to summon? "
-                                    "Once you do this, the final sequence of the game begins.There will be no turning back. "
+                                    "Once you do this, the final sequence of the game begins. There will be no turning back. "
                                     "Remember, there is a second world accessible with <awaken> and exitable with <sleep>\n"
                                     "Summon?(yes/no): ")
                 if finalChoice[0:1] == "y":
@@ -500,7 +504,72 @@ def gameLoop():
                   "Perhaps you should try to <speak> to him?")
         elif locInfo == 11:
             print("The throne is unoccupied. Perhaps you should try to <summon> the owner.")
-                
+        if userAction == "inspect food":
+            if "Food" in inventory:
+                print("Eating this item will provide a slight score boost. However, it is also needed for a hidden quest...")
+            else:
+                print("You do not have Food")
+        if userAction == "inspect ornament":
+            if "Ornament" in inventory:
+                print("This item is part of the guardian quest.")
+            else:
+                print("You do not have the Ornament.")
+        if userAction == "inspect map":
+            if "Map" in inventory:
+                print("Type <map> to view the map.")
+            else:
+                print("You do not have the map.")
+        if userAction == "inspect garments" or userAction == "inspect exotic garments":
+            if "Exotic Garments" in inventory:
+                print("These are useful in convincing certain people to do your bidding.\n"
+                      "Type <use garments> to equip them.")
+            else:
+                print("You do not have Exotic Garments")
+        if userAction == "inspect photo" or userAction == "inspect family photo":
+            if "Family Photo" in inventory:
+                print("This item unlocks special dialogue when it is in your inventory.")
+            else:
+                print("You do not have the Family Photo")
+        if userAction == "inspect guardian gem" or userAction == "inspect gem":
+            if "Guardian Gem" in inventory:
+                print("This item is part of the guardian quest.")
+            else:
+                print("You do not have the Guardian Gem in your inventory")
+        if userAction == "inspect shrine key" or userAction == "inspect key":
+            if "Shrine Key" in inventory:
+                print("If you get locked out of the shrine, <use key> when standing outside it.")
+            else:
+                print("You do not have the Shrine Key.")
+        if userAction == "inspect dagger" or userAction == "inspect cursed dagger":
+            if "Cursed Dagger" in inventory:
+                print("This dagger radiates with an evil energy."
+                      "There are several chances where you will be given the choice to use it, "
+                      "but there is no going back once you do.")
+            else:
+                print("You do not have the Cursed Dagger")
+        if userAction == "inspect rare coin" or userAction == "inspect coin":
+            if "Rare Coin" in inventory:
+                print("This item is part of the guardian quest.")
+            else:
+                print("You do not have the Rare Coin.")
+        if userAction == "inspect dream shard" or userAction == "inspect shard":
+            if "Dream Shard" in inventory:
+                print("This item will <summon> the owner of the Throne of Dreams if you are standing in front of it.")
+            else:
+                print("You do not have the Dream Shard")
+        if userAction == "inspect blanket":
+            if "Blanket" in inventory:
+                print("This is a quest item.")
+            else:
+                print("You do not have the blanket.")
+        if userAction == "inspect necklace" or userAction == "inspect expensive necklace":
+            if "Necklace" in inventory:
+                print("This are useful in convincing certain people to do your bidding.\n"
+                      "Type <use necklace> to equip it. Maybe pair it with another convincing item "
+                      "to convince tougher people.")
+            else:
+                print("You do not have the Expensive Necklace")
+                              
 def goTo(x):
     global score
     global hasBeenThere
@@ -619,13 +688,13 @@ def dropItem(locInfo):
         else:
             print("You do not have the Family Photo")
             print('')
-    if itemChoice == "strange gem" or itemChoice == "gem":
-        if "Strange Gem" in inventory:
-            inventory.remove("Strange Gem")
-            items[7] = "Strange Gem"
+    if itemChoice == "guardian gem" or itemChoice == "gem":
+        if "Guardian Gem" in inventory:
+            inventory.remove("Guardian Gem")
+            items[7] = "Guardian Gem"
             score = score - 5
         else:
-            print("You do not have the Strange Gem")
+            print("You do not have the Guardian Gem")
             print('')
     if itemChoice == "dream shard":
         if "Dream Shard" in inventory:
@@ -823,13 +892,13 @@ def guardianEncounter():
     global garments
     global necklace
     global morality
-    if "Ornament" in inventory and "Strange Gem" in inventory and "Rare Coin" in inventory:
+    if "Ornament" in inventory and "Guardian Gem" in inventory and "Rare Coin" in inventory:
         guardianRequest = 1
     input("As you try to continue, a guardian suddenly appears and blocks your way, preventing you from going forward. "
           "You must find some way to deal with him in order to continue. "
           "There are several hidden ways to do this, doing his bidding is not the only way. Press ENTER to hear his words... \n")
-    if score < 5 and guardianState == 0:
-          print("\"Bah! You've hardly accomplished anything here. Come back when you've done more!\"")
+    if score < 60 and guardianState == 0:
+          print("\"Bah! You've hardly accomplished anything yet. Come back when you've done more!\"")
           locInfo = 6
     elif guardianState == 0:
         print("\"Seems like you've done quite a bit around here. So, here's the deal. "
@@ -844,7 +913,7 @@ def guardianEncounter():
             if guardianRequest == 1:
                 print("\"Ah, thank you. You have done me a great service. You are free to pass.\"\n")
                 print("The guardian disappears, allowing you to move forward freely")
-                inventory.remove("Strange Gem")
+                inventory.remove("Guardian Gem")
                 inventory.remove("Rare Coin")
                 inventory.remove("Ornament")
                 guardianState = 2
@@ -906,7 +975,6 @@ def shrineEncounter():
                                 "5 - (End Conversation)")
             if acceptQuest == "1":
                   print("\"Thank you! Come back as soon as you can!\"")
-                  shrineState = 1
             if acceptQuest == "2":
                   print("You run up and take the dagger. As you attempt to leave, the woman's husband blocks your path"
                         "\"You're gonna have to kill me first if you want to leave with that dagger! I won't allow it!\" He yells.")
@@ -1075,6 +1143,7 @@ def finalEncounter():
     global guardianRequest
     global guardianState
     global garments
+    global moves
     global necklace
     global shrineState
     global shrineOpen
@@ -1084,12 +1153,14 @@ def finalEncounter():
     global familyHonored
     global daggerState
     global familyPhoto
+    global moves
+    score = score - moves
     input("During this section, press ENTER when ... appears at the end to continue...\n")
     print("The shard glows vibrantly as you use it and your wife, in perfect detail, comes out from behind the throne to sit on it.\n"
           "\"I was waiting for you to come to this end, my love.\n\"")
     input("ENTER - How have you appeared here in such clear detail? You don't seem like a mere memory\n")
-    print("\"You're not the only one in the world with strange abilities.\n"
-          "I found out that in death, I can visit the dreams of the one I loved most if they still live."
+    print("\"You're not the only one in the world with strange abilities.\n "
+          "I found out that in death, I can visit the dreams of the one I loved most if they still live. "
           "I can also control their dreams, but I only figured out how to do it recently. I made this world as a test for you.\"\n")
     input("ENTER - So, what happened to you? Tell me who took you from me!\n")
     input("\"You're still asking this? I cannot believe how blind you are to what is right in front of you. "
@@ -1253,14 +1324,14 @@ def finalEncounter():
                 print("I'm not letting you wake up from this dream until you agree to it.\n")
                 continue
     elif morality >= 5:
-        input("I can't do this..." +playerName+", you're a good person. You've always been...")
-        input("I planned to try and convince you that you burned the house down and killed us but...I did it.")
+        input("You...I can't do this, " +playerName+". you're a good person. You have always been...")
+        input("I planned to try and convince you that you burned the house down and killed us but...I did it...\n")
         input("I don't know why I did it. Because I wanted to? Because I COULD do it? "
               "Sometimes there really is no reason for evil...\n")
         input("After I did it I immediately regretted it and tried to save everyone, "
               "but I had sedated you all before, so I couldn't wake anyone up. "
               "I carried you outside and tried to go get the kids, but the fire had already spread everywhere. "
-              "They died and I died trying to save them.\"")
+              "They died and I died trying to save them.\"...\n")
         while True:
             endChoice = input("1 - I don't know what to say\n"
                               "2 - (Kill Her)\n"
@@ -1283,46 +1354,44 @@ def finalEncounter():
             if endChoice == "4":
                 print("As hard as it is for me to say...move on. If either of us try and use our powers to fix this, "
                       "the results will prove disastrous for you. I will leave and never come back.")
-                input("I'm sorry "+playerName+". Try to forget about me...")
+                input("I'm sorry, "+playerName+". Try to forget about me...")
                 input("...")
                 gameEndGood()
-        
-        
                           
 def gameEndGood():
     global Score
-    print("Congratulations on completing the game. You have achieved the GOOD ending of the game with a final score of "+str(score)+"."
-          "This game has 4 endings, one of which is hidden in the GOOD ending."
-          "All of the endings are drastically different and reveal different information about the story."
+    print("Congratulations on completing the game! You have achieved the GOOD ending of the game with a final score of: "+str(score)+". \n"
+          "This game has 4 endings, one of which is hidden in the GOOD ending. "
+          "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 3, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
+    input("Copyright: Abel Simon, abel.simon1@marist.edu\n")
     quit(1)
     
 def gameEndEvil():
     global Score
-    print("Congratulations on completing the game. You have achieved the EVIL ending of the game with a final score of "+str(score)+"."
-          "This game has 4 endings, one of which is hidden in the GOOD ending."
-          "All of the endings are drastically different and reveal different information about the story."
+    print("Congratulations on completing the game! You have achieved the EVIL ending of the game with a final score of: "+str(score)+". \n"
+          "This game has 4 endings, one of which is hidden in the GOOD ending. "
+          "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 3, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
+    input("Copyright: Abel Simon, abel.simon1@marist.edu\n")
     quit(1)
 
 def gameEndNeutral():
     global Score
-    print("Congratulations on completing the game. You have achieved the NEUTRAL ending of the game with a final score of "+str(score)+"."
-          "This game has 4 endings, one of which is hidden in the GOOD ending."
-          "All of the endings are drastically different and reveal different information about the story."
+    print("Congratulations on completing the game! You have achieved the NEUTRAL ending of the game with a final score of: "+str(score)+". \n"
+          "This game has 4 endings, one of which is hidden in the GOOD ending. "
+          "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 3, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
+    input("Copyright: Abel Simon, abel.simon1@marist.edu\n")
     quit(1)
 
 def gameEndRevenge():
     global Score
-    print("Congratulations on completing the game. You have achieved the REVENGE ending of the game with a final score of "+str(score)+"."
-          "This game has 4 endings, one of which is hidden in the GOOD ending (you just achieved it)."
-          "All of the endings are drastically different and reveal different information about the story."
+    print("Congratulations on completing the game! You have achieved the REVENGE ending of the game with a final score of: "+str(score)+". \n"
+          "This game has 4 endings, one of which is hidden in the GOOD ending (you just achieved it). "
+          "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 3, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
+    input("Copyright: Abel Simon, abel.simon1@marist.edu\n")
     quit(1)
     
 def main():
