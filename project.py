@@ -138,8 +138,7 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
                "You arrive in a grey room with random burned objects scattered about."
                " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.",
                "In front of your home, a message, painted across the sidewalk in blood red reads: \n\"WHY?\"",
-               "You arrive at a dinner table with a mirror image of yourself. He smiles at you provokingly. "
-               "Perhaps you should try to <speak> to him.",
+               "You arrive at a dinner table that you recognize from your old home.",
                "You arrive at the edge of a cliff, beyond which a dark abyss lies.",
                "Inside the house, you find that the walls are covered with black and white pictures of your family"
                " that were taken before they died mysteriously years ago."
@@ -224,14 +223,20 @@ def gameLoop():
     global guardianState
     global shrineState
     global shrineOpen
+    global morality
+    global score
     while True:
         showLocation(locInfo)
         userAction = input("Enter Command: ").lower()
         # only address the whereTo function if the user decides to move somewhere
         if userAction == "north" and locInfo == 6 and guardianState == 0:
             guardianEncounter()
-        if userAction == "north" and shrineState == 3 and "Shrine Key" not in inventory:
+        elif userAction == "east" and shrineState == 3 and locInfo == 7 and "Shrine Key" not in inventory:
             print("The shrine is locked and you cannot enter")
+        elif userAction == "east" and shrineState == 3 and locInfo == 7 and "Shrine Key" in inventory:
+            print("The shrine is locked. Maybe if you <use shrine key> you will be able to enter.")
+        elif userAction =="east" and shrineState == 4 and locInfo == 7:
+            print("There is nothing left in the shrine for you to destroy, you monster")
         elif userAction == "north" or userAction == "east" or userAction == "south" or userAction == "west":
             whereTo(locInfo, userAction)
         if userAction == "speak":
@@ -249,15 +254,15 @@ def gameLoop():
                 shrineQuestTwo()
         if userAction == "awaken":
             if locInfo <= 11:
-                print('')
                 print("You awaken from your slumber.")
+                print('')
                 locInfo = 12
             elif locInfo >= 12:
                 print("You are already awake.")
         if userAction == "sleep":
             if locInfo >= 12:
-                print('')
                 print("You go back to your bed and return to the dream world.")
+                print('')
                 locInfo = 0
             elif locInfo <= 11:
                 print("You are already dreaming.")
@@ -338,7 +343,7 @@ def gameLoop():
                 items[5] = None
             else:
                 print("The Family Photo is not here")
-        if userAction == "take strange gem":
+        if userAction == "take strange gem" or userAction == "take gem":
             if locInfo == 7 and "Strange Gem" not in inventory:
                 retrieve(locInfo)
                 items[8] = None
@@ -351,7 +356,7 @@ def gameLoop():
             else:
                 print("There is no Dream Shard here")
         if userAction == "take shrine key" or userAction == "take key":
-            if locInfo == 9 and "Shrine Key" not in inventory:
+            if locInfo == 8 and "Shrine Key" not in inventory:
                 retrieve(locInfo)
                 print("Use this to get back into the shrine if you get locked out")
                 items[8] = None
@@ -371,25 +376,39 @@ def gameLoop():
                       "Type <use necklace> to put it on")
             else:
                 print("The expensive Necklace is not here")
+        if userAction == "take food":
+            if locInfo == 14 and "Food" not in inventory:
+                retrieve(locInfo)
+                items[14] = None
+                print("This item can be used for a quick score boost, but it has another hidden purpose...")
+            else:
+                print("There is no food here")
         if userAction == "use shrine key" or userAction == "use key":
-            if shrineState == 4:
-                print("There is nothing left in the shrine for you to destroy, you monster.")
-            elif locInfo == 7 and "Shrine Key" in inventory and shrineOpen == False:
+            if locInfo == 7 and "Shrine Key" in inventory and shrineOpen == False:
                 print("You use the key to break back into the shrine")
                 shrineBreakIn()
             elif shrineOpen == True:
                 print("The shrine is not locked, you can enter any time you wish.")
             else:
-                print("You are not in front of the shrine or you do not have the Shrine Key")  
+                print("You are not in front of the shrine or you do not have the Shrine Key")
+        if userAction == "use food" or userAction == "eat food":
+            if "Food" in inventory and locInfo == 8:
+                print("\"How could you eat that in front of us, you monster?!\"")
+                morality = morality - 1
+                score = score + 5
+                shrineState = 11
+                inventory.remove("Food")
+            elif "Food" in inventory:
+                score = score + 5
+                inventory.remove("Food")
+            else:
+                print("You do not have food in your inventory")
         if userAction == "drop":
             dropItem(locInfo)
         if userAction[0:3] == "inv":
             print(inventory)
         if userAction == "stuck":
-            print("There are 12 locations. Each one must be visited in order to win. \n"
-                  "Type <search> at every location and then <take [item name]> if something is found. \n"
-                  "You must find all items, except the Dream Shard, to pass the final stage of the game. \n"
-                  "DO NOT try to visit the final location without finding the Dream Shard. You will die.")
+            print("in progress")
         if userAction == "map" or userAction == "use map":
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
             if "Map" in inventory and locInfo <= 11:
@@ -428,13 +447,16 @@ def gameLoop():
                 print("You have not yet found the map")
         elif locInfo == 4 and coldManState == 0:
             print("A man lies near the edge of the cliff. "
-                    "Perhaps you should try to <speak> to him?")
+                  "Perhaps you should try to <speak> to him?")
         elif locInfo == 4 and coldManState == 3:
             print("The man at the cliff's ashes lie where you killed him.")
         elif locInfo == 4 and coldManState == 1:
             print("The man at the cliff is content now that you have given him a blanket.")
         elif locInfo == 4 and coldManState == 2:
             print("The man at the cliff is angry with you for stealing his coin.")
+        elif locInfo == 3:
+            print("A mirror image of yourself sits at the dinner table. "
+                  "Perhaps you should try to <speak> to him?")
                 
             
 
@@ -550,7 +572,7 @@ def playerSearch(s):
 def retrieve(locInfo):
     global score
     # only allow player to take an item if they have searched and there is an item in the location
-    if hasBeenSearched[locInfo] is True:
+    if items[locInfo] != None:
         # add new item to inventory list and inform player of successful take
         inventory.append(items[locInfo])
         print("You have picked up a", items[locInfo]+".")
@@ -609,6 +631,17 @@ def dropItem(locInfo):
         else:
             print("You do not have the Dream Shard")
             print('')
+    if itemChoice == "cursed dagger" or itemChoice == "dagger":
+        if "Cursed Dagger" in inventory and locInfo == 10:
+            print("The dagger shakes violently and then explodes the moment it makes contact with the water")
+            inventory.remove("Cursed Dagger")
+            morality = morality + 2
+            score = score + 15
+        elif "Cursed Dagger" in inventory:
+            print("You cannot drop the Cursed Dagger at this location")
+            print('')
+        else:
+            print("You do not have the Cursed Dagger")
 
 def speechCheckOne():
     global locInfo
@@ -654,7 +687,13 @@ def speechCheckOne():
                     if questionThree == "1":
                         print("\"That's your fault, you know. I'm only doing what you would do in the same situation. \n"
                               "Subconsciously, you love messing with people and playing games.\"")
-    elif locInfo == 3 and "Family Photo" not in inventory and morality > -3:
+    elif locInfo == 3 and "Family Photo" not in inventory and morality >= -9:
+                if morality >= -2 and morality <= 2:
+                    print("\"Well, hello there.\" He greets you.")
+                if morality >= 3:
+                    print("\"I haven't seen such a friendly face in a while! Greetings!\" He says to you, happily")
+                if morality <= -3:
+                    print("\"You're scum. But, I'm sure you know that, right?\"")
                 consciousQuestion = input("What would you like to say (type the # of the response you want)?\n"
                                        "1 - Who are you? \n"
                                        "2 - How can I find out who burned my home and killed my family? \n"
@@ -673,8 +712,8 @@ def speechCheckOne():
                 elif consciousQuestion == "3":
                     print("\"Because you feel guilty for running away and it's been eating away at you for years. "
                           "My guess would be that you've had enough and want answers.\"")
-    else:
-        print("Leave now. You should feel ashamed of how sadistic and evil you are")
+    elif locInfo == 3:
+        print("\"Leave now. You should feel ashamed of how sadistic and evil you are.\" He interrupts with as you begin speaking.")
         
 def cliffEncounter():
     global locInfo
@@ -688,7 +727,7 @@ def cliffEncounter():
         print("\"Go away!!! You've already taken the one thing I had. What more do you want from me?\"\n")
     elif locInfo == 4 and "Cursed Dagger" in inventory and coldManState == 2:
         attackChoice = input("\"Go away!!! You've already taken the one thing I had. What more do you want from me?\"\n"
-                             "1 - (Kill him using the cursed dagger)"
+                             "1 - (Kill him using the cursed dagger) \n"
                              "2 - (Leave)")
         if attackChoice == "1":
             print("The man screams and writhes in extreme pain the moment the dagger makes contact with his heart. "
@@ -702,7 +741,7 @@ def cliffEncounter():
     elif locInfo == 4 and coldManState == 1 and "Cursed Dagger" not in inventory:
         print("\"Thank you again for the blanket!\"\n")
     elif locInfo == 4 and coldManState == 0:
-        print("As you approach the man, you can see that is barely clothed and is freezing from the cold. "
+        print("As you approach the man, you can see that he is barely clothed and is freezing from the cold. "
                         "However, you also notice that he is clutching a Rare Coin to his chest.")
         helpMan = input("What would you like to do (type the # of the action you want)?\n"
                         "1 - (Give him a blanket) \n"
@@ -744,14 +783,16 @@ def guardianEncounter():
     global guardianState
     global garments
     global necklace
+    global morality
     if "Ornament" in inventory and "Strange Gem" in inventory and "Rare Coin" in inventory:
         guardianRequest = 1
     input("As you try to continue, a guardian suddenly appears and blocks your way, preventing you from going forward. "
           "You must find some way to deal with him in order to continue. "
           "There are several hidden ways to do this, doing his bidding is not the only way. Press ENTER to hear his words... \n")
-    if score < 50:
+    if score < 5 and guardianState == 0:
           print("\"Bah! You've hardly accomplished anything here. Come back when you've done more!\"")
-    elif score >= 50:
+          locInfo = 6
+    elif guardianState == 0:
         print("\"Seems like you've done quite a bit around here. So, here's the deal. "
               "I'll let you pass if you bring me my ornament and my gem. "
               "I also spotted a rare coin that I fancy and want you to bring that to me as well.\"")
@@ -768,8 +809,10 @@ def guardianEncounter():
                 inventory.remove("Rare Coin")
                 inventory.remove("Ornament")
                 guardianState = 2
+                locInfo = 6
             else:
                 print("\"Is this some kind of joke? You do not have all the items I requested.\"")
+                locInfo = 6
         if guardianChoice == "2":
             if "Cursed Dagger" not in inventory:
                 print("The guardian is far stronger than you and would kill you instantly if you tried fighting him. "
@@ -779,16 +822,21 @@ def guardianEncounter():
                       "Before dying, he bellows \"WHY HAVE YOU DONE THIS? YOU TRULY ARE EVIL SCUM AND DESERVE THE WORST OF FATES! YOU WILL RECEIVE WHAT YOU DESERVE\""
                       "The guardian fades into dust as he dies.\n"
                       "The path is now clear")
-                morality = morality - 1
+                morality = morality - 5
                 guardianState = 3
+                locInfo = 6
         if guardianChoice == "3":
             if necklace == 1 and garments == 1:
                 print("\"You know, you do seem like a citizen of high stature. I will let you pass.\"")
                 print("The guardian disappears, allowing you to move forward freely")
                 guardianState = 1
+                locInfo = 6
             else:
                 print("The guardian laughs in your face and refuses to let you pass. "
                       "Perhaps if you could fool him somehow he would step aside...")
+                locInfo = 6
+        else:
+            locInfo = 6
 
 def shrineEncounter():
     global locInfo
@@ -834,7 +882,7 @@ def shrineEncounter():
                               "and lock the door.")
                         morality = morality - 10
                         inventory.append("Cursed Dagger")
-                        shrineState = 5
+                        shrineState = 3
                         shrineOpen = False
                         locInfo = 7
             if acceptQuest == "3":
@@ -851,8 +899,9 @@ def shrineEncounter():
                     print("You do not have the item required to perform that action")
     if shrineState == 2:
         acceptQuest = input("1 - I have changed my mind, I will find him some food. \n"
-                             "2 - (Give her food) \n"
-                             "3 - (End Conversation)")
+                             "2 - (Give her food)\n"
+                             "3 - (Ignore her and take the dagger)\n"
+                             "4 - (End Conversation)\n")
         if acceptQuest == "1":
             print("\"Thank you! Come back as soon as you can!\"")
         if acceptQuest == "2":
@@ -864,6 +913,46 @@ def shrineEncounter():
                 shrineState = 1
             else:
                 print("You lack the required item to perform that action")
+        if acceptQuest == "3":
+            print("You run up and take the dagger. As you attempt to leave, the woman's husband blocks your path"
+                        "\"You're gonna have to kill me first if you want to leave with that dagger! I won't allow it!\" He yells.")
+            killOrSpareTwo = input("What will you do? \n"
+                                   "1 - (Kill him using the dagger) \n"
+                                   "2 - (Put the dagger back)")
+            if killOrSpareTwo == "1":
+                print("The man's wife and child watch in horror as you slaughter him using the dagger. "
+                      "As he dies, you realize that the dagger causes an immensely painful death by slowly disintegrating "
+                      "a person's body until nothing remains. Soon, the man is nothing but ashes. "
+                      "However, as you are killing her husband, the woman manages to push you out of the shrine room "
+                      "and lock the door.")
+                morality = morality - 10
+                inventory.append("Cursed Dagger")
+                shrineState = 3
+                shrineOpen = False
+                locInfo = 7
+    if shrineState == 11:
+        evilChoiceTwo = input("\"What do you want? You're clearly not here to help us\"\n"
+                              "1 - (Ignore her and take the dagger) \n"
+                              "2 - (End conversation)\n")
+        if evilChoiceTwo == "1":
+                  print("You run up and take the dagger. As you attempt to leave, the woman's husband blocks your path"
+                        "\"You're gonna have to kill me first if you want to leave with that dagger! I won't allow it!\" He yells.")
+                  killOrSpareTwo = input("What will you do? \n"
+                        "1 - (Kill him using the dagger) \n"
+                        "2 - (Put the dagger back)")
+                  if killOrSpareTwo == "1":
+                        print("The man's wife and child watch in horror as you slaughter him using the dagger. "
+                              "As he dies, you realize that the dagger causes an immensely painful death by slowly disintegrating "
+                              "a person's body until nothing remains. Soon, the man is nothing but ashes. "
+                              "However, as you are killing her husband, the woman manages to push you out of the shrine room "
+                              "and lock the door.")
+                        morality = morality - 10
+                        inventory.append("Cursed Dagger")
+                        shrineState = 3
+                        shrineOpen = False
+                        locInfo = 7
+                              
+        
 
 def shrineBreakIn():
     global locInfo
@@ -886,8 +975,12 @@ def shrineBreakIn():
         print("You slaughter the mother and child mercilessly with the cursed dagger. "
               "Turning to leave the shrine, you hear their screams dissipate as the cursed energy from the dagger disintegrates their bodies. "
               "There is no going back from the evil path you have embarked on.")
+        shrineOpen = True
         shrineState = 4
         morality = morality - 20
+        locInfo = 7
+    else:
+        print("You leave the shrine and they lock the door behind you again")
 
 def shrineQuestTwo():
     global locInfo
@@ -903,7 +996,7 @@ def shrineQuestTwo():
     global morality
     global inventory
     if shrineState == 1:
-        print("\"I have another job for you. You need to convince my husband that this dagger needs to be destroyed. "
+        print("\"You need to convince my husband that this dagger needs to be destroyed. "
               "It carries evil energy and I fear for our lives if it is allowed to remain. There is a body of black water "
               "past the Balcony that has the power to destroy evil artifacts. If you can convince my husband to let you take it, "
               "you must <drop> it when at the Blackened Water.\"")
@@ -911,48 +1004,27 @@ def shrineQuestTwo():
                                   "2 - (End Conversation)")
         if daggerQuestAccept == "1":
             shrineState == 9
-            daggerQuestBegin = input("\"Would you like to go speak with him now?\""
+            daggerQuestBegin = input("\"Would you like to go speak with him now?\"\n"
                                      "1 - Yes, bring me to him \n"
-                                     "2 - No, I will do so later")
+                                     "2 - No, I will do so later\n")
             if daggerQuestBegin == "1":
                 print("The woman brings you to her husband")
-                husbandSpeechCheck = input("He gets up from kneeling in front of the shrine."
+                husbandSpeechCheck = input("He gets up from kneeling in front of the shrine.\n"
                                            "\"What do you want?!?\" He yells, angrily. \n"
                                            "1 - That dagger is evil and must be destroyed. Give it to me so I can do so. \n"
-                                           "2 - (End Conversation)")
+                                           "2 - (End Conversation)\n")
                 if husbandSpeechCheck == "1":
-                    if garments == 1:
+                    if garments == 1 or necklace == 1:
                         print("\"Really? Huh. Well, if you say so. You have been a great help so far anyway.\"\n"
                               "The man hands you the dagger.")
                         inventory.append("Cursed Dagger")
                         shrineState = 10
                     else:
                         print("\"You can have it over my dead body! Begone from my sight!\"")
-                        shrineState = 9
         else:
             shrineState == 9
-    if shrineState == 9:
-        daggerQuestBegin = input("\"Would you like to go speak with my husband now?\""
-                                     "1 - Yes, bring me to him \n"
-                                     "2 - No, I will do so later")
-        if daggerQuestBegin == "1":
-            print("The woman brings you to her husband")
-            husbandSpeechCheck = input("He gets up from kneeling in front of the shrine."
-                                           "\"What do you want?!?\" He yells, angrily. \n"
-                                           "1 - That dagger is evil and must be destroyed. Give it to me so I can do so. \n"
-                                           "2 - (End Conversation)")
-            if husbandSpeechCheck == "1":
-                if garments == 1:
-                    print("\"Really? Huh. Well, if you say so. You have been a great help so far anyway.\"\n"
-                              "The man hands you the dagger.")
-                    inventory.append("Cursed Dagger")
-                    shrineState = 10
-                else:
-                    print("\"You can have it over my dead body! Begone from my sight!\"")
     if shrineState == 10:
         print("\"Thank you so much for taking the dagger. I hope that you will destroy it like I asked\"")
-            
-        
                                       
 def gameEnd():
     print("Congratulations on completing the game! This game has 3 possible endings. "
