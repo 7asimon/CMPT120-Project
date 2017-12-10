@@ -6,7 +6,7 @@ score = 0
 moves = 0
 userAction = None
 specialQuestionAsked = False
-morality = 0
+morality = -100
 guardianRequest = 0
 necklace = 0
 garments = 0
@@ -113,11 +113,10 @@ def showIntro():
                   "Type <sleep> when in the real world to return to your dream. \n"
                   "ALWAYS Type <search> to look for an item in your location. \n"
                   "Type <take item name> to take an item once you find it. \n"
+                  "Example: type <take map> to pick up the map once found. \n"
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have taken. \n"
                   "Type <look> to view the long description of your location (automatically displayed at first visit).\n"
-                  "typing <look> will also inform you of this. \n"
-                  "For example, type <take map> to pick up the map (it is near the start). \n"
                   "Type <map> once you find it to view it. "
                   "Type <inspect item name> to be told how to use an item."
                   "Type <inv> to view your inventory. \n"
@@ -281,7 +280,7 @@ def gameLoop():
         if userAction == "look" and locInfo == 8 and shrineState == 4:
             print("You have destroyed everything in the shrine and slaughtered the helpless family.")
         if userAction == "look" and locInfo == 8 and shrineState == 12:
-            rint("You have destroyed everything in the shrine and slaughtered the helpless family.")
+            print("You have destroyed everything in the shrine and slaughtered the helpless family.")
         elif userAction == "look":
             print(locDescrips[locInfo])
         elif userAction == "take":
@@ -292,11 +291,10 @@ def gameLoop():
                   "Type <sleep> when in the real world to return to your dream. \n"
                   "ALWAYS Type <search> to look for an item in your location. \n"
                   "Type <take item name> to take an item once you find it. \n"
+                  "Example: type <take map> to pick up the map once found. \n"
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have taken. \n"
                   "Type <look> to view the long description of your location (automatically displayed at first visit).\n"
-                  "typing <look> will also inform you of this. \n"
-                  "For example, type <take map> to pick up the map (it is near the start). \n"
                   "Type <map> once you find it to view it. "
                   "Type <inspect item name> to be told how to use an item."
                   "Type <inv> to view your inventory. \n"
@@ -342,7 +340,7 @@ def gameLoop():
                 print("You do not have the Shrine Key.")
         elif userAction == "inspect dagger" or userAction == "inspect cursed dagger":
             if "Cursed Dagger" in inventory:
-                print("This dagger radiates with an evil energy."
+                print("This dagger radiates with an evil energy. "
                       "There are several chances where you will be given the choice to use it, "
                       "but there is no going back once you do.")
             else:
@@ -1005,8 +1003,8 @@ def guardianEncounter():
                 locInfo = 6
         if guardianChoice == "4":
             print("\"I plan to use them to restore my power and rule this land as sovereign. "
-                  "Please understand that I am not evil, I just see that this land is in chaos and needs order.\"\n")
-            print("You see that the guardian is power-hungry, but killing him would still be wrong.")
+                  "Please understand that I am not evil, I just see that this land is in chaos and needs order.\"")
+            print("You see that the guardian is power-hungry, but killing him would still be wrong.\n")
         else:
             locInfo = 6
 
@@ -1079,7 +1077,7 @@ def shrineEncounter():
                              "3 - (Ignore her and take the dagger)\n"
                              "4 - (End Conversation)\n")
         if acceptQuest == "1":
-            print("\"Thank you! Come back as soon as you can!\"")
+            print("\"Fine then. Come back as soon as you can.\"")
         if acceptQuest == "2":
             if "Food" in inventory:
                 print("\"Thank you kindly, ser! We certainly would have starved without your help! "
@@ -1294,7 +1292,8 @@ def finalEncounter():
             input("You stole the Rare Coin from the old man, the only thing he had, and did not help him.\n"
                   "...")
         if coldManState == 3:
-            input("You stole the Rare Coin from the old man and then proceeded to murder him needlessly.")
+            input("You stole the Rare Coin from the old man and then proceeded to murder him needlessly.\n"
+                  "...")
     elif coldManState == 3:
         input("You killed the old man with the cursed dagger for no reason other than bloodlust.\n"
               "...")
@@ -1358,7 +1357,66 @@ def finalEncounter():
         input("And finally, you disgraced my memory by destroying my ring.\n"
               "...")
     input("If I had to score your morality somehow, I'd give you a "+str(morality)+"...")
-    if morality <= -10:
+    if morality <= -70:
+        input("Now that you understand how horrible of a person you are. I'll tell you exactly who murdered your family...")
+        input("You did. You killed me. You killed our daughter. You killed our son...")
+        input("In the middle of the night, while sleepwalking, you lit a match on the stove and torched the whole house. "
+              "Conveniently, you then stumbled out of the house and collapsed, leaving us to burn to death while you fled the country...")
+        endChoice = input("This dream world you've created and the atrocious acts you've committed in it only prove how terrible of a person you are, subconsciously. "
+              "What happened that night was a demonstration of your true desires: destruction, death, and chaos. Do you see it now?\"\n"
+              "1 - I don't believe you\n"
+              "2 - I don't care, I had fun\n"
+              "3 - I'm sorry\n"
+              "4 - (Continue)\n")
+        if endChoice == "1":
+            input("\"After all the atrocities you've committed, you don't believe yourself to be capable of this? Don't lie to yourself.\"")
+        if endChoice == "2":
+            input("\"You're evil and deserve to suffer...\"")
+        if endChoice == "3":
+            input("\"No, you are not. Nobody as evil as you are is ever sorry.\"")
+        print("\"I actually cannot believe how staggeringly evil you are. "
+              "It's almost like somebody is controlling your actions. No human this evil should even be allowed to live.")
+        reasoning = input("Tell me, why did you do it? Why must you be so vile and destructive?\"\n"
+                          "1 - Because I'm bored\n"
+                          "2 - Because I can\n"
+                          "3 - Because I don't care about anyone\n"
+                          "4 - (Continue)\n")
+        if reasoning == "1":
+            print("\"Surely there must be a better solution for boredom other than mass killings and chaos!\"")
+        if reasoning == "2":
+            print("\"You are the worst kind of evil; the kind that exists just because the world cannot stop them "
+                  "and lack any real reason for their actions. Your type cannot even be understood.\"")
+        if reasoning == "3":
+            print("\"Clearly! Nobody those capable of caring about others could do what you just did.\"")
+        input("You must not be allowed to live, no matter the cost. I'm shutting down your brain so that you will never wake up from this dream. "
+              "Doing so will destroy the only place I can reside in, but I don't care. I'm doing the world a massive service.\"")
+        while True:
+            resetChoice = input("\"Are you ready to die?\""
+                                "1 - Yes\n"
+                                "2 - You cannot kill me\n"
+                                "3 - (Kill Her)\n")
+            if resetChoice == "1":
+                input("\"Good. I am sorry, but this is the way it must be. I am ashamed to say that I ever loved you.\"")
+                input("You feel yourself shutting down as your consciousness leaves you...")
+                input("...")
+                input("You finally breathe your last breath. Both you and the etheral version of your wife die permanently in your dream.")
+                gameEndTrueEvil()
+            if resetChoice == "2":
+                print("Yes, I can. You are in a dream world that I created and I have control of your consciousness. "
+                      "I can kill you and plan to do so when you are ready.")
+            if resetChoice == "3":
+                if "Cursed Dagger" not in inventory:
+                    print("You lack the required item to attempt that action")
+                elif "Cursed Dagger" in inventory:
+                    input("You attempt to stab her with the dagger, but it disintegrates from your hand as you try.\n"
+                          "\"Did you not think I would anticipate that? I created this world, you fool.\" She says...")
+                    inventory.remove("Cursed Dagger")
+                
+            else:
+                print("\"I have locked your body in this dream. "
+                      "Your body can either starve to death or you can accept your fate now.\"\n")
+                continue
+    elif morality <= -10:
         input("Now that you understand how horrible of a person you are. I'll tell you exactly who murdered your family...")
         input("You did. You killed me. You killed our daughter. You killed our son...")
         input("In the middle of the night, while sleepwalking, you lit a match on the stove and torched the whole house. "
@@ -1370,9 +1428,9 @@ def finalEncounter():
               "3 - I'm sorry\n"
               "4 - (Say Nothing)\n")
         if endChoice == "1":
-            input("\"But you do. You know it's true and that's the real reason why you ran...\"")
+            input("\"After all the atrocities you've committed, you don't believe yourself to be capable of this? Don't lie to yourself.\"")
         if endChoice == "2":
-            input("\"You're evil and deserve to suffer...\"")
+            input("\"Really? You truly do deserve to suffer.\"")
         if endChoice == "3":
             input("\"It's far too late for apologies...\"")
         print("Ultimately, it was your choice, " +playerName+ ". You chose to be evil. There's only one option left. "
@@ -1390,6 +1448,7 @@ def finalEncounter():
                 input("You scream in agony as you feel the transfer process slowly removing your memories of the dreams "
                       "and everything that occurred during the past five years ago being removed...\n")
                 input("You are doomed to repeat the process of running away and experiencing these dreams again every five years...\n")
+                input("...")
                 gameEndEvil()  
             else:
                 print("I'm not letting you wake up from this dream until you agree to it.\n")
@@ -1464,40 +1523,50 @@ def finalEncounter():
                 input("I'm sorry, "+playerName+". Try to forget about me...")
                 input("...")
                 gameEndGood()
+        
                           
 def gameEndGood():
     global Score
     print("Congratulations on completing the game! You have achieved the GOOD ending of the game with a final score of: "+str(score)+". \n"
-          "This game has 4 endings, one of which is hidden in the GOOD ending. "
+          "This game has 5 endings, one of which is hidden in the GOOD ending. "
           "All of the endings are drastically different and reveal different information about the story. "
-          "If you want to know how to achieve the other 3, just ask me!")
+          "If you want to know how to achieve the other 4, just ask me!")
     input()
     quit(1)
     
 def gameEndEvil():
     global Score
     print("Congratulations on completing the game! You have achieved the EVIL ending of the game with a final score of: "+str(score)+". \n"
-          "This game has 4 endings, one of which is hidden in the GOOD ending. "
+          "This game has 5 endings, one of which is hidden in the GOOD ending. "
           "All of the endings are drastically different and reveal different information about the story. "
-          "If you want to know how to achieve the other 3, just ask me!")
+          "If you want to know how to achieve the other 4, just ask me!")
     input()
     quit(1)
 
 def gameEndNeutral():
     global Score
     print("Congratulations on completing the game! You have achieved the NEUTRAL ending of the game with a final score of: "+str(score)+". \n"
-          "This game has 4 endings, one of which is hidden in the GOOD ending. "
+          "This game has 5 endings, one of which is hidden in the GOOD ending. "
           "All of the endings are drastically different and reveal different information about the story. "
-          "If you want to know how to achieve the other 3, just ask me!")
+          "If you want to know how to achieve the other 4, just ask me!")
     input()
     quit(1)
 
 def gameEndRevenge():
     global Score
     print("Congratulations on completing the game! You have achieved the REVENGE ending of the game with a final score of: "+str(score)+". \n"
-          "This game has 4 endings, one of which is hidden in the GOOD ending (you just achieved it). "
+          "This game has 5 endings, one of which is hidden in the GOOD ending (you just achieved it). "
           "All of the endings are drastically different and reveal different information about the story. "
-          "If you want to know how to achieve the other 3, just ask me!")
+          "If you want to know how to achieve the other 4, just ask me!")
+    input()
+    quit(1)
+
+def gameEndTrueEvil():
+    global Score
+    print("Congratulations on completing the game! You have achieved the TRUE EVIL ending of the game with a final score of: "+str(score)+". \n"
+          "This game has 5 endings, one of which is hidden in the GOOD ending (you just achieved it). "
+          "All of the endings are drastically different and reveal different information about the story. "
+          "If you want to know how to achieve the other 4, just ask me!")
     input()
     quit(1)
 
