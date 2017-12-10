@@ -809,7 +809,7 @@ def cliffEncounter():
                   "A blue energy courses throughout the man as he begins to disintegrate from the cursed energy the dagger possess. "
                   "You are certain that the man experienced some of the most pain possible while he slowly died.")
                 coldManState = 3
-                morality = morality - 10
+                morality = morality - 15
                 
         
         
@@ -919,7 +919,7 @@ def shrineEncounter():
                               "a person's body until nothing remains. Soon, the man is nothing but ashes. "
                               "However, as you finish killing her husband, the woman manages to push you out of the shrine room "
                               "and lock the door.")
-                        morality = morality - 10
+                        morality = morality - 15
                         inventory.append("Cursed Dagger")
                         shrineState = 3
                         shrineOpen = False
@@ -965,7 +965,7 @@ def shrineEncounter():
                       "a person's body until nothing remains. Soon, the man is nothing but ashes. "
                       "However, as you finish killing her husband, the woman manages to push you out of the shrine room "
                       "and lock the door.")
-                morality = morality - 10
+                morality = morality - 15
                 inventory.append("Cursed Dagger")
                 shrineState = 3
                 shrineOpen = False
@@ -986,7 +986,7 @@ def shrineEncounter():
                               "a person's body until nothing remains. Soon, the man is nothing but ashes. "
                               "However, as you finish killing her husband, the woman manages to push you out of the shrine room "
                               "and lock the door.")
-                        morality = morality - 10
+                        morality = morality - 15
                         inventory.append("Cursed Dagger")
                         shrineState = 3
                         shrineOpen = False
@@ -1017,7 +1017,7 @@ def shrineBreakIn():
               "There is no going back from the evil path you have embarked on.")
         shrineOpen = True
         shrineState = 4
-        morality = morality - 20
+        morality = morality - 30
         locInfo = 7
     else:
         print("You leave the shrine and they lock the door behind you again")
@@ -1194,7 +1194,7 @@ def finalEncounter():
             input("\"It's far too late for apologies...\"")
         print("Ultimately, it was your choice, " +playerName+ ". You chose to be evil. There's only one option left. "
               "You've always had this strange ability to bring things from your dreams into the real world, "
-              "though it comes at a great cost and you nearly died last time you brought anything of significant back to the world. "
+              "though it comes at a great cost and you nearly died last time you brought anything of significance back to the world. "
               "That's a risk you need to take this time. Transfer the Dream Shard out of here and use it; it will automatically reset the timeline to before you killed us.\"")
         while True:
             resetChoice = input("1 - Fine, I'll do it\n"
@@ -1205,23 +1205,69 @@ def finalEncounter():
                 input("The memory of your wife that you conjured up tricked you.\n"
                       "The Dream Shard transfers you to the morning you woke up to find your family dead in the burning house...")
                 input("You scream in agony as you feel the transfer process slowly removing your memories of the dreams "
-                      "and everything that occurred during the past five years ago being removed.\n"
-                      "You are doomed to repeat the process of running away and experiencing these dreams again every five years...\n")
+                      "and everything that occurred during the past five years ago being removed.\n")
+                input("You are doomed to repeat the process of running away and experiencing these dreams again every five years...\n")
                 input("Unless you change your ways the next time the dreams start occurring again...Will you?")
                 gameEndEvil()  
             else:
                 print("I'm not letting you wake up from this dream until you agree to it.\n")
                 continue
+    elif morality >= -9 and morality <= 4:
+        input("Now that you understand what you've done. I'll tell you exactly who murdered your family...")
+        input("You did. You killed me. You killed our daughter. You killed our son...")
+        input("In the middle of the night, while sleepwalking, you lit a match on the stove and torched the whole house. "
+              "Conveniently, you then stumbled out of the house and collapsed, leaving us to burn to death while you fled the country...")
+        endChoice = input("This dream world you've created and the acts you've committed have not convinced me that you're evil, "
+                          "but they have not convinced me that your act of arson was a lapse in judgement either.\"\n"
+                          "1 - I don't believe you\n"
+                          "2 - I don't care, I had fun\n"
+                          "3 - I'm sorry\n"
+                          "4 - (Say Nothing)\n")
+        if endChoice == "1":
+            input("\"But you do. You know it's true and that's the real reason why you ran...\"")
+        if endChoice == "2":
+            input("\"I see...\"")
+        if endChoice == "3":
+            input("\"It's far too late for apologies...\"")
+        print("I still think you've suffered enough over the past few years" +playerName+ ". I leave you with one choice."
+              "You've always had this strange ability to bring things from your dreams into the real world, "
+              "though it comes at a great cost and you nearly died last time you brought anything of significance back to the world. "
+              "That's a risk you need to take this time. Transfer the Dream Shard out of here; it will automatically wipe your memories."
+              "It's the only way you will find peace.\"")
+        while True:
+            resetChoice = input("1 - Fine, I'll do it\n"
+                                "2 - No, I refuse to do it\n")
+            if resetChoice == "1":
+                input("\"Good. I will wake you up now, and you will be able to live a normal life.\"")
+                input("You wake up and use the Dream Shard. It seeps into your brain, "
+                      "erasing all memories you have related to your family...")
+                input("...")
+                input("Your family was so interwoven into your life that the erasure process causes you to forget more than you anticipated.\n"
+                      "You wake up with no recollection of who you are...")
+                gameEndNeutral()  
+            else:
+                print("I'm not letting you wake up from this dream until you agree to it.\n")
+                continue
+        
+                          
     
     
 def gameEndEvil():
-    globalScore
-    print("Congratulations on completing the game. You have achieved the evil ending of the game with a final score of "+score+"."
+    global Score
+    print("Congratulations on completing the game. You have achieved the EVIL ending of the game with a final score of "+score+"."
           "This game has 3 endings, all of which are drastically different and reveal different information about the story."
           "If you want to know how to achieve the other two, just ask me!")
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
-    
+
+def gameEndNeutral():
+    global Score
+    print("Congratulations on completing the game. You have achieved the NEUTRAL ending of the game with a final score of "+score+"."
+          "This game has 3 endings, all of which are drastically different and reveal different information about the story."
+          "If you want to know how to achieve the other two, just ask me!")
+    input("Copyright: Abel Simon, abel.simon1@marist.edu")
+    quit(1)
+
 def gameEnd():
     print("Congratulations on completing the game! This game has 4 possible endings, all of which are drastically different. "
           "If you want to know how to achieve the other two, just ask me!")
