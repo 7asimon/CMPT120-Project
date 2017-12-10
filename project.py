@@ -89,7 +89,7 @@ def showIntro():
     input("STORY:\n \n"
           "You are a sleepwalker with the power to bring items you find in your dreams into the real world. "
           "5 years ago, you woke up lying down on the front lawn of your home feeling almost paralyzed. "
-          "Your entire house was engulfed in flames and your wife, son, and daughter all perished in the fire. "
+          "Your entire house was engulfed in flames and your fiance, son, and daughter all perished in the fire. "
           "You immediately fled the country out of fear that you would be blamed. "
           "To this day, you still do not have a clue why it occurred or why whoever did it left you alive. "
           "You suspect that someone planned to ruin your life by killing everyone you loved and framing you. \n \n"
@@ -102,10 +102,10 @@ def showIntro():
           "Choose wisely...")
     print('')
     while True:
-        startOrHelp = input("Either type <help> for a tutorial (highly recommended if you have not played before), "
-                            "or type <start> if you have played before and wish to begin immediately: ")
+        startOrHelp = input("Type <help> for a tutorial. \n"
+                            "Type <start> if you have played before and wish to begin immediately: ")
         if startOrHelp == "start":
-            print('')
+            print("\n\n\n\n\n")
             break
         elif startOrHelp == "help":
             print('')
@@ -127,7 +127,7 @@ def showIntro():
                   "All commands should be typed without < or >. \n")
             print("Simply interacting with the world adds to your score, regardless of whether your choice is good or evil.")
             input("Press Enter to Continue: ")
-            print('')
+            print("\n\n\n\n\n")
             break
         else:
             print("You entered an invalid command.")
@@ -175,7 +175,8 @@ inventory = []
 locNames = ["The Meadow", "Grey Room", "Home Town",
            "Dinner Table", "Cliff", "House Interior", 
            "Guardian's Lair", "Path Of Agony", "Shrine" , "Balcony",
-            "Black Water", "Throne of Dreams", "Your Room", "The Hallway", "The Living Room", "The Kitchen"]
+            "Black Water", "Throne of Dreams", "Your Room", "The Hallway",
+            "The Living Room", "The Kitchen"]
 
 # matrix key
 meadow = 0
@@ -369,7 +370,7 @@ def gameLoop():
                 print("You do not have the Expensive Necklace")
         elif userAction == "inspect ring" or userAction == "inspect wedding ring":
             if "Wedding Ring" in inventory:
-                print("The ring you used to propose to your wife.\n"
+                print("The ring you used to propose to your fiance.\n"
                       "<use ring> at the meadow.")
             else:
                 print("You do not have the Wedding Ring")
@@ -746,7 +747,9 @@ def speechCheckOne():
     global specialQuestionAsked
     global morality
     global familyHonored
-    if locInfo == 3 and "Family Photo" in inventory:
+    if locInfo == 3 and morality <= -70:
+        print("Stay away from me, you vile man! I refuse to speak to you!")
+    elif locInfo == 3 and "Family Photo" in inventory:
                 if morality >= -4 and morality <= 4:
                     print("\"Well, hello there.\" He greets you.")
                 elif morality >= 5:
@@ -790,7 +793,7 @@ def speechCheckOne():
                               "Subconsciously, you love messing with people and playing games.\"\n")
                         if familyHonored == 0:
                             print("In any case, I'm glad you're demonstrating curiosity.\n"
-                                  "Here, take the ring you gave your wife. Go to the Meadow and <use ring>. I'm sure you'll see why.\"\n(He gives you a Wedding Ring)\n")
+                                  "Here, take the ring you gave your fiance. Go to the Meadow and <use ring>. I'm sure you'll see why.\"\n(He gives you a Wedding Ring)\n")
                             inventory.append("Wedding Ring")
                             familyHonored = 1
                 elif consciousQuestion == "4":
@@ -801,9 +804,9 @@ def speechCheckOne():
                         print("\"You haven't done anything notable yet. You've yet to create your legacy here.\"")
                     elif morality >= 3:
                         print("\"The world needs more people like you. You deserve to have a lot of respect for yourself.\"")
-                    elif morality <= -5 and morality >= -9:
+                    elif morality <= -5 and morality >= -4:
                         print("\"You are evil and should be condemned endlessly for your actions.\"")
-                    elif morality <= -10:
+                    elif morality <= -15:
                         print("\"You are irredeemably evil and your sadism knows no bounds. I hesitate to even call you human at this point.\"") 
     elif locInfo == 3 and "Family Photo" not in inventory:
                 if morality >= -4 and morality <= 2:
@@ -836,14 +839,14 @@ def speechCheckOne():
                 elif consciousQuestion == "4":
                     if morality >= -4 and morality <= 2 and score >= 60:
                         print("\"It is hard for me to pass judgement on you...\n"
-                              "You are either staying out of things or are avoiding doing anything significantly good or evil.\"")
+                              "You are either staying out of things or are avoiding being significantly good or evil.\"")
                     elif morality >= -4 and morality <= 2:
                         print("\"You haven't done anything notable yet. You've yet to create your legacy here.\"")
                     elif morality >= 3:
                         print("\"The world needs more people like you. You deserve to have a lot of respect for yourself.\"")
-                    elif morality <= -5 and morality >= -9:
+                    elif morality <= -5 and morality >= -14:
                         print("\"You are evil and should be condemned endlessly for your actions.\"")
-                    elif morality <= -10:
+                    elif morality <= -15:
                         print("\"You are irredeemably evil and your sadism knows no bounds. I hesitate to even call you human at this point.\"")  
                 
 
@@ -853,20 +856,20 @@ def ringSequence():
     global score
     if familyHonored == 1:
         print("You remember why this ring and the meadow are special.\n"
-              "Not only was it your marriage ring, but this is where you proposed to her as well. "
-              "She was so happy that years later during a cancer scare, "
-              "she told you that if she didn't make it, she wanted to be buried in this same meadow where you proposed.")
+              "Not only was it your marriage ring, but this is where you proposed to them as well. "
+              "They were so happy that years later during a cancer scare, "
+              "they told you that if they didn't make it, they wanted to be buried in this same meadow where you proposed.")
         ringChoice = input("1 - (Bury the ring)\n"
                            "2 - (Destroy the ring)\n"
                            "3 - (Do nothing)\n")
         if ringChoice == "1":
-            print("You honor your wife's legacy by burying the ring in the meadow")
+            print("You honor your fiance's legacy by burying the ring in the meadow")
             morality = morality + 2
             inventory.remove("Wedding Ring")
             score = score + 10
             familyHonored = 2
         if ringChoice == "2":
-            print("You spite your wife and her death by destroying the ring")
+            print("You spite your fiance and their death by destroying the ring")
             inventory.remove("Wedding Ring")
             morality = morality - 2
             score = score + 10
@@ -1260,9 +1263,10 @@ def finalEncounter():
     global daggerState
     global familyPhoto
     global moves
+    score = score + 100
     score = score - moves
     input("During this section, press ENTER when ... appears at the end to continue...\n")
-    print("The shard glows vibrantly as you use it and your wife, in perfect detail, comes out from behind the throne to sit on it.\n"
+    print("The shard glows vibrantly as you use it and your fiance, in perfect detail, comes out from behind the throne to sit on it.\n"
           "\"I was waiting for you to come to this end, my love.\"\n")
     input("ENTER - How have you appeared here in such clear detail? You don't seem like a mere memory\n")
     print("\"You're not the only one in the world with strange abilities.\n"
@@ -1400,7 +1404,7 @@ def finalEncounter():
                 input("\"Good. I am sorry, but this is the way it must be. I am ashamed to say that I ever loved you.\"")
                 input("You feel yourself shutting down as your consciousness leaves you...")
                 input("...")
-                input("You finally breathe your last breath. Both you and the etheral version of your wife die permanently in your dream.")
+                input("You finally breathe your last breath. Both you and the etheral version of your fiance die permanently in your dream.")
                 gameEndTrueEvil()
             if resetChoice == "2":
                 print("Yes, I can. You are in a dream world that I created and I have control of your consciousness. "
@@ -1440,21 +1444,23 @@ def finalEncounter():
               "That's a risk you need to take this time. Transfer the Dream Shard out of here and use it; it will automatically reset the timeline to before you killed us.\"")
         while True:
             resetChoice = input("1 - Fine, I'll do it\n"
-                                "2 - No, I refuse to do it\n")
+                                "2 - If I'm as evil as you say, why would you do that for me?\n"
+                                "3 - No, I refuse to do it\n")
             if resetChoice == "1":
                 input("\"Good. I will wake you up now, and everything will be back the way it was before...\"")
                 input("You wake up and use the Dream Shard. A cloud covers you as you begin to see a vision of the timeline you're being transfered to...")
-                input("Your wife tricked you.\n"
+                input("Your fiance tricked you.\n"
                       "The Dream Shard transfers you to the morning you woke up to find your family dead in the burning house...")
                 input("You scream in agony as you feel the transfer process slowly removing your memories of the dreams "
                       "and everything that occurred during the past five years ago being removed...\n")
-                #input("You are doomed to repeat the process of running away and experiencing these dreams again every five years...\n")
                 input("...")
-                gameEndEvil()  
+                gameEndEvil()
+            if resetChoice == "2":
+                print("Because I love you and still believe that there is hope for us.")
             else:
                 print("I'm not letting you wake up from this dream until you agree to it.\n")
                 continue
-    elif morality >= -9 and morality <= 4:
+    elif morality >= -9 and morality <= 9:
         input("Now that you understand what you've done. I'll tell you exactly who murdered your family...")
         input("You did. You killed me. You killed our daughter. You killed our son...")
         input("In the middle of the night, while sleepwalking, you lit a match on the stove and torched the whole house. "
@@ -1484,13 +1490,13 @@ def finalEncounter():
                 input("You wake up and use the Dream Shard. It seeps into your brain, "
                       "erasing all memories you have related to your family...")
                 input("...")
-                input("Your family was so interwoven into your life that the erasure process causes you to forget more than you anticipated.\n"
-                      "You wake up with no recollection of who you are...")
+                input("Your family was so interwoven into your life that the erasure process causes you to forget more than you anticipated...\n")
+                input("You wake up with no recollection of who you are...")
                 gameEndNeutral()  
             else:
                 print("I'm not letting you wake up from this dream until you agree to it.\n")
                 continue
-    elif morality >= 5:
+    elif morality >= 10:
         input("You...I can't do this, " +playerName+". you're a good person. You have always been...")
         input("I planned to try and convince you that you burned the house down and killed us but...I did it...\n")
         input("I don't know why I did it. Because I wanted to? Because I COULD do it? "
@@ -1520,7 +1526,7 @@ def finalEncounter():
                 print("I wish it were not true, my love. I'm sorry.")
             if endChoice == "4":
                 print("As hard as it is for me to say...move on. If either of us try and use our powers to fix this, "
-                      "the results will prove disastrous for you. I will leave and never come back.")
+                      "the results will prove disastrous for you. I will leave and I will never disrupt your sleep again.")
                 input("I'm sorry, "+playerName+". Try to forget about me...")
                 input("...")
                 gameEndGood()
