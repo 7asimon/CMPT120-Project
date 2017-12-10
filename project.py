@@ -6,7 +6,7 @@ score = 0
 moves = 0
 userAction = None
 specialQuestionAsked = False
-morality = -100
+morality = 0
 guardianRequest = 0
 necklace = 0
 garments = 0
@@ -86,18 +86,19 @@ Locales = [
 def showIntro():
     global playerName
     global score
-    print("STORY:\n \n"
-          "You are a sleepwalker and an insomniac with the uncanny ability to bring items you find in your dreams into the real world. "
+    input("STORY:\n \n"
+          "You are a sleepwalker with the power to bring items you find in your dreams into the real world. "
           "5 years ago, you woke up lying down on the front lawn of your home feeling almost paralyzed. "
           "Your entire house was engulfed in flames and your wife, son, and daughter all perished in the fire. "
-          "You immediately went into hiding and eventually fled the country out of fear that you would be blamed. "
+          "You immediately fled the country out of fear that you would be blamed. "
           "To this day, you still do not have a clue why it occurred or why whoever did it left you alive. "
-          "Perhaps someone planned to ruin your life by killing everyone you loved and framing you just by striking a match. \n \n"
+          "You suspect that someone planned to ruin your life by killing everyone you loved and framing you. \n \n"
           "Recently, you have been having very detailed lucid dreams containing strange details about your past and the day of the fire. "
-          "You continue on in hopes that you will find something that gives a clue as to who is responsible for the massacre of your family.")
+          "You travel this dream world in hopes that you will find something that shows you who is responsible for the massacre of your family...\n \n"
+          "Press ENTER to continue...")
     print('')
-    print("This game is unique in that the decisions you make throughout the course of it "
-          "affect the events that occur within the game and the ending of its story. \n"
+    print("In this game, the decisions you make "
+          "affect the events that occur within the game and the ending to your story. \n"
           "Choose wisely...")
     print('')
     while True:
@@ -117,8 +118,8 @@ def showIntro():
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have taken. \n"
                   "Type <look> to view the long description of your location (automatically displayed at first visit).\n"
-                  "Type <map> once you find it to view it. "
-                  "Type <inspect item name> to be told how to use an item."
+                  "Type <map> once you find it to view it.\n"
+                  "Type <inspect item name> to be told how to use an item.\n"
                   "Type <inv> to view your inventory. \n"
                   "Type <speak> to talk to any people present at your current location. \n"
                   "In sections that give you multiple numbered choices, type the # of the choice you want.\n"
@@ -295,8 +296,8 @@ def gameLoop():
                   "Type <score> to view your current score. \n"
                   "Type <moves> to see how many moves you have taken. \n"
                   "Type <look> to view the long description of your location (automatically displayed at first visit).\n"
-                  "Type <map> once you find it to view it. "
-                  "Type <inspect item name> to be told how to use an item."
+                  "Type <map> once you find it to view it.\n"
+                  "Type <inspect item name> to be told how to use an item.\n"
                   "Type <inv> to view your inventory. \n"
                   "Type <speak> to talk to any people present at your current location. \n"
                   "In sections that give you multiple numbered choices, type the # of the choice you want.\n"
@@ -1348,7 +1349,7 @@ def finalEncounter():
         input("And finally, you did not find my ring and honor my memory\n"
               "...")
     if familyHonored == 1:
-        input("And finally, you found my ring, but neglected to honor my memory like your subconscious advised you.\n"
+        input("And finally, you found my ring, but neglected to honor my memory.\n"
               "...")
     if familyHonored == 2:
         input("And finally, you honored my memory by burying my ring where I wanted to be buried.\n"
@@ -1447,7 +1448,7 @@ def finalEncounter():
                       "The Dream Shard transfers you to the morning you woke up to find your family dead in the burning house...")
                 input("You scream in agony as you feel the transfer process slowly removing your memories of the dreams "
                       "and everything that occurred during the past five years ago being removed...\n")
-                input("You are doomed to repeat the process of running away and experiencing these dreams again every five years...\n")
+                #input("You are doomed to repeat the process of running away and experiencing these dreams again every five years...\n")
                 input("...")
                 gameEndEvil()  
             else:
