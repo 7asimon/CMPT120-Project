@@ -13,7 +13,9 @@ garments = 0
 coldManState = 0
 guardianState = 0
 shrineState = 0
+familyHonored = 0
 shrineOpen = True
+familyPhoto = False
 
 #player name is retrieved outside of functions first, otherwise it is difficult to use it in location descriptions
 print("FIVE YEARS OF AGONY")
@@ -227,6 +229,7 @@ def gameLoop():
     global shrineOpen
     global morality
     global score
+    global familyHonored
     while True:
         showLocation(locInfo)
         userAction = input("Enter Command: ").lower()
@@ -306,6 +309,15 @@ def gameLoop():
                 items[2] = None
             else:
                 print("There is no map here")
+        if userAction == "use ring":
+            if "Wedding Ring" in inventory and locInfo == 0 and familyHonored == 1:
+                ringSequence()
+            elif "Wedding Ring" in inventory and locInfo != 1:
+                print("You cannot use the ring here")
+            elif "Wedding Ring" not in inventory and familyHonored != 1:
+                print("You have already used your ring")
+            elif "Wedding Ring" not in inventory:
+                print("You do not have the ring")
         if userAction == "use necklace" or userAction == "use expensive necklace":
             if "Expensive Necklace" in inventory and necklace == 0:
                 print("You have put on the expensive necklace")
@@ -409,6 +421,18 @@ def gameLoop():
             dropItem(locInfo)
         if userAction[0:3] == "inv":
             print(inventory)
+        if userAction == "summon":
+            if locInfo == 11 and "Dream Shard" in inventory:
+                finalChoice = input("Are you sure you wish to summon? "
+                                    "Once you do this, the final sequence of the game begins. There will be no turning back.\n"
+                                    "(yes/no): ")
+                if finalChoice[0:1] == "y":
+                    finalEncounter()
+            elif "Dream Shard" not in inventory:
+                print("You lack the item required to summon. Judging by the aesthetic of the throne, "
+                      "whatever item you need to <summon> has something to do with dreams.")
+            elif "Dream Shard" in inventory:
+                print("You cannot summon from here. Try going toward the throne in the distance")
         if userAction == "stuck":
             print("in progress")
         if userAction == "map" or userAction == "use map":
@@ -425,7 +449,7 @@ def gameLoop():
                        "                                ||                                   \n"
                        "                                ||                                   \n"
                        "                                ||                                   \n"
-                       " House Interior ========= Guardian's Lair ========== Path of Agony ====== Shrine \n"
+                       " House Interior ========= Guardian's Lair ======= Path of Agony ====== Shrine \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
                        "     ||                         ||                     ||       \n"
@@ -475,42 +499,6 @@ def goTo(x):
     if hasBeenThere[x] == False:
         score = score + 5
         hasBeenThere[x] = True
-        
-# special function for handling the final location of the game, where the player could potentially win or lose the game
-def finalEncounter(location):
-    global score
-    global locNames
-    global locInfo
-    global locationCheck
-    if locationCheck[location] == False:
-        print(locDescrips[locInfo])
-        print('')
-        locationCheck[location] = True
-    else:
-        print(locNames[locInfo])
-        print('')
-    finalDecision = input()
-    #win by using the dream shard. lose instantly if you have failed to collect it
-    if finalDecision == "use dream shard":
-         if "Dream Shard" in inventory and score >= 55:
-             gameEnd()
-         else:
-             input("You failed to collect the dream shard and cannot leave the dream")
-             quit()
-    else:
-         if "Dream Shard" in inventory and score >= 55:
-             secondTry = input("Use the Dream Shard!")
-             if secondTry == "use dream shard":
-                 gameEnd()
-             elif secondTry != "use dream shard":
-                 input("You have failed to use the dream shard in time")
-                 quit()
-             else:
-                 input("You have failed to use the dream shard in time")
-                 quit()
-         else:
-             input("You have failed to collect the dream shard.")
-             quit()
     
                     
 def whereTo(location,userAction):
@@ -649,6 +637,7 @@ def speechCheckOne():
     global score
     global questionThreeAsked
     global morality
+    global familyHonored
     if locInfo == 3 and "Family Photo" in inventory:
                 if morality >= -4 and morality <= 4:
                     print("\"Well, hello there.\" He greets you.")
@@ -690,6 +679,11 @@ def speechCheckOne():
                     if questionThree == "1":
                         print("\"That's your fault, you know. I'm only doing what you would do in the same situation. \n"
                               "Subconsciously, you love messing with people and playing games.\"")
+                        if familyHonored == 0:
+                            print("\"In any case, I'm glad you're demonstrating curiosity.\n"
+                                  "Here, take the ring you gave your wife. Go to the Meadow and <use ring>. I'm sure you'll see why.\"")
+                            inventory.append("Wedding Ring")
+                            familyHonored = 1
     elif locInfo == 3 and "Family Photo" not in inventory:
                 if morality >= -4 and morality <= 2:
                     print("\"Well, hello there.\" He greets you.")
@@ -717,6 +711,27 @@ def speechCheckOne():
                 elif consciousQuestion == "3":
                     print("\"Because you feel guilty for running away and it's been eating away at you for years. "
                           "My guess would be that you've had enough and want answers.\"")
+
+def ringSequence():
+    global familyHonored
+    global morality
+    if familyHonored == 1:
+        print("You remember why this ring and the meadow are special.\n"
+              "Not only was it your marriage ring, but this is where you proposed to her as well. "
+              "She was so happy that years later during a cancer scare, "
+              "she told you that if she didn't make it, she wanted to be buried in this same meadow where you proposed.")
+        ringChoice = input("1 - (Bury the ring)\n"
+                           "2 - (Destroy the ring)\n"
+                           "3 - (Do nothing)\n")
+        if ringChoice == "1":
+            print("You honor your wife's legacy by burying the ring in the meadow")
+            morality = morality + 2
+            inventory.remove("Wedding Ring")
+            familyHonored = 2
+        if ringChoice == "2":
+            print("You spite your wife and her death by destroying the ring")
+            inventory. remove("Wedding Ring")
+            familyHonored = 3
         
 def cliffEncounter():
     global locInfo
@@ -1029,6 +1044,22 @@ def shrineQuestTwo():
             shrineState == 9
     if shrineState == 10:
         print("\"Thank you so much for taking the dagger. Please do not use it for anything, just destroy it!\"")
+
+# special function for handling the final location of the game, where the player could potentially win or lose the game
+def finalEncounter(location):
+    global locInfo
+    global hasBeenSearched
+    global world
+    global score
+    global guardianRequest
+    global guardianState
+    global garments
+    global necklace
+    global shrineState
+    global shrineOpen
+    global morality
+    global inventory
+    print("Suddenly")
                                       
 def gameEnd():
     print("Congratulations on completing the game! This game has 4 possible endings. "
