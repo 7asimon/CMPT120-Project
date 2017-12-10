@@ -143,22 +143,24 @@ locDescrips = ["You find yourself in a vaguely familiar meadow filled with wilte
                "Inside the house, you find that the walls are covered with black and white pictures of your family"
                " that were taken before they died mysteriously years ago."
                " Eerily enough, you are missing from all the pictures as if you were cropped out of them.",
-               "You come across a wall with seemingly meaningless inscribings on them."
-               " You cannot make out what the strange drawings say. You hear people shuffling around on the other side.",
+               " You come across a large room that appears to be a lair for a creature of some sort."
+               " A broken section of the wall reveals a balcony straight ahead. ",
                "Walking down the path, you witness many villagers screaming in agony and running down the street."
-               " There appears to be an endless number of them",
-               "At the end of the path of agony, a family of three sits around a small shrine. "
+               " You are curious as to what could have possibly driven them insane.",
+               "At the end of the path of agony, a small family sits around a small shrine. "
                "On the shrine lies a glowing dagger that seems to be the subject of their worship. It radiates with evil energy. "
                "The mother of the family sits alone in a corner looking very distraught. Perhaps you should try to <speak> to her?",
-               "As you approach the wall, it crumbles, reavealing a balcony",
-               "Using a ladder, you climb down from the balcony into the black water."
-               " Proceeding without visiting every location and without the dream shard is ill-advised",
-               "As you wade out of the water onto the land, you realize that the water surrounds you."
-               " You must find a way out of this dream.",
-               "You just woke up in your room. Testing.",
-               "You are in the hallway. Testing.",
-               "You are in the kitchen. Testing.",
-               "You are in the living room. Testing."]
+               "With the guardian gone, you exist his lair through the broken section of the wall",
+               "Using a ladder, you climb down from the balcony into the black water. "
+               "The water seems to be filled with a destructive energy. "
+               "In front of you lies a pair of opaque stairs leading to an empty throne.",
+               "You climb up the stairs till you reach the platform containing the unoccupied throne.",
+               "You wake up from your dream alone in your room. "
+               "The items you collected in your dream transfer over, so the <map> command will still work if you found the map. "
+               "Type <sleep> to return to your dream.",
+               "You are in the hallway. From here, you can enter your kitchen or your living room.",
+               "Looks like you left the stove in your kitchen on by accident earlier. The room reaks of carbon monoxide.",
+               "The movie \"Inception\" plays on your living room television."]
 
 # all these lists of booleans are used in vital functions
 hasBeenThere = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
@@ -171,7 +173,7 @@ inventory = []
 locNames = ["The Meadow", "Grey Room", "Home Town",
            "Dinner Table", "Cliff", "House Interior", 
            "Guardian's Lair", "Path Of Agony", "Shrine" , "Balcony",
-            "Water", "Land", "Your Room", "The Hallway", "Your Son's Room", "Your Daughter's Room"]
+            "Black Water", "Throne of Dreams", "Your Room", "The Hallway", "The Living Room", "The Kitchen"]
 
 # matrix key
 meadow = 0
@@ -184,12 +186,12 @@ strangeWall = 6
 pathOfAgony = 7
 shrine = 8
 balcony = 9
-water = 10
-land = 11
-room1 = 12
-room2 = 13
-room3 = 14
-room4 = 15
+blackWater = 10
+throneOfDreams = 11
+yourRoom = 12
+hallway = 13
+livingRoom = 14
+kitchen = 15
 # locInfo stores the number of the location you're in, making creating additional functions far easier.
 # locInfo is repeatedly updated throughout the functions in this program
 locInfo = 0
@@ -205,9 +207,9 @@ world = [[2,  None,     1,  None] # meadow
         ,[None,  4,     8,     6] # path of agony
         ,[None,  None,   None, 7] # shrine
         ,[None,  6,  10,  None] # balcony
-        ,[11,  None,  None,  9] # water
-        ,[None,10, None,  None] # land
-        ,[13, None, None, None]
+        ,[11,  None,  None,  9] # blackened water
+        ,[None,10, None,  None] # fiery throne
+        ,[13, None, None, None] # your room
         ,[None,   12,   14, 15]
         ,[None, None, None, 13]
         ,[None, None, 13, None]
@@ -413,7 +415,7 @@ def gameLoop():
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
             if "Map" in inventory and locInfo <= 11:
                 print(
-                       "                                                 Fiery Throne        \n"
+                       "                                                 Throne of Dreams        \n"
                        "                                                       ||            \n"
                        "                                                       ||            \n"
                        "                                                       ||            \n"
@@ -457,9 +459,9 @@ def gameLoop():
         elif locInfo == 3:
             print("A mirror image of yourself sits at the dinner table. "
                   "Perhaps you should try to <speak> to him?")
+        elif locInfo == 11:
+            print("The throne is unoccupied. Perhaps you should try to <summon> the owner.")
                 
-            
-
 def goTo(x):
     global score
     global hasBeenThere
@@ -473,9 +475,6 @@ def goTo(x):
     if hasBeenThere[x] == False:
         score = score + 5
         hasBeenThere[x] = True
-    # triggers the final encounter scene only if at "land"
-    if curLocation == locNames[11]:
-        finalEncounter(locInfo)
         
 # special function for handling the final location of the game, where the player could potentially win or lose the game
 def finalEncounter(location):
@@ -650,11 +649,15 @@ def speechCheckOne():
     global score
     global questionThreeAsked
     global morality
-    if locInfo == 3 and "Family Photo" in inventory and morality > -3:
-                if morality >= -2 and morality <= 2:
+    if locInfo == 3 and "Family Photo" in inventory:
+                if morality >= -4 and morality <= 4:
                     print("\"Well, hello there.\" He greets you.")
-                if morality >= 3:
+                elif morality >= 5:
                     print("\"I haven't seen such a friendly face in a while! Greetings!\" He says to you, happily")
+                elif morality <= -5 and morality >= -9:
+                    print("\"You're scum. But, I'm sure you know that, right?\"")
+                elif morality <= -10:
+                    print("\"I greatly disprove of your evil actions. I beg of you, change your ways!\"")    
                 consciousQuestion = input("What would you like to say (type the # of the response you want)?\n"
                                        "1 - Who are you? \n"
                                        "2 - How can I find out who burned my home and killed my family? \n"
@@ -687,13 +690,15 @@ def speechCheckOne():
                     if questionThree == "1":
                         print("\"That's your fault, you know. I'm only doing what you would do in the same situation. \n"
                               "Subconsciously, you love messing with people and playing games.\"")
-    elif locInfo == 3 and "Family Photo" not in inventory and morality >= -9:
-                if morality >= -2 and morality <= 2:
+    elif locInfo == 3 and "Family Photo" not in inventory:
+                if morality >= -4 and morality <= 2:
                     print("\"Well, hello there.\" He greets you.")
-                if morality >= 3:
+                elif morality >= 3:
                     print("\"I haven't seen such a friendly face in a while! Greetings!\" He says to you, happily")
-                if morality <= -3:
+                elif morality <= -5 and morality >= -9:
                     print("\"You're scum. But, I'm sure you know that, right?\"")
+                elif morality <= -10:
+                    print("\"I greatly disprove of your evil actions. I beg of you, change your ways!\"")  
                 consciousQuestion = input("What would you like to say (type the # of the response you want)?\n"
                                        "1 - Who are you? \n"
                                        "2 - How can I find out who burned my home and killed my family? \n"
@@ -712,8 +717,6 @@ def speechCheckOne():
                 elif consciousQuestion == "3":
                     print("\"Because you feel guilty for running away and it's been eating away at you for years. "
                           "My guess would be that you've had enough and want answers.\"")
-    elif locInfo == 3:
-        print("\"Leave now. You should feel ashamed of how sadistic and evil you are.\" He interrupts with as you begin speaking.")
         
 def cliffEncounter():
     global locInfo
@@ -761,7 +764,7 @@ def cliffEncounter():
                   "He tries to stop you, but he is too weak to stop you from ripping it from his clutches")
             inventory.append("Rare Coin")
             coldManState = 2
-            morality = morality - 2
+            morality = morality - 3
         if helpMan == "3":
             if "Cursed Dagger" not in inventory:
                 print("You lack the required item to perform this action")
@@ -770,7 +773,7 @@ def cliffEncounter():
                   "A blue energy courses throughout the man as he begins to disintegrate from the cursed energy the dagger possess. "
                   "You are certain that the man experienced some of the most pain possible while he slowly died.")
                 coldManState = 3
-                morality = morality - 5
+                morality = morality - 10
                 
         
         
@@ -822,7 +825,7 @@ def guardianEncounter():
                       "Before dying, he bellows \"WHY HAVE YOU DONE THIS? YOU TRULY ARE EVIL SCUM AND DESERVE THE WORST OF FATES! YOU WILL RECEIVE WHAT YOU DESERVE\""
                       "The guardian fades into dust as he dies.\n"
                       "The path is now clear")
-                morality = morality - 5
+                morality = morality - 10
                 guardianState = 3
                 locInfo = 6
         if guardianChoice == "3":
@@ -857,9 +860,9 @@ def shrineEncounter():
                                 "2 - (Refuse to help her) \n")
         if helpWoman == "1":
             print("\"My husband has become possessed! "
-                  "He's obsessed with this dagger and worships it day and night! I think it is cursed! "
+                  "He's obsessed with this dagger and worships it day and night! I think it is cursed; it has driven everyone mad! "
                   "He refuses to go find food and I don't want to leave our child here with him. \n"
-                  "Can you please find us some food before we starve to death?")
+                  "Can you please find us some food before we starve to death?\n")
             acceptQuest = input("1 - I will find him some food \n"
                                 "2 - (Ignore her and take the dagger)\n"
                                 "3 - You can all eat dirt, I don't care about you or your deadbeat husband \n"
@@ -878,7 +881,7 @@ def shrineEncounter():
                         print("The man's wife and child watch in horror as you slaughter him using the dagger. "
                               "As he dies, you realize that the dagger causes an immensely painful death by slowly disintegrating "
                               "a person's body until nothing remains. Soon, the man is nothing but ashes. "
-                              "However, as you are killing her husband, the woman manages to push you out of the shrine room "
+                              "However, as you finish killing her husband, the woman manages to push you out of the shrine room "
                               "and lock the door.")
                         morality = morality - 10
                         inventory.append("Cursed Dagger")
@@ -898,6 +901,7 @@ def shrineEncounter():
                 else:
                     print("You do not have the item required to perform that action")
     if shrineState == 2:
+        print("What would you like to say?")
         acceptQuest = input("1 - I have changed my mind, I will find him some food. \n"
                              "2 - (Give her food)\n"
                              "3 - (Ignore her and take the dagger)\n"
@@ -923,7 +927,7 @@ def shrineEncounter():
                 print("The man's wife and child watch in horror as you slaughter him using the dagger. "
                       "As he dies, you realize that the dagger causes an immensely painful death by slowly disintegrating "
                       "a person's body until nothing remains. Soon, the man is nothing but ashes. "
-                      "However, as you are killing her husband, the woman manages to push you out of the shrine room "
+                      "However, as you finish killing her husband, the woman manages to push you out of the shrine room "
                       "and lock the door.")
                 morality = morality - 10
                 inventory.append("Cursed Dagger")
@@ -944,7 +948,7 @@ def shrineEncounter():
                         print("The man's wife and child watch in horror as you slaughter him using the dagger. "
                               "As he dies, you realize that the dagger causes an immensely painful death by slowly disintegrating "
                               "a person's body until nothing remains. Soon, the man is nothing but ashes. "
-                              "However, as you are killing her husband, the woman manages to push you out of the shrine room "
+                              "However, as you finish killing her husband, the woman manages to push you out of the shrine room "
                               "and lock the door.")
                         morality = morality - 10
                         inventory.append("Cursed Dagger")
@@ -1024,10 +1028,10 @@ def shrineQuestTwo():
         else:
             shrineState == 9
     if shrineState == 10:
-        print("\"Thank you so much for taking the dagger. I hope that you will destroy it like I asked\"")
+        print("\"Thank you so much for taking the dagger. Please do not use it for anything, just destroy it!\"")
                                       
 def gameEnd():
-    print("Congratulations on completing the game! This game has 3 possible endings. "
+    print("Congratulations on completing the game! This game has 4 possible endings. "
           "If you want to know how to achieve the other two, just ask me!")
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
