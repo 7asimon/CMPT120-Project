@@ -378,7 +378,7 @@ def gameLoop():
             else:
                 print("You do not have the blanket.")
         elif userAction == "inspect necklace" or userAction == "inspect expensive necklace":
-            if "Necklace" in inventory:
+            if "Expensive Necklace" in inventory:
                 print("This is useful in convincing certain people to do your bidding.\n"
                       "Type <use necklace> to equip it.")
             else:
