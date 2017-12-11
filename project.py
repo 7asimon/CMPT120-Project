@@ -597,8 +597,7 @@ def gameLoop():
             print("The mother of the family at this location is angry with you for eating food in front of her instead of helping.")
         elif locInfo == 11:
             print("The throne at this location is unoccupied.\n"
-                  "
-                  Perhaps you should try to <summon> the owner.")
+                  "Perhaps you should try to <summon> the owner.")
         
                               
 def goTo(x):
