@@ -418,8 +418,7 @@ def gameLoop():
                 print("You have put on the exotic garments")
                 garments = 1
                 score = score + 5
-                print("This item can be useful in convincing certain people. "
-                      "Type <use garments> to put it on")
+                print("This item can be useful in convincing certain people.")
             elif "Exotic Garments" in inventory and garments == 1:
                 print("You are already wearing the exotic garments")
             else:
@@ -1417,7 +1416,7 @@ def finalEncounter():
             resetChoice = input("\"Are you ready to die?\"\n"
                                 "1 - Yes\n"
                                 "2 - You cannot kill me\n"
-                                "3 - (Kill Her)\n")
+                                "3 - (Kill Your Fiance)\n")
             if resetChoice == "1":
                 input("\"Good. I am sorry, but this is the way it must be. I am ashamed to say that I ever loved you.\"")
                 input("You feel yourself shutting down as your consciousness leaves you...")
@@ -1458,9 +1457,7 @@ def finalEncounter():
         if endChoice == "3":
             input("\"It's far too late for apologies...\"")
         print("Ultimately, it was your choice, " +playerName+ ". You chose to be evil. There's only one option left. "
-              "You've always had this strange ability to bring things from your dreams into the real world, "
-              "though it comes at a great cost and you nearly died last time you brought anything of significance back to the world. "
-              "That's a risk you need to take this time. Transfer the Dream Shard out of here and use it; it will automatically reset the timeline to before you killed us.\"")
+              "You will use your abilities to transfer the Dream Shard out of here. I have altered it to reset the world to before you kill us.\"")
         while True:
             resetChoice = input("1 - Fine, I'll do it\n"
                                 "2 - If I'm as evil as you say, why would you do that for me?\n"
@@ -1501,9 +1498,7 @@ def finalEncounter():
         if endChoice == "3":
             input("\"It's far too late for apologies...\"")
         print("I still think you've suffered enough over the past few years" +playerName+ ". I leave you with one choice."
-              "You've always had this strange ability to bring things from your dreams into the real world, "
-              "though it comes at a great cost and you nearly died last time you brought anything of significance back to the world. "
-              "That's a risk you need to take this time. Transfer the Dream Shard out of here; it will automatically wipe your memories."
+              "You will use your abilities to transfer the Dream Shard out of here. I have altered it to automatically wipe your memories."
               "It's the only way you will find peace.\"")
         while True:
             resetChoice = input("1 - Fine, I'll do it\n"
@@ -1531,16 +1526,16 @@ def finalEncounter():
               "They died and I died trying to save them.\"...\n")
         while True:
             endChoice = input("1 - I don't know what to say\n"
-                              "2 - (Kill Her)\n"
+                              "2 - (Kill Your Fiance)\n"
                               "3 - I don't believe you\n"
                               "4 - What happens now, then?\n")
             if endChoice == "1":
-                print("Please, you don't have to say anything, You married the wrong woman. That's all there is to know.")
+                print("Please, you don't have to say anything, You married the wrong person. That's all there is to know.")
                 continue
             if endChoice == "2":
                 if "Cursed Dagger" in inventory:
-                    print("You rush her with the cursed dagger and plunge it into her heart.\n")
-                    input("\"I...I understand...I deserve this.\" She stammers as she disintegrates...")
+                    print("You rush her with the cursed dagger and plunge it into their heart.\n")
+                    input("\"I...I understand...I deserve this.\" They stammer as they disintegrate...")
                     input("...")
                     print("\n\n\n\n\n")
                     gameEndRevenge()
