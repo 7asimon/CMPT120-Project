@@ -1504,13 +1504,13 @@ def finalEncounter():
               "3 - I'm sorry\n"
               "4 - (Say Nothing)\n")
         if endChoice == "1":
-            input("\"After all the atrocities you've committed, you don't believe yourself to be capable of this? Don't lie to yourself.\"")
+            input("\"After all the atrocities you've committed, you don't believe yourself to be capable of this? Don't lie to yourself...\"")
         if endChoice == "2":
-            input("\"Really? You truly do deserve to suffer.\"")
+            input("\"Really? You truly do deserve to suffer...\"")
         if endChoice == "3":
             input("\"It's far too late for apologies...\"")
         print("Ultimately, it was your choice, " +playerName+ ". You chose to be evil. There's only one option left. "
-              "You will use your abilities to transfer the Dream Shard out of here. I have altered it to reset the world to before you kill us.\"")
+              "You will use your abilities to transfer the Dream Shard out of here. I have altered it to reset the world to before you killed us.\"")
         while True:
             resetChoice = input("1 - Fine, I'll do it\n"
                                 "2 - If I'm as evil as you say, why would you do that for me?\n"
