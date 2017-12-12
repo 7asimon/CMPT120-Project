@@ -285,19 +285,19 @@ def gameLoop():
         if userAction[0:5] == "speak":
             if locInfo == 3:
                 speechCheckOne()
-            if locInfo == 6 and guardianState == 0:
+            elif locInfo == 6 and guardianState == 0:
                 guardianEncounter()
             elif locInfo == 7:
                 print("You try speaking to the encrazed people, but they flail their arms and are completely incoherent.")
             elif locInfo == 4:
                 cliffEncounter()
-            elif locInfo == 8 and shrineState != 1:
-                shrineEncounter()
-            elif locInfo == 8 and shrineState == 1:
-                shrineQuestTwo()
             elif locInfo == 8 and shrineState == 9:
                 shrineQuestTwo()
             elif locInfo == 8 and shrineState == 10:
+                shrineQuestTwo()
+            elif locInfo == 8 and shrineState != 1:
+                shrineEncounter()
+            elif locInfo == 8 and shrineState == 1:
                 shrineQuestTwo()
         #allow player to transfer to the real world if they are sleeping
         elif userAction == "awaken":
@@ -636,7 +636,7 @@ def gameLoop():
             print("A mirror image of yourself sits at table in this location. "
                   "Perhaps you should try to <speak> to him?")
         elif locInfo == 8 and shrineState == 0:
-            print("The mother of the family  at this location looks very distraught.\nPerhaps you should try to <speak> to her?")
+            print("The mother of the family at this location looks very distraught.\nPerhaps you should try to <speak> to her?")
         elif locInfo == 8 and shrineState == 1:
             print("The mother of the family at this location pleased with you.\n<speak> to her for another quest.")
         elif locInfo == 8 and shrineState == 2:
@@ -646,6 +646,8 @@ def gameLoop():
         elif locInfo == 11:
             print("The throne at this location is unoccupied.\n"
                   "Perhaps you should try to <summon> the owner.")
+        elif locInfo == 8 and shrineState == 10:
+            print("You have finished helping the family at this shrine.")
         
                               
 def goTo(x):
@@ -1299,7 +1301,7 @@ def shrineQuestTwo():
                         
     if shrineState == 10:
         sadisticChoice = input("\"Thank you so much for taking the dagger. Please do not use it for anything, just destroy it!\"\n"
-                               "1 - {Kill them using the dagger)\n"
+                               "1 - (Kill them using the dagger)\n"
                                "2 - (End Conversation)\n")
         if sadisticChoice == "1":
             print("You slaughter the entire family mercileslly without any remorse.\n"
