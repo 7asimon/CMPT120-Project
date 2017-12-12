@@ -1,17 +1,33 @@
+                                       		 DREAM WORLD MAP			
 
-                                                       Balcony
-                                                          ||                          
-                                                          ||                                  
-                                                          ||                          
-                                                          ||                          
-                        House Interior ============= Strange Wall ============== Path of Agony ============== Shrine
-                             ||                           ||                          ||      
-                             ||                           ||                          ||      
-                             ||                           ||                          ||       
-                             ||                           ||                          ||      
-                         Grey Room ================ Dinner Table =================== Cliff     
-                             ||                           ||                                                     
-                             ||                           ||                                   
-                             ||                           ||                                   
-                             ||                           ||                                   
-                           Meadow ==================== Village             
+								      Throne of Dreams        
+                                                                              ||           
+                                                                              ||            
+                                                                              ||            
+                                                                              ||            
+                                                   Balcony  ========== Blackened Water     
+                                                       ||                                   
+                                                       ||                                   
+                                                       ||                                   
+                                                       ||                                   
+                        House Interior ========= Guardian's Lair ======= Path of Agony ====== Shrine 
+                            ||                         ||                     ||       
+                            ||                         ||                     ||      
+                            ||                         ||                     ||       
+                            ||                         ||                     ||       
+                         Home Town ============== Dinner Table ============= Cliff     
+                            ||                         ||                                              
+                            ||                         ||                              
+                            ||                         ||                              
+                            ||                         ||                              
+                          Meadow ================== Grey Room     
+
+
+						  REAL WORLD MAP 
+  
+	                Living Room ============= The Hallway ============ Kitchen     
+                                                       ||                              
+                                                       ||                              
+                                                       ||                              
+                                                       ||                              
+                                                   Your Room                       
