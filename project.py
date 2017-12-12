@@ -52,11 +52,12 @@ __ ((_|(_))\ _ )\(_)) (_))
  /_/ \_\   \___|\___/|_|\_| |_|                                                                                                                 
 """)
 
-#player name is retrieved outside of functions first, otherwise it is difficult to use it in location descriptions
-playerName = input("Your name is...you cannot seem to recall it. \nTry to remember your name: ").capitalize()
-print(playerName + "...Yes, that was it.")
-print('')
-
+def customizePlayer():
+    global playerName
+    #player name is retrieved outside of functions first, otherwise it is difficult to use it in location descriptions
+    playerName = input("Your name is...you cannot seem to recall it. \nTry to remember your name: ").capitalize()
+    print(playerName + "...Yes, that was it.")
+    print('')
         
 #classes
 
@@ -586,7 +587,24 @@ def gameLoop():
             elif "Dream Shard" in inventory:
                 print("You cannot summon from here. Try going toward the throne in the distance")
         elif userAction == "cheat":
-            print("command in progress")
+            print("Current Morality: "+str(morality)+"\n"
+                  "There are five endings in this game: Neutral, Evil, True Evil, Good, and Revenge...\n"
+                  "To receive the Neutral ending, you must have a morality level between 9 and -9 by the end of the game.\n"
+                  "To receive the Evil ending, you must have a morality level lower than -10 but not lower than -69 by the end of the game.\n"
+                  "To receive the True evil ending, you must have a morality level of -70 or lower by the end of the game.\n"
+                  "To receive the Good ending, you must have a morality level of 11 or higher by the end of the game.\n"
+                  "To receive the Revenge ending, have a morality level of 11 or higher while keeping the dagger in your inventory by the end "
+                  "and then attack your fiance during the final encounter.")
+            moreInfo = input("Would you like to be told how to increase/decrease morality (yes/no) (SPOILERS)?")
+            if moreInfo[0:1] == "y":
+                print("To increase your morality:\n"
+                      "1. Take the family photo from House Interior and give it to your subconscious at the Dinner Table. "
+                      "He will give you your wedding ring. <use ring> at the Meadow and bury it when asked for your choice...\n"
+                      "2. Find the blanket in your room (you must <awaken> from the dream) and bring it to the man at the Cliff...\n"
+                      "3. Complete the entire Shrine questline from the family residing there...\n"
+                      "4. Convince the guardian to let you pass\n"
+                      "(you must find the Exotic Garments and the Necklace and <use> both.\n"
+                      "5. Destroy the dagger by typing <drop dagger> at the Blackened Water.\n")
         elif userAction == "map" or userAction == "use map":
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
             if "Map" in inventory and locInfo <= 11:
@@ -619,7 +637,7 @@ def gameLoop():
                       "                                 ||                              \n"
                       "                                 ||                              \n"
                       "                                 ||                              \n"
-                      "                      "+playerName+"'s Room \n"
+                      "                  ------"+playerName+"'s Room \n-----"
                       )
             if "Map" not in inventory:
                 print("You have not yet found the map")
@@ -957,7 +975,7 @@ def cliffEncounter():
     global inventory
     if locInfo == 4 and coldManState == 2:
         attackChoice = input("\"I don't want your help, go away!!! You've already taken the one thing I had. What more do you want from me?\"\n"
-                             "1 - (Kill him with the cursed dagger) \n"
+                             "1 - (Kill him)\n"
                              "2 - (Leave)\n")
         if attackChoice == "1":
             if "Cursed Dagger" in inventory:
@@ -1653,10 +1671,15 @@ def gameEndTrueEvil():
     input("Copyright: Abel Simon, abel.simon1@marist.edu")
     quit(1)
 
+def resetValues():
+    pass
+
 # note: max morality is 18 i think
 # note: min morality is close to -100. I'm not sure.
 
 def main():
+    resetValues()
+    customizePlayer()
     showIntro()
     gameLoop()
 
