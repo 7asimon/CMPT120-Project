@@ -1,7 +1,4 @@
-# PLEASE DO NOT EDIT THE CODE
-# Press F5 To Start
-
-# FIVE YEARS AFLAME
+# FIVE YEARS OF AGONY
 # Author: Abel Simon
 # Date : November 28, 2017
 
@@ -62,11 +59,11 @@ def customizePlayer():
 #classes
 
 class Player:
-    def __init__(self, name, score, curLocation, moveCount, inventory):
+    def __init__(self, name, score, curLocation, moves, inventory):
         self.name = name
         self.score = score
         self.curLocation = curLocation
-        self.moveCount = moveCount
+        self.moves = moves
         self.inventory = inventory
     def changeScore(self):
         score = score + 5
@@ -81,37 +78,44 @@ class Locale:
 
 #initiate classes
         
-player = Player('', 0, "Meadow", 20, [])
+player = Player('', 0, "Meadow", 0, [])
 Locales = [
     Locale("meadow", "You find yourself in a vaguely familiar meadow filled with wilted daisies."
                " Looking forward, you can see a village engulfed in flames."
                " There appears to be areas of interest to the east, west, and south as well.", "The Meadow",
            False, False, None),
-    Locale("burning village", "The village is completely vacant as the buildings crumble and burn around you."
-               " However, in front of you lies one house that is completely unaffected by the fire,"
-               " and a sign in front of it that reads: WHY HAVE YOU CAUSED US SUCH AGONY?", "The Burning Village",
-           False, False, None),
     Locale("grey room", "You arrive in a grey room with random burned objects scattered about."
-               " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.",
-           "Grey Room", False, False, "Map"),
-    Locale("dinner table", "You arrive at a dinner table with a mirror image of yourself. No matter what you do, he does not speak to you.",
-           "Dinner Table", False, False, "Exotic Garments"),
-    Locale("cliff", "You arrive at the edge of a cliff with a dark abyss below it. There is nothing of interest here.", "Cliff",
+               " As you walk into the room, the color fades from your skin and you notice everything you see is in black and white.", "Grey Room",
            False, False, "Ornament"),
+    Locale("home town", "In front of your home, a message painted across the sidewalk in blood red reads:\"WHY?\"",
+           "Home Town", False, False, "Map"),
+    Locale("dinner table", "You arrive at a dinner table that you recognize from your old home.",
+           "Dinner Table", False, False, "Exotic Garments"),
+    Locale("cliff", "You arrive at the edge of a cliff, beyond which a dark abyss lies.", "Cliff",
+           False, False, None),
     Locale("house interior", "Inside the house, you find that the walls are covered with black and white pictures of your family"
                " that were taken before they died mysteriously years ago."
                " Eerily enough, you are missing from all the pictures as if you were cropped out of them.", "House Interior",
            False, False, "Family Photo"),
-    Locale("guardian's lair", "You come across a wall with seemingly meaningless inscribings on them."
-               " You cannot make out what the strange drawings say. You hear people shuffling around on the other side.", "Guardian's Lair",
+    Locale("guardian's lair", " You come across a large room that appears to be a lair for a creature of some sort."
+               " A broken section of the wall reveals a balcony straight ahead. ", "Guardian's Lair",
            False, False, None),
     Locale("path of agony", "Walking down the path, you witness many villagers screaming in agony and running down the street."
-               " There appears to be an endless number of them", "Path of Agony", False, False, None),
-    Locale("shrine", "At the end of the path of agony, people gather around a small shrine", "Shrine", False, False, "Guardian Gem"),
-    Locale("balcony", "As you approach the wall, it crumbles, reavealing a balcony", "Balcony", False, False, "Dream Shard"),
-    Locale("water", "Using a ladder, you climb down from the balcony into the black water. Proceeding without visiting every location and without the dream shard is ill advised", "Water", False, False, None),
-    Locale("land", "As you wade out of the water onto the land, you realize that the water surrounds you."
-               " You must find a way out of this dream.", "Land", False, False, None)]
+               " You are curious as to what could have possibly driven them insane.", "Path of Agony", False, False, "Guardian Gem"),
+    Locale("shrine", "A small family sits around the shrine. On the shrine lies a glowing dagger "
+           "that seems to be the subject of their worship. It radiates with evil energy. ", "Shrine", False, False, "Shrine Key"),
+    Locale("balcony", "With the guardian gone, you exit his lair through the broken section of the wall", "Balcony", False, False, "Dream Shard"),
+    Locale("black water", "Using a ladder, you climb down from the balcony into the black water. "
+               "The water seems to be filled with a destructive energy. "
+               "In front of you lies a pair of opaque stairs leading to an empty throne.", "Black Water", False, False, None),
+    Locale("throne of dreams", "You climb up the stairs till you reach the platform containing the unoccupied throne.", "Throne of Dreams", False, False, None),
+    Locale("your room", "You wake up from your dream alone in your room. "
+           "Try the <map> command if you found the map in your dream. "
+           "Type <sleep> to return to your dream.", "Your Room", False, False, "Blanket"),
+    Locale("hallway", "You are in the hallway. From here, you can enter your kitchen or your living room.", "The Hallway", False, False, None),
+    Locale("kitchen", "You left the stove in your kitchen on by accident earlier. The room reaks of carbon monoxide.", "Kitchen", False, False, "Food"),
+    Locale("living room", "The movie \"Inception\" plays on your living room television.", "Living Room",
+           False, False, "Expensive Necklace")]
     
 
     
@@ -158,6 +162,7 @@ def showIntro():
                   "Type <speak> to talk to any people present at your current location. \n"
                   "In sections that give you multiple numbered choices, type the # of your choice.\n"
                   "Type <help> at any point to view these commands again. \n"
+                  "Type <developer> to view cheat commands \n"
                   "All commands should be typed without < or >. \n"
                   "If nothing happens when you enter a command, you entered an invalid command.\n")
             print("Simply interacting with the world adds to your score, regardless of whether your choice is good or evil.")
@@ -350,6 +355,7 @@ def gameLoop():
                   "Type <inv> to view your inventory. \n"
                   "Type <speak> to talk to any people present at your current location. \n"
                   "In sections that give you multiple numbered choices, type the # of your choice.\n"
+                  "Type <developer> to view cheat commands \n"
                   "Type <help> at any point to view these commands again. \n"
                   "All commands should be typed without < or >. \n"
                   "If nothing happens when you enter a command, you entered an invalid command.\n")
@@ -546,6 +552,7 @@ def gameLoop():
                 print("You are not in front of the shrine or you do not have the Shrine Key")
         elif userAction == "use food" or userAction == "eat food":
             if "Food" in inventory and locInfo == 8:
+                #special dialogue for if you eat food in front of the starving family
                 print("\"How could you eat that in front of us, you monster?!\"")
                 morality = morality - 2
                 score = score + 20
@@ -559,6 +566,7 @@ def gameLoop():
                 print("You do not have food in your inventory")
         elif userAction == "drop":
             dropItem(locInfo)
+        #dropping the dagger at the black water destroys it
         elif userAction == "drop cursed dagger" or userAction == "drop dagger":
             if "Cursed Dagger" in inventory and locInfo == 10:
                 print("The dagger shakes violently and then explodes the moment it makes contact with the water")
@@ -575,6 +583,7 @@ def gameLoop():
             print(inventory)
         elif userAction == "summon":
             if locInfo == 11 and "Dream Shard" in inventory:
+                #choosing to summon the throne owner begins the end sequence of the game
                 finalChoice = input("Are you sure you wish to summon? "
                                     "Once you do this, the final sequence of the game begins. There will be no turning back. "
                                     "Remember, there is a second world accessible with <awaken> and exitable with <sleep>\n"
@@ -586,6 +595,21 @@ def gameLoop():
                       "whatever item you need to <summon> has something to do with dreams.")
             elif "Dream Shard" in inventory:
                 print("You cannot summon from here. Try going toward the throne in the distance")
+        #these commands are intended to help the teacher make sure the different endings work without having to meet the requirements of each ending, if desired
+        elif userAction == "developer":
+            print("Developer Commands Are:\n"
+                  "<view morality> lets you see your morality level.\n"
+                  "<cheat> tells you how to increase/decrease morality and how to achieve each ending.\n"
+                  "<increase morality> increases morality.\n"
+                  "<decrease morality> decreases morality.\n")
+        #special command for seeing morality
+        elif userAction == "increase morality":
+            morality = morality + 5
+        elif userAction == "decrease morality":
+            morality = morality - 5
+        elif userAction == "view morality":
+            print(morality)
+        #this is a special command for if you want to know how to receive every ending
         elif userAction == "cheat":
             print("Current Morality: "+str(morality)+"\n"
                   "There are five endings in this game: Neutral, Evil, True Evil, Good, and Revenge...\n"
@@ -600,14 +624,26 @@ def gameLoop():
                 print("To increase your morality:\n"
                       "1. Take the family photo from House Interior and give it to your subconscious at the Dinner Table. "
                       "He will give you your wedding ring. <use ring> at the Meadow and bury it when asked for your choice...\n"
-                      "2. Find the blanket in your room (you must <awaken> from the dream) and bring it to the man at the Cliff...\n"
+                      "2. Find the blanket in your room (you must <awaken> when in the dream) and bring it to the man at the Cliff...\n"
                       "3. Complete the entire Shrine questline from the family residing there...\n"
                       "4. Convince the guardian to let you pass\n"
                       "(you must find the Exotic Garments and the Necklace and <use> both.\n"
-                      "5. Destroy the dagger by typing <drop dagger> at the Blackened Water.\n")
+                      "5. Destroy the dagger by typing <drop dagger> at the Blackened Water.\n"
+                      "\n"
+                      "To decrease your morality:\n"
+                      "1. Take the family photo from House Interior and give it to your subconscious at the Dinner Table. "
+                      "He will give you your wedding ring. <use ring> at the Meadow and destroy it when asked for your choice...\n"
+                      "2. Steal from the old man and then kill him with the Cursed Dagger...\n"
+                      "3. Steal the key from the man at the shrine, steal the dagger and kill the man,"
+                      " then use the key to break back into the shrine and kill everyone else when you get locked out...\n"
+                      "4. Kill the guardian with the Cursed Dagger...\n"
+                      "5. Insult the woman at the shrine when she asks you for help...\n"
+                      "6. Fill the guardians wish and bring him the requested items (this is mutually exclusive with "
+                      "option 4 and causes a smaller morality loss\n")
         elif userAction == "map" or userAction == "use map":
             # map only works if player has map in their inventory, otherwise it informs them that they cannot view map yet.
             if "Map" in inventory and locInfo <= 11:
+                #dream world map
                 print(
                        "                                                 Throne of Dreams        \n"
                        "                                                       ||            \n"
@@ -632,6 +668,7 @@ def gameLoop():
                        "   Meadow ================== Grey Room                          \n"
                       )
             if "Map" in inventory and locInfo >= 12:
+                #player sees a different map if they are awake in their house
                 print("  Living Room ============= The Hallway ============ Kitchen     \n"
                       "                                 ||                              \n"
                       "                                 ||                              \n"
@@ -771,6 +808,7 @@ def retrieve(locInfo):
 
 def dropItem(locInfo):
     global daggerState
+    global score
     # ask player what item they want to drop and put down the item they choose
     # the player can still choose to pick the item up again
     itemChoice = input("What item do you want to drop? ")
@@ -824,6 +862,11 @@ def dropItem(locInfo):
         else:
             print("You do not have Food")
             print('')
+    else:
+        if itemChoice in inventory:
+            print("You cannot drop that item")
+        if itemChoice not in inventory:
+            print("That is not an item in your inventory")
 
 def speechCheckOne():
     global locInfo
@@ -833,6 +876,8 @@ def speechCheckOne():
     global specialQuestionAsked
     global morality
     global familyHonored
+    #if your morality is incredibly low, he will refuse to talk to you
+    #if this occurs, you are guaranteed to get the TRUE EVIL ending
     if locInfo == 3 and morality <= -70:
         print("Stay away from me, you vile man! I refuse to speak to you!")
     elif locInfo == 3 and "Family Photo" in inventory:
@@ -865,6 +910,8 @@ def speechCheckOne():
                 elif consciousQuestion == "3":
                     print("\"Because you feel guilty for running away and it's been eating away at you for years. "
                           "My guess would be that you've had enough and want answers.\"")
+                #special dialogue that unlocks if you have the family photo in your inventory
+                #you also get a special ring for asking this question, which can be used at the meadow
                 elif consciousQuestion == "5":
                     questionThree = input("\"Your subconscious has removed you from the picture out of guilt. \n "
                                           "Now, whether that is just guilt for running away, survivor guilt, "
@@ -883,6 +930,7 @@ def speechCheckOne():
                             inventory.append("Wedding Ring")
                             familyHonored = 1
                 elif consciousQuestion == "4":
+                    #you must steal the dagger from the shrine OR complete the full shrine questline to have access to this option
                     if morality >= -4 and morality <= 2 and score >= 60:
                         print("\"It is hard for me to pass judgement on you...\n"
                               "You have not yet done anything significantly good or evil.\"")
@@ -925,6 +973,8 @@ def speechCheckOne():
                     print("\"Because you feel guilty for running away and it's been eating away at you for years. "
                           "My guess would be that you've had enough and want answers.\"")
                 elif consciousQuestion == "4":
+                    #this is how you can get a sense of what ending you're going to get
+                    #the man at the table responds differently to you depending on your morality level when asked this question
                     if morality >= -4 and morality <= 2 and score >= 60:
                         print("\"It is hard for me to pass judgement on you...\n"
                               "You have not yet done anything significantly good or evil.\"")
@@ -973,6 +1023,7 @@ def cliffEncounter():
     global coldManState
     global morality
     global inventory
+    #differing dialogue options depending on the items you have, if you have already stolen from this man, or if you've helped him
     if locInfo == 4 and coldManState == 2:
         attackChoice = input("\"I don't want your help, go away!!! You've already taken the one thing I had. What more do you want from me?\"\n"
                              "1 - (Kill him)\n"
@@ -1071,6 +1122,7 @@ def guardianEncounter():
                 print("\"Is this some kind of joke? You do not have all the items I requested.\"")
                 locInfo = 6
         if guardianChoice == "2":
+            #you must steal the dagger from the shrine OR complete the full shrine questline to have access to this option
             if "Cursed Dagger" not in inventory:
                 print("The guardian is far stronger than you and would kill you instantly if you tried fighting him. "
                       "Perhaps if you had some sort of weapon you'd stand a chance...")
@@ -1131,6 +1183,9 @@ def shrineEncounter():
                                 "5 - (End Conversation)\n")
             if acceptQuest == "1":
                   print("\"Thank you! Come back as soon as you can!\"")
+            #this is a special decision that can affect the rest of the game
+            #stealing the dagger and killing the man starts you down an evil path
+            #you are guaranteed to receive one of the evil endings if you do this
             if acceptQuest == "2":
                   print("You run up and take the dagger. As you attempt to leave, the woman's husband blocks your path. "
                         "\"You're gonna have to kill me first if you want to leave with that dagger! I won't allow it!\" He yells.")
@@ -1164,6 +1219,7 @@ def shrineEncounter():
                     score = score + 10
                 else:
                     print("You do not have the item required to perform that action")
+    #if the player insults the woman asking for help
     if shrineState == 2:
         print("What would you like to say?")
         acceptQuest = input("1 - I have changed my mind, I will find him some food. \n"
@@ -1201,6 +1257,7 @@ def shrineEncounter():
                 shrineOpen = False
                 locInfo = 7
                 score = score + 15
+    #if the player eats food in front of the starving family...
     if shrineState == 11:
         evilChoiceTwo = input("\"What do you want? You're clearly not here to help us\"\n"
                               "1 - (Ignore her and take the dagger) \n"
@@ -1240,6 +1297,7 @@ def shrineBreakIn():
     global shrineOpen
     global morality
     global inventory
+    #special function that occurs if the player breaks back into the shrine after killing the man
     print("The woman screams as you break back into the shrine, cursed dagger in hand")
     evilChoice = input("What will you do?\n"
                        "1 - (Slaughter the rest of the family) \n"
@@ -1269,6 +1327,7 @@ def shrineQuestTwo():
     global shrineOpen
     global morality
     global inventory
+    #if you have not yet completed the quest...
     if shrineState == 1:
         print("\"You need to convince my husband that this dagger needs to be destroyed. "
               "It carries evil energy and I fear for our lives if it is allowed to remain. There is a body of black water "
@@ -1317,6 +1376,7 @@ def shrineQuestTwo():
                         locInfo = 7
                         score = score + 20
                         
+    #if you have already completed the quest                    
     if shrineState == 10:
         sadisticChoice = input("\"Thank you so much for taking the dagger. Please do not use it for anything, just destroy it!\"\n"
                                "1 - (Kill them using the dagger)\n"
@@ -1367,6 +1427,7 @@ def finalEncounter():
           "I'll save the answers for when we're done here. "
           "First, let's talk about what you've been doing in this dream world you've created for yourself.\n"
           "...")
+    #your fiance says different things depending on what you've done in the game
     if guardianState == 1:
         input("You passed the guardian with a non-violent approach and without allowing him to become the ruler of this land.\n"
               "...")
@@ -1452,6 +1513,9 @@ def finalEncounter():
         input("And finally, you disgraced my memory by destroying my ring.\n"
               "...")
     input("If I had to score your morality somehow, I'd give you a "+str(morality)+"...")
+    #the ending you get is tied to your morality
+    #for example, to get this ending, your morality must be -70 or lower
+    #having a high morality grants you a better ending, whereas a low one results in a terrible fate
     if morality <= -70:
         input("Now that you understand how horrible of a person you are. I'll tell you exactly who murdered your family...")
         input("You did. You killed me. You killed our daughter. You killed our son...")
@@ -1632,8 +1696,14 @@ def gameEndGood():
           "This game has 5 endings, one of which is hidden in the GOOD ending. "
           "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 4, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
-    quit(1)
+    while True:
+        playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
+                          "Would you like to play again? (yes/no)")
+        if playAgain == "yes":
+            resetValues()
+            main()
+        if playAgain == "no":
+            quit()
     
 def gameEndEvil():
     global Score
@@ -1641,8 +1711,14 @@ def gameEndEvil():
           "This game has 5 endings, one of which is hidden in the GOOD ending. "
           "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 4, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
-    quit(1)
+    while True:
+        playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
+                          "Would you like to play again? (yes/no)")
+        if playAgain == "yes":
+            resetValues()
+            main()
+        if playAgain == "no":
+            quit()
 
 def gameEndNeutral():
     global Score
@@ -1650,8 +1726,14 @@ def gameEndNeutral():
           "This game has 5 endings, one of which is hidden in the GOOD ending. "
           "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 4, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
-    quit(1)
+    while True:
+        playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
+                          "Would you like to play again? (yes/no)")
+        if playAgain == "yes":
+            resetValues()
+            main()
+        if playAgain == "no":
+            quit()
 
 def gameEndRevenge():
     global Score
@@ -1659,8 +1741,14 @@ def gameEndRevenge():
           "This game has 5 endings, one of which is hidden in the GOOD ending (you just achieved it). "
           "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 4, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
-    quit(1)
+    while True:
+        playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
+                          "Would you like to play again? (yes/no)")
+        if playAgain == "yes":
+            resetValues()
+            main()
+        if playAgain == "no":
+            quit()
 
 def gameEndTrueEvil():
     global Score
@@ -1668,17 +1756,34 @@ def gameEndTrueEvil():
           "This game has 5 endings, one of which is hidden in the GOOD ending (you just achieved it). "
           "All of the endings are drastically different and reveal different information about the story. "
           "If you want to know how to achieve the other 4, just ask me!")
-    input("Copyright: Abel Simon, abel.simon1@marist.edu")
-    quit(1)
+    while True:
+        playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
+                          "Would you like to play again? (yes/no)")
+        if playAgain == "yes":
+            resetValues()
+            main()
+        if playAgain == "no":
+            quit()
 
 def resetValues():
-    pass
-
-# note: max morality is 18 i think
-# note: min morality is close to -100. I'm not sure.
+    score = 0
+    moves = 0
+    userAction = None
+    specialQuestionAsked = False
+    morality = 0
+    guardianRequest = 0
+    necklace = 0
+    garments = 0
+    coldManState = 0
+    guardianState = 0
+    shrineState = 0
+    familyHonored = 0
+    daggerState = 0
+    shrineOpen = True
+    familyPhoto = False
+    locInfo = 0 
 
 def main():
-    resetValues()
     customizePlayer()
     showIntro()
     gameLoop()
