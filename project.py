@@ -1307,7 +1307,7 @@ def shrineBreakIn():
               "Turning to leave the shrine, you hear their screams dissipate as the cursed energy from the dagger disintegrates their bodies.")
         shrineOpen = True
         shrineState = 4
-        morality = morality - 30
+        morality = morality - 40
         locInfo = 7
         score = score + 25
     else:
@@ -1698,7 +1698,7 @@ def gameEndGood():
           "If you want to know how to achieve the other 4, just ask me!")
     while True:
         playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
-                          "Would you like to play again? (yes/no)")
+                          "Would you like to play again? (yes/no): ")
         if playAgain == "yes":
             resetValues()
             main()
@@ -1713,7 +1713,7 @@ def gameEndEvil():
           "If you want to know how to achieve the other 4, just ask me!")
     while True:
         playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
-                          "Would you like to play again? (yes/no)")
+                          "Would you like to play again? (yes/no): ")
         if playAgain == "yes":
             resetValues()
             main()
@@ -1728,7 +1728,7 @@ def gameEndNeutral():
           "If you want to know how to achieve the other 4, just ask me!")
     while True:
         playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
-                          "Would you like to play again? (yes/no)")
+                          "Would you like to play again? (yes/no): ")
         if playAgain == "yes":
             resetValues()
             main()
@@ -1743,7 +1743,7 @@ def gameEndRevenge():
           "If you want to know how to achieve the other 4, just ask me!")
     while True:
         playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
-                          "Would you like to play again? (yes/no)")
+                          "Would you like to play again? (yes/no): ")
         if playAgain == "yes":
             resetValues()
             main()
@@ -1758,7 +1758,7 @@ def gameEndTrueEvil():
           "If you want to know how to achieve the other 4, just ask me!")
     while True:
         playAgain = input("Copyright: Abel Simon, abel.simon1@marist.edu\n"
-                          "Would you like to play again? (yes/no)")
+                          "Would you like to play again? (yes/no): ")
         if playAgain == "yes":
             resetValues()
             main()
@@ -1766,6 +1766,28 @@ def gameEndTrueEvil():
             quit()
 
 def resetValues():
+    #resets every value, this is for if player chooses to restart
+    global score
+    global moves
+    global userAction
+    global specialQuestionAsked
+    global morality
+    global guardianRequest
+    global necklace
+    global garments
+    global coldManState
+    global guardianState
+    global shrineState
+    global familyHonored
+    global daggerState
+    global shrineOpen
+    global familyPhoto
+    global locInfo
+    global hasBeenThere
+    global hasBeenSearched
+    global locationCheck
+    global items
+    global inventory
     score = 0
     moves = 0
     userAction = None
@@ -1781,7 +1803,13 @@ def resetValues():
     daggerState = 0
     shrineOpen = True
     familyPhoto = False
-    locInfo = 0 
+    locInfo = 0
+    hasBeenThere = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+    hasBeenSearched = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+    locationCheck = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+    items = [None, "Ornament", "Map", "Exotic Garments", None, "Family Photo", None, "Guardian Gem", "Shrine Key",
+         "Dream Shard", None, None, "Blanket", None, "Food", "Expensive Necklace"]
+    inventory = []
 
 def main():
     customizePlayer()
