@@ -1,8 +1,8 @@
 # Python-Game-Project
 FIVE YEARS AFLAME README
 
-This game was created as the final project for Intro to Programming. 
-It's most notable feature is how heavily player choice affects the ending of the game and the events that occur throughout it. No two playthroughs will be alike. 
+
+Simple python text game where player choice heavily affects the ending of the game and the events that occur throughout it. No two playthroughs will be alike. 
 
 HOW TO PLAY:
 
