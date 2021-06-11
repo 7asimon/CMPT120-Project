@@ -12,7 +12,7 @@ Type awaken when in a dream state to wake up and move around in your home.
 
 Type sleep when in the real world to return to your dream.
 
-ALWAYS Type search to look for an item in your location.
+Type search to look for an item in your location (heavily recommended).
 
 Type take item name to take an item once you find it.
 
