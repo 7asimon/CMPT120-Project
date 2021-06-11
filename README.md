@@ -1,5 +1,5 @@
 # Python-Game-Project
-FIVE YEARS AFLAME README
+THE FIFTH YEAR
 
 
 Simple python text game where player choice heavily affects the ending of the game and the events that occur throughout it. No two playthroughs will be alike. 
